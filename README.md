@@ -17,7 +17,6 @@
 ## 📋 Table of Contents
 - [Features](#-features)
 - [Permissions Explained](#-permissions-explained)
-- [Privacy Policy](#-privacy-policy)
 - [Building from Source](#-building-from-source)
 - [Contributing](#-contributing)
 - [Donations](#-donations)
