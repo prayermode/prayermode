@@ -16,39 +16,31 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import com.google.android.material.snackbar.Snackbar
-
 private const val tag = "PermissionHelper"
-
 class PermissionsHelper(private val context: Context) {
-
     fun checkLocationPermission(): Boolean {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
-
     fun checkNotificationPermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
         } else true
     }
-
     fun checkAlarmPermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val alarmManager = ActivityCompat.getSystemService(context, AlarmManager::class.java)
             alarmManager?.canScheduleExactAlarms() == true
         } else true
     }
-
     fun checkDNDPermission(context: Context): Boolean {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         return notificationManager.isNotificationPolicyAccessGranted
     }
-
     fun checkBackgroundLocationPermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
         } else true
     }
-
     fun requestDNDPermission(activity: MainActivity) {
         val notificationManager = activity.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (!notificationManager.isNotificationPolicyAccessGranted) {
@@ -88,7 +80,6 @@ class PermissionsHelper(private val context: Context) {
                 .show()
         }
     }
-
     fun requestAlarmPermission(activity: MainActivity) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             Snackbar.make(activity.findViewById(android.R.id.content), context.getString(R.string.alarm_permission_granted), Snackbar.LENGTH_SHORT).show()
@@ -126,7 +117,6 @@ class PermissionsHelper(private val context: Context) {
                 .show()
         } else Snackbar.make(activity.findViewById(android.R.id.content), context.getString(R.string.alarm_permission_granted), Snackbar.LENGTH_SHORT).show()
     }
-
     fun requestBackgroundLocationPermission(activity: MainActivity) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return
         logDisclosureShown()
@@ -159,19 +149,24 @@ class PermissionsHelper(private val context: Context) {
             }
             .show()
     }
-
+    fun areLocNotifDNDGranted(): Boolean {
+        return checkLocationPermission() && checkNotificationPermission() && checkDNDPermission(context)
+    }
+    fun areLocNotifDNDAlarmGranted(): Boolean {
+        return checkLocationPermission() && checkNotificationPermission() && checkDNDPermission(context) && checkAlarmPermission()
+    }
+    fun areLocDNDAlarmBackgroundLocGranted(): Boolean {
+        return checkLocationPermission() && checkDNDPermission(context) && checkAlarmPermission() && checkBackgroundLocationPermission()
+    }
     fun areAllPermissionsGranted(): Boolean {
         return checkLocationPermission() && checkNotificationPermission() && checkDNDPermission(context) && checkAlarmPermission() && checkBackgroundLocationPermission()
     }
-
     private fun logDisclosureShown() {
         if (BuildConfig.DEBUG) Log.d(tag, "Background location disclosure shown")
     }
-
     private fun logDisclosureAccepted() {
         if (BuildConfig.DEBUG) Log.d(tag, "Background location disclosure accepted")
     }
-
     private fun logDisclosureDenied() {
         if (BuildConfig.DEBUG) Log.d(tag, "Background location disclosure denied")
     }

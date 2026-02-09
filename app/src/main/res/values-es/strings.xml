@@ -4,10 +4,12 @@
     <string name="On">Encendido</string>
     <string name="select_option">Selecciona una opción</string> <!-- No translation -->
     <string name="AudioText">Escuchar el takbir antes de activar el modo silencio</string>
+    <string name="AblutionText">Tiempo de Ablución - 10 minutos antes del Adhan</string>
+    <string name="menu">Menú</string>
+    <string name="settings_title">Información de la aplicación</string>
 
-    <!-- Daily Schedule Card view -->
-    <string name="daily_schedule">Horario Diario de Oraciones</string>
-
+    <!-- Calculation methods & Takbir Card view -->
+    <string name="prayer_options">Opciones de Oración</string>
     <string name="calculation_method">Método de cálculo</string>  <!-- No translation -->
     <string name="select_calculation_method">Selecciona el método de cálculo</string>
     <string-array name="calculation_methods">
@@ -36,9 +38,29 @@
         <item>Shia Ithna-Ashari, Instituto Leva, Qum</item>
     </string-array>
 
-    <string name="daily_silent_duration_after_adhan">Duración del silencio diario después del adhan</string>
-    <string name="daily_silent_duration">Duración del silencio diario</string>  <!-- No translation -->
-    <string name="select_silent_duration">Selecciona la duración diaria</string>
+    <!-- Daily Schedule Card view -->
+    <string name="daily_schedule">Silencio diario tras el Adhan</string>
+    <!-- Fajr Card view -->
+    <string name="fajr_silent_duration_after_adhan">Fajr</string>
+    <string name="fajr_silent_duration">Duración Fajr</string>
+    <string name="select_fajr_duration">Seleccionar duración silencio Fajr</string>
+    <!-- Dhuhr Card view -->
+    <string name="dhuhr_silent_duration_after_adhan">Dhuhr</string>
+    <string name="dhuhr_silent_duration">Duración Dhuhr</string>
+    <string name="select_dhuhr_duration">Seleccionar duración silencio Dhuhr</string>
+    <!-- Asr Card view -->
+    <string name="asr_silent_duration_after_adhan">Asr</string>
+    <string name="asr_silent_duration">Duración Asr</string>
+    <string name="select_asr_duration">Seleccionar duración silencio Asr</string>
+    <!-- Maghrib Card view -->
+    <string name="maghrib_silent_duration_after_adhan">Maghrib</string>
+    <string name="maghrib_silent_duration">Duración Maghrib</string>
+    <string name="select_maghrib_duration">Seleccionar duración silencio Maghrib</string>
+    <!-- Isha Card view -->
+    <string name="isha_silent_duration_after_adhan">Isha</string>
+    <string name="isha_silent_duration">Duración Isha</string>
+    <string name="select_isha_duration">Seleccionar duración silencio Isha</string>
+
     <string-array name="silent_durations">
         <item>15 minutos</item>
         <item>20 minutos</item>
@@ -47,17 +69,20 @@
         <item>35 minutos</item>
         <item>40 minutos</item>
         <item>45 minutos</item>
+        <item>50 minutos</item>
+        <item>55 minutos</item>
+        <item>60 minutos</item>
     </string-array>
 
-    <!-- Joumoua Card view -->
-    <string name="joumoua">Al-Jumua</string>
+    <!-- jumua Card view -->
+    <string name="jumua_card">Duraciones de silencio de Al-Jumua</string>
     <!-- Black fix text -->
-    <string name="before_dhuhr">Duración del silencio antes del adhan</string>
+    <string name="before_jumua">Antes del Adhan</string>
     <!-- TV variable text -->
-    <string name="duration_before_dhuhr">Duración antes del adhan</string>  <!-- No translation -->
+    <string name="duration_before_jumua">Duración antes del adhan</string>  <!-- No translation -->
     <!-- Select menu -->
-    <string name="select_before_dhuhr_duration">Selecciona la duración antes del adhan</string>
-    <string-array name="before_dhuhr_duration">
+    <string name="select_before_jumua_duration">Selecciona la duración antes del adhan</string>
+    <string-array name="before_jumua_duration">
         <item>Apagado</item>
         <item>10 minutos</item>
         <item>15 minutos</item>
@@ -72,10 +97,10 @@
         <item>60 minutos</item>
     </string-array>
 
-    <string name="after_dhuhr">Duración del silencio después del adhan</string>
-    <string name="duration_after_dhuhr">Duración después del adhan</string>  <!-- No translation -->
-    <string name="select_after_dhuhr_duration">Selecciona la duración después del adhan</string>
-    <string-array name="after_dhuhr_duration">
+    <string name="after_jumua">Después del Adhan</string>
+    <string name="duration_after_jumua">Duración después del adhan</string>  <!-- No translation -->
+    <string name="select_after_jumua_duration">Selecciona la duración después del adhan</string>
+    <string-array name="after_jumua_duration">
         <item>15 minutos</item>
         <item>20 minutos</item>
         <item>25 minutos</item>
@@ -91,10 +116,10 @@
     <!-- Ramadan Card view -->
     <string name="ramadan">Ramadán</string>
 
-    <string name="tarawih_silent_duration">Duración del silencio para Isha y Taraweeh</string>
-    <string name="tarawih_duration">Duración de Taraweeh</string>  <!-- No translation -->
-    <string name="select_tarawih_duration">Selecciona la duración de Isha y Taraweeh</string>
-    <string-array name="tarawih_duration">
+    <string name="taraweeh_silent_duration">Isha y Taraweeh</string>
+    <string name="taraweeh_duration">Duración de Taraweeh</string>  <!-- No translation -->
+    <string name="select_taraweeh_duration">Selecciona la duración de Isha y Taraweeh</string>
+    <string-array name="taraweeh_duration">
         <item>20 minutos</item>
         <item>30 minutos</item>
         <item>40 minutos</item>
@@ -106,7 +131,7 @@
         <item>3 horas</item>
     </string-array>
 
-    <string name="tahajjud_silent_duration">Duración del silencio para Tahajjud</string>
+    <string name="tahajjud_silent_duration">Tahajjud</string>
     <string name="tahajjud_duration">Duración de Tahajjud</string>  <!-- No translation -->
     <string name="select_tahajjud_duration">Selecciona la duración de Tahajjud</string>
     <string-array name="tahajjud_duration">
@@ -122,7 +147,7 @@
     </string-array>
 
     <!-- Eid Card view -->
-    <string name="eid_alfitr_and_eid_aladha">Eid Al Fitr - Eid Al Adha</string>
+    <string name="eid_alfitr_and_eid_aladha">Eid Al-Fitr - Eid Al-Adha</string>
 
     <string name="eid_time_prayer">Hora de la oración del Eid</string>
     <string name="eid_time">Hora del Eid</string>  <!-- No translation -->
@@ -143,6 +168,7 @@
     <string name="eid_duration">Duración del Eid</string>  <!-- No translation -->
     <string name="select_eid_duration">Selecciona la duración de la oración del Eid</string>
     <string-array name="eid_duration">
+        <item>Apagado</item>
         <item>20 minutos</item>
         <item>30 minutos</item>
         <item>40 minutos</item>
@@ -175,7 +201,7 @@ La aplicación solicitará permiso para acceder a la ubicación de su dispositiv
 <b>Modo No Molestar</b><br/><br/>
 Esta aplicación también puede solicitar permiso para activar el modo No Molestar (DND) en su dispositivo. Este permiso es necesario para que la aplicación funcione correctamente al habilitar temporalmente el modo DND para minimizar las interrupciones durante los horarios de oración.<br/><br/>
 Si bien este permiso permite que la aplicación controle la configuración de sonido y vibración de su dispositivo, queremos aclarar explícitamente que la aplicación NO accede, lee ni recopila ninguna de sus notificaciones, mensajes, contenido de llamadas ni ningún otro dato personal que muestren sus notificaciones. Este permiso es únicamente para activar y desactivar el modo DND.<br/><br/>
-Usted reconoce que mientras el modo DND esté activo, <b>es posible que no reciba notificaciones estándar, incluidas llamadas de emergencia</b>. Nuestra empresa no se hará responsable de ninguna consecuencia resultante de notificaciones perdidas y llamadas de emergencia, durante los períodos en que la aplicación haya activado el modo DND.<br/><br/>
+Usted reconoce que mientras el modo DND esté activo, <b>es posible que no reciba notificaciones estándar, incluidas llamadas de emergencia</b>. No nos haremos responsables de ninguna consecuencia resultante de notificaciones perdidas y llamadas de emergencia, durante los períodos en que la aplicación haya activado el modo DND.<br/><br/>
 Es su responsabilidad configurar la configuración y excepciones de DND según sus necesidades.<br/><br/>
 Estamos comprometidos a proteger su privacidad. Si tiene alguna pregunta o inquietud sobre nuestras prácticas de privacidad, contáctenos en <a href="mailto:prayer.mode@outlook.com">prayer.mode@outlook.com</a><br/><br/>
 
@@ -216,8 +242,11 @@ Gracias por confiar en nuestra aplicación.<br/><br/>
     <string name="calculation">Métodos de cálculo</string>
     <string name="calculation_description">Selecciona el método de cálculo preferido antes de activar el interruptor. Ten en cuenta que la aplicación utiliza la API de aladhan.com para obtener horarios de oración precisos.</string>
 
+    <string name="ablution">Configuración del tiempo de ablución</string>
+    <string name="ablution_description">Activa No molestar 10 minutos antes del adhan para dar tiempo para la ablución (Wudu). Solo puedes cambiar esta configuración cuando el interruptor principal está apagado.</string>
+
     <string name="durations">Duración</string>
-    <string name="durations_description">Selecciona las duraciones según tus preferencias. Ten en cuenta que las cinco oraciones diarias, Jumua, Taraweeh, Tahajjud y las oraciones del Eid tienen cada una su propia duración.</string>
+    <string name="durations_description">Selecciona las duraciones según tus preferencias. Ten en cuenta que cada oración tiene su propia duración de silencio.</string>
 
     <string name="time">Hora</string>
     <string name="time_description">Elige la hora de la oración del Eid de Al-Fitr y Al-Adha.</string>
@@ -228,25 +257,23 @@ Gracias por confiar en nuestra aplicación.<br/><br/>
     <string name="wearable">Wearable</string>
     <string name="wearable_description">Tu reloj conectado también puede recibir notificaciones y seguir el modo de sonido de tu teléfono; para lograrlo, revisa la configuración de la aplicación de tu reloj inteligente.</string>
 
-    <string name="donation">Donaciones</string>
+    <string name="donation">Apoyar el proyecto</string>
     <string name="donation_link_text">PayPal</string>
     <string name="donation_content">Apóyanos</string>
     <string name="donation_description"><![CDATA[
-    Modo Oración es software gratuito y de código abierto. El desarrollo y mantenimiento requieren tiempo y esfuerzo.<br/><br/>
-    Si encuentras esta aplicación valiosa y deseas apoyar su desarrollo continuo, puedes hacer una donación voluntaria.<br/><br/>
-    Las donaciones son <b>voluntarias, no reembolsables</b> y no te dan derecho a ningún servicio o función premium.<br/><br/>
-    Son simplemente una forma de mostrar tu aprecio y ayudar a garantizar que la aplicación permanezca gratuita y actualizada para todos.<br/><br/>
-    Puedes donar usando [DONATION_LINK].<br/><br/>
-    ]]></string>
+Modo Oración es software libre y de código abierto. Mantener y mejorar la aplicación requiere tiempo y esfuerzo significativos.<br/><br/>
+Si encuentras útil esta aplicación y deseas apoyar su desarrollo continuo, puedes realizar una contribución voluntaria.<br/><br/>
+Estas contribuciones son <b>voluntarias y no reembolsables</b>. No desbloquean funciones premium, ya que la aplicación está pensada para ser gratuita para todos.<br/><br/>
+Tu apoyo es simplemente una forma de mostrar tu agradecimiento, lo que nos anima a seguir actualizando la aplicación para la comunidad.<br/><br/>
+Puedes contribuir a través de [DONATION_LINK].<br/><br/>
+]]></string>
 
     <string name="back_button">Botón Atrás</string>  <!-- No translation -->
 
     <!-- MainActivity SnackBar -->
     <string name="cannot_change_settings">No se pueden cambiar los ajustes mientras el interruptor está encendido.</string>
-    <string name="permissions_granted">Todos los permisos están concedidos, el interruptor se puede encender.</string>
     <string name="alarm_permission_granted">Permiso de Alarma concedido.</string>
     <string name="grant_location_permission">Por favor, concede el permiso de Ubicación.</string>
-    <string name="grant_alarm_permission">Por favor, concede el permiso de Alarma.</string>
     <string name="grant_dnd_permission">Se necesita el permiso de No Molestar para el silenciado automático.</string>
     <string name="background_location_denied_message">Se necesita acceso a la ubicación en segundo plano para actualizar automáticamente los horarios de oración.</string>
     <string name="no_location_internet">No se puede activar el Modo Oración, por favor verifica el Servicio de Ubicación y la conexión a Internet.</string>
@@ -296,21 +323,24 @@ Gracias por confiar en nuestra aplicación.<br/><br/>
     <string name="today_fajr_time_is">La oración del Fajr de hoy es a las %1$s.</string>
     <string name="today_dhuhr_time_is">La oración de Al-Jumua de hoy es a las %1$s.</string>
     <string name="silent_mode_activated_for">No Molestar activado para %1$s.</string>
+    <string name="ablution_silent_mode_activation">No Molestar activado para %1$s 10 minutos antes del Adhan.</string>
     <string name="today_imsak_time_is">El tiempo de Imsak de hoy es a las %1$s.</string>
     <string name="back_to_normal_mode">Modo No Molestar desactivado.</string>
     <string name="location_title">Servicio de ubicación</string>
     <string name="getting_location_update">Obteniendo actualizaciones de ubicación.</string>
-    <string name="happy_eid_alfitr">Feliz Eid Al Fitr, que Allah acepte nuestras buenas acciones así como las tuyas.</string>
-    <string name="happy_eid_aladha">Feliz Eid Al Adha, que Allah acepte nuestras buenas acciones así como las tuyas.</string>
+    <string name="happy_eid_alfitr">Feliz Eid Al-Fitr, que Allah acepte nuestras buenas acciones así como las tuyas.</string>
+    <string name="happy_eid_aladha">Feliz Eid Al-Adha, que Allah acepte nuestras buenas acciones así como las tuyas.</string>
     <string name="dnd_already_on">El modo DND ya estaba activo por el usuario/sistema al intentar activarlo para %1$s y, por lo tanto, permanecerá activo para respetar tu configuración actual.</string>
 
     <string name="location_service_disabled">Para garantizar que la aplicación funcione como se espera, activa el servicio de ubicación.</string>
-    <string name="travelled_distance">Has viajado %1$s km. Adaptando tu horario de oraciones a tu nueva posición.</string>
-    <string name="location_name">Obteniendo horarios de oración para %1$s. ¿Ubicación incorrecta? Es posible que necesites ajustar la configuración de ubicación de tu dispositivo.</string>
+    <string name="travelled_distance">Adaptando el horario de oraciones a la posición actual.</string>
+    <string name="location_name">Obteniendo horarios de oración para %1$s.</string>
+    <string name="location_fetch">Obteniendo ubicación, por favor muévase a un área abierta o cerca de una ventana.</string>
 
     <string name="open_prayer">Abrir aplicación</string>
 
-    <string name="eid">Al Eid</string>
+    <string name="jumua">Al-Jumua</string>
+    <string name="eid">Al-Eid</string>
     <string name="imsak">Imsak</string>
     <string name="fajr">Fajr</string>
     <string name="sunrise">Amanecer</string>
@@ -318,7 +348,7 @@ Gracias por confiar en nuestra aplicación.<br/><br/>
     <string name="asr">Asr</string>
     <string name="maghrib">Maghrib</string>
     <string name="isha">Isha</string>
-    <string name="tarawih">Taraweeh</string>
+    <string name="taraweeh">Taraweeh</string>
     <string name="tahajjud">Tahajjud</string>
     <string name="prayer_name_unknown">Oración</string>
 
@@ -331,7 +361,7 @@ Gracias por confiar en nuestra aplicación.<br/><br/>
 
     <string name="update_notification_title">Actualización de Modo Oración</string>
     <string name="update_notification_message">La versión %1$s ya está disponible.</string>
-    <string name="update">Actualizar ahora</string>
+    <string name="update">Abrir notas de la versión</string>
     <string name="silent_schedule_success">Programación de horarios de oración exitosa.</string>
 
     <string name="welcome_title">Bienvenido al Modo Oración</string>
@@ -344,6 +374,40 @@ Gracias por confiar en nuestra aplicación.<br/><br/>
     No permitas que las llamadas y notificaciones te impidan conectar con Alá.
     </string>
     <string name="next">Siguiente</string>
+
+    <string name="education_title">Bueno Saber</string>
+    <string name="education_message">
+🔁 Los Tiempos de Oración se Actualizan\n
+\u2022 Mensualmente desde Aladhan.com\n
+\u2022 Cuando se detecta un desplazamiento significativo\n\n
+🚨 El Interruptor Puede No Activar Si\n
+\u2022 La ubicación está apagada\n
+\u2022 Señal GPS débil\n
+\u2022 No hay conexión a Internet\n
+\u2022 Se revocan los permisos esenciales\n\n
+✅ Requerido Para Operación Completa\n
+\u2022 Todos los permisos\n
+\u2022 Ubicación siempre activa - Asegure buena señal GPS\n
+\u2022 Conexión a Internet persistente\n\n
+💡 La aplicación puede usar su última ubicación conocida si la señal GPS no está disponible temporalmente.\n</string>
+    <string name="got_it">Entendido</string>
+
+    <!-- Language Section -->
+    <string name="language_section">Idioma</string>
+    <string name="language">Idioma de la aplicación</string>
+    <string name="select_language">Seleccionar idioma</string>
+
+    <!-- App Performance Strings -->
+    <string name="app_performance_section">Rendimiento de la App</string>
+    <string name="battery_optimization_title">Acceso a Ubicación en Segundo Plano</string>
+    <string name="battery_optimization_checking">Verificando estado…</string>
+    <string name="battery_optimization_enabled">✓ Sin restricciones (Recomendado)</string>
+    <string name="battery_optimization_active">Restringido - Toca para cambiar</string>
+    <string name="battery_optimization_dialog_title">Mejorar Seguimiento de Ubicación</string>
+    <string name="battery_optimization_dialog_message">Para actualizaciones confiables de los horarios de oración durante los viajes, por favor permite el uso de batería en segundo plano para esta aplicación.\n\nEsto ayuda a la aplicación a adaptar los horarios de oración automáticamente.\n\nVe a Batería/Uso de batería de la app → Sin restricciones o Permitir uso en segundo plano o No optimizar.</string>
+    <string name="battery_optimization_dialog_negative">Ahora no</string>
+    <string name="battery_optimization_error">No se pueden abrir los ajustes de batería</string>
+    <string name="battery_optimization_already_enabled">La optimización de batería ya está activada para esta aplicación. Esto ayuda a mantener un seguimiento de ubicación confiable para las actualizaciones de horarios de oración cuando viajas.</string>
 
     <!-- Catch & else blocks -->
     <string name="failed_writing">Por favor, asegúrate de tener suficiente espacio de almacenamiento.</string>

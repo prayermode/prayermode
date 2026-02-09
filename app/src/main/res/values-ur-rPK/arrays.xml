@@ -1,0 +1,89 @@
+<resources>
+
+     <string-array name="silent_durations">
+        <item>15 منٹ</item>
+        <item>20 منٹ</item>
+        <item>25 منٹ</item>
+        <item>30 منٹ</item>
+        <item>35 منٹ</item>
+        <item>40 منٹ</item>
+        <item>45 منٹ</item>
+        <item>50 منٹ</item>
+        <item>55 منٹ</item>
+        <item>60 منٹ</item>
+    </string-array>
+
+     <string-array name="before_jumua_duration">
+        <item>بند</item>
+        <item>10 منٹ</item>
+        <item>15 منٹ</item>
+        <item>20 منٹ</item>
+        <item>25 منٹ</item>
+        <item>30 منٹ</item>
+        <item>35 منٹ</item>
+        <item>40 منٹ</item>
+        <item>45 منٹ</item>
+        <item>50 منٹ</item>
+        <item>55 منٹ</item>
+        <item>60 منٹ</item>
+    </string-array>
+
+     <string-array name="after_jumua_duration">
+        <item>15 منٹ</item>
+        <item>20 منٹ</item>
+        <item>25 منٹ</item>
+        <item>30 منٹ</item>
+        <item>35 منٹ</item>
+        <item>40 منٹ</item>
+        <item>45 منٹ</item>
+        <item>50 منٹ</item>
+        <item>55 منٹ</item>
+        <item>60 منٹ</item>
+    </string-array>
+
+      <string-array name="taraweeh_duration">
+        <item>20 منٹ</item>
+        <item>30 منٹ</item>
+        <item>40 منٹ</item>
+        <item>50 منٹ</item>
+        <item>1 گھنٹہ</item>
+        <item>1 گھنٹہ 30 منٹ</item>
+        <item>2 گھنٹے</item>
+        <item>2 گھنٹے 30 منٹ</item>
+        <item>3 گھنٹے</item>
+    </string-array>
+
+     <string-array name="tahajjud_duration">
+        <item>بند</item>
+        <item>15 منٹ</item>
+        <item>30 منٹ</item>
+        <item>45 منٹ</item>
+        <item>1 گھنٹہ</item>
+        <item>1 گھنٹہ 30 منٹ</item>
+        <item>2 گھنٹے</item>
+        <item>2 گھنٹے 30 منٹ</item>
+        <item>3 گھنٹے</item>
+    </string-array>
+
+    <string-array name="eid_time">
+        <item>طلوع آفتاب کے 20 منٹ بعد</item>
+        <item>06:00</item>
+        <item>06:30</item>
+        <item>07:00</item>
+        <item>07:30</item>
+        <item>08:00</item>
+        <item>08:30</item>
+        <item>09:00</item>
+        <item>10:00</item>
+    </string-array>
+
+    <string-array name="eid_duration">
+        <item>بند</item>
+        <item>20 منٹ</item>
+        <item>30 منٹ</item>
+        <item>40 منٹ</item>
+        <item>50 منٹ</item>
+        <item>60 منٹ</item>
+    </string-array>
+
+</resources>

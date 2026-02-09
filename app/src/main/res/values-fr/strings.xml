@@ -4,10 +4,12 @@
     <string name="On">Activé</string>
     <string name="select_option">Selectionner une option</string>
     <string name="AudioText">Ecouter le takbir avant d\'activer le mode silencieux</string>
+    <string name="AblutionText">Temps d\'ablution - 10 min avant l\'Adhan</string>
+    <string name="menu">Menu</string>
+    <string name="settings_title">Informations sur l\'application</string>
 
-    <!-- Daily Schedule Cardview -->
-    <string name="daily_schedule">Programmation Quotidienne</string>
-
+    <!-- Calculation methods & Takbir Card view -->
+    <string name="prayer_options">Options de Prière</string>
     <string name="calculation_method">Méthode de calcul</string>
     <string name="select_calculation_method">Choix de la méthode de calcul</string>
     <string-array name="calculation_methods">
@@ -36,9 +38,29 @@
         <item>Shia Ithna-Ashari, Institut Leva, Qum</item>
     </string-array>
 
-    <string name="daily_silent_duration_after_adhan">Durée du mode silencieux après al adhan</string>
-    <string name="daily_silent_duration">Durée quotidienne mode silencieux</string>
-    <string name="select_silent_duration">Choix de la durée quotidienne du mode silencieux</string>
+    <!-- Daily Schedule Cardview -->
+    <string name="daily_schedule">Durées de silence quotidiennes après l\'Adhan</string>
+    <!-- Fajr Card view -->
+    <string name="fajr_silent_duration_after_adhan">Fajr</string>
+    <string name="fajr_silent_duration">Durée Fajr</string>
+    <string name="select_fajr_duration">Sélection durée du silence Fajr</string>
+    <!-- Dhuhr Card view -->
+    <string name="dhuhr_silent_duration_after_adhan">Dhuhr</string>
+    <string name="dhuhr_silent_duration">Durée Dhuhr</string>
+    <string name="select_dhuhr_duration">Sélection durée du silence Dhuhr</string>
+    <!-- Asr Card view -->
+    <string name="asr_silent_duration_after_adhan">Asr</string>
+    <string name="asr_silent_duration">Durée Asr</string>
+    <string name="select_asr_duration">Sélection durée du silence Asr</string>
+    <!-- Maghrib Card view -->
+    <string name="maghrib_silent_duration_after_adhan">Maghrib</string>
+    <string name="maghrib_silent_duration">Durée Maghrib</string>
+    <string name="select_maghrib_duration">Sélection durée du silence Maghrib</string>
+    <!-- Isha Card view -->
+    <string name="isha_silent_duration_after_adhan">Isha</string>
+    <string name="isha_silent_duration">Durée Isha</string>
+    <string name="select_isha_duration">Sélection durée du silence Isha</string>
+
     <string-array name="silent_durations">
         <item>15 minutes</item>
         <item>20 minutes</item>
@@ -47,17 +69,20 @@
         <item>35 minutes</item>
         <item>40 minutes</item>
         <item>45 minutes</item>
+        <item>50 minutes</item>
+        <item>55 minutes</item>
+        <item>60 minutes</item>
     </string-array>
 
-    <!-- Joumouaa Cardview -->
-    <string name="joumoua">Al Joumoua</string><!-- Cardview Up text -->
+    <!-- jumua Cardview -->
+    <string name="jumua_card">Durées de silence pour Al-Jumua</string><!-- Cardview Up text -->
     <!-- Black fix text -->
-    <string name="before_dhuhr">Durée du mode silencieux avant al adhan</string>
+    <string name="before_jumua">Avant Adhan</string>
     <!-- TV variable text -->
-    <string name="duration_before_dhuhr">Durée avant adhan</string>
+    <string name="duration_before_jumua">Durée avant adhan</string>
     <!-- Select menu -->
-    <string name="select_before_dhuhr_duration">Choix de la durée avant al adhan</string>
-    <string-array name="before_dhuhr_duration">
+    <string name="select_before_jumua_duration">Choix de la durée avant Adhan</string>
+    <string-array name="before_jumua_duration">
         <item>Désactivée</item>
         <item>10 minutes</item>
         <item>15 minutes</item>
@@ -72,10 +97,10 @@
         <item>60 minutes</item>
     </string-array>
 
-    <string name="after_dhuhr">Durée du mode silencieux après al adhan</string>
-    <string name="duration_after_dhuhr">Durée après adhan</string>
-    <string name="select_after_dhuhr_duration">Choix de la durée après al adhan</string>
-    <string-array name="after_dhuhr_duration">
+    <string name="after_jumua">Après Adhan</string>
+    <string name="duration_after_jumua">Durée après adhan</string>
+    <string name="select_after_jumua_duration">Choix de la durée après Adhan</string>
+    <string-array name="after_jumua_duration">
         <item>15 minutes</item>
         <item>20 minutes</item>
         <item>25 minutes</item>
@@ -91,10 +116,10 @@
     <!-- Ramadan Cardview -->
     <string name="ramadan">Ramadan</string>
 
-    <string name="tarawih_silent_duration">Durée du mode silencieux Isha et Tarawih</string>
-    <string name="tarawih_duration">Durée Tarawih</string>
-    <string name="select_tarawih_duration">Choix de la durée de la prière d\'Isha et des Tarawih</string>
-    <string-array name="tarawih_duration">
+    <string name="taraweeh_silent_duration">Isha et Taraweeh</string>
+    <string name="taraweeh_duration">Durée Taraweeh</string>
+    <string name="select_taraweeh_duration">Choix de la durée Isha et Taraweeh</string>
+    <string-array name="taraweeh_duration">
         <item>20 minutes</item>
         <item>30 minutes</item>
         <item>40 minutes</item>
@@ -106,7 +131,7 @@
         <item>3 heures</item>
     </string-array>
 
-    <string name="tahajjud_silent_duration">Durée du mode silencieux de Tahajjoud</string>
+    <string name="tahajjud_silent_duration">Tahajjoud</string>
     <string name="tahajjud_duration">Durée Tahajjoud</string>
     <string name="select_tahajjud_duration">Choix de la durée du Tahajjoud</string>
     <string-array name="tahajjud_duration">
@@ -122,7 +147,7 @@
     </string-array>
 
     <!-- Eid Cardview -->
-    <string name="eid_alfitr_and_eid_aladha">Aïd Al Fitr - Aïd Al Adha</string>
+    <string name="eid_alfitr_and_eid_aladha">Aïd Al-Fitr - Aïd Al-Adha</string>
 
     <string name="eid_time_prayer">Heure de la prière de l\'Aïd</string>
     <string name="eid_time">Heure Aïd</string>
@@ -143,6 +168,7 @@
     <string name="eid_duration">Durée Aïd</string>
     <string name="select_eid_duration">Choix de la durée de la prière de l\'Aïd</string>
     <string-array name="eid_duration">
+        <item>Désactivée</item>
         <item>20 minutes</item>
         <item>30 minutes</item>
         <item>40 minutes</item>
@@ -176,7 +202,7 @@ L\'appli demandera l\'autorisation d\'accéder à la localisation de votre appar
 <b>Mode Ne Pas Déranger</b><br/><br/>
 Cette appli peut également demander l\'autorisation d\'activer le mode Ne Pas Déranger (NPD) sur votre appareil. Cette autorisation est nécessaire au bon fonctionnement de l\'appli, car elle active temporairement le mode NPD afin de minimiser les interruptions pendant les heures de prière.<br/><br/>
 Bien que cette autorisation permette à l\'appli de contrôler les paramètres de son et de vibration de votre appareil, nous tenons à préciser explicitement que l\'appli N\'ACCÈDE PAS, NE LIT PAS et NE COLLECTE PAS vos notifications, messages, contenu d\'appels, ou toute autre donnée personnelle affichée par vos notifications. Cette autorisation est uniquement destinée à activer et désactiver le mode NPD.<br/><br/>
-Vous reconnaissez que lorsque le mode NPD est activé, <b>vous pourriez ne pas recevoir les notifications standard et les appels d\'urgence</b>. Notre entreprise ne saurait être tenue responsable des conséquences résultants de notifications et d\'appels d\'urgence manqués, pendant les périodes où l\'appli a activé le mode Ne Pas Déranger.<br/><br/>
+Vous reconnaissez que lorsque le mode NPD est activé, <b>vous pourriez ne pas recevoir les notifications standard et les appels d\'urgence</b>. Nous ne saurons être tenues responsables des conséquences résultants de notifications et d\'appels d\'urgence manqués, pendant les périodes où l\'appli a activé le mode Ne Pas Déranger.<br/><br/>
 Il est de votre responsabilité de configurer les paramètres du mode NPD et les exceptions en fonction de vos besoins.<br/><br/>
 
 Nous nous engageons à protéger votre vie privée. Si vous avez des questions ou des préoccupations concernant nos pratiques de confidentialité, veuillez nous contacter par e-mail <a href="mailto:prayer.mode@outlook.com">prayer.mode@outlook.com</a><br/><br/>
@@ -192,16 +218,16 @@ Nous vous remercions pour la confiance que vous accordez à notre application.<b
     <string name="location_permission">Icône d\'autorisation de localisation</string>
 
     <string name="location">Location</string>
-    <string name="location_description">Utilisé pour accéder à la position de votre appareil afin d\'obtenir des heures de prière précises et garantir des mises à jour automatiques, même lorsque l\'appli n\'est pas active.</string>
+    <string name="location_description">Utilisée pour accéder à la position de votre appareil afin d\'obtenir des heures de prière précises et garantir des mises à jour automatiques, même lorsque l\'appli n\'est pas active.</string>
 
     <string name="notifications">Notifications</string>
-    <string name="notifications_description">Utilisé pour fournir des informations sur les rappels, alertes et autres informations importantes, en assurant leur réception en temps voulu.</string>
+    <string name="notifications_description">Utilisées pour fournir des informations sur les rappels, alertes et autres informations importantes, en assurant leur réception en temps voulu.</string>
 
     <string name="dnd">Mode Ne Pas Déranger</string>
     <string name="dnd_description">Utilisé pour activer automatiquement le mode Ne Pas Déranger pendant les heures de prière.</string>
 
     <string name="alarm">Alarme &amp; Rappels</string>
-    <string name="alarm_description">Utilisé pour planifier le mode Ne pas déranger pour les heures de prière.</string>
+    <string name="alarm_description">Utilisés pour planifier le mode Ne pas déranger pour les heures de prière.</string>
 
     <string name="help">Aide</string>
     <string name="bulb">Avant de commencer à utiliser l\'appli</string>
@@ -217,8 +243,11 @@ Nous vous remercions pour la confiance que vous accordez à notre application.<b
     <string name="calculation">Méthodes de calcul</string>
     <string name="calculation_description">Sélectionnez la méthode de calcul souhaitée avant d\'activer l\'appli. Veuillez noter que l\'appli utilise l\'API d\'aladhan.com pour obtenir avec précision les heures de prière.</string>
 
+    <string name="ablution">Réglage du temps d\'ablution</string>
+    <string name="ablution_description">Active le mode Ne Pas Déranger 10 minutes avant l\'adhan pour laisser du temps pour les ablutions (Wudu). Ce réglage ne peut être modifié que lorsque l\'interrupteur principal est désactivé.</string>
+
     <string name="durations">Durées</string>
-    <string name="durations_description">Sélectionnez les durées en fonction de vos préférences. Notez que les cinq prières quotidiennes, la prière du vendredi (Joumoua), Tarawih, Tahajjoud et les prières de l\'Aïd ont chacunes leurs propres durées.</string>
+    <string name="durations_description">Sélectionnez les durées en fonction de vos préférences. Notez que chaque prière a sa propre durée de silence.</string>
 
     <string name="time">Heure</string>
     <string name="time_description">Choisissez l\’heure de la prière de l\’Aïd Al-Fitr et Al-Adha.</string>
@@ -229,26 +258,23 @@ Nous vous remercions pour la confiance que vous accordez à notre application.<b
     <string name="wearable">Montre connectée</string>
     <string name="wearable_description">Votre montre connectée peut également recevoir les notifications et suivre le mode sonore de votre téléphone. Pour cela, vérifiez les paramètres de l\'appli de votre montre.</string>
 
-    <string name="donation">Dons</string>
+    <string name="donation">Soutenir le projet</string>
     <string name="donation_link_text">PayPal</string>
     <string name="donation_content">Soutenez-nous</string>
     <string name="donation_description"><![CDATA[
-Mode prière est un logiciel gratuit et open-source. Son développement et sa maintenance demandent du temps et des efforts.<br/><br/>
-Si vous trouvez cette application utile et souhaitez soutenir son développement continu, vous pouvez faire un don volontaire.<br/><br/>
-Les dons sont <b>volontaires et non remboursables</b> et ne vous donnent droit à aucun service ou fonctionnalité premium.<br/><br/>
-Ils sont simplement un moyen de montrer votre appreciation et d\'aider à garantir que l\'application reste gratuite et mise à jour pour tous.<br/><br/>
-Vous pouvez faire un don en utilisant [DONATION_LINK].<br/><br/>
+Mode Prière est un logiciel gratuit et open-source. Sa maintenance et son amélioration demandent du temps et des efforts significatifs.<br/><br/>
+Si vous trouvez cette appli utile et souhaitez soutenir son développement continu, vous pouvez apporter une contribution volontaire.<br/><br/>
+Ces contributions sont <b>volontaires et non remboursables</b>. Elles ne débloquent pas de fonctionnalités premium, car l\'appli est destinée à rester gratuite pour tous.<br/><br/>
+Votre soutien est simplement une façon de montrer votre appréciation, ce qui nous encourage à continuer de mettre à jour l\'appli pour la communauté.<br/><br/>
+Vous pouvez contribuer via [DONATION_LINK].<br/><br/>
 ]]></string>
 
     <string name="back_button">Boutton arrière</string>
 
     <!-- MainActivity SnackBar -->
     <string name="cannot_change_settings">Lorsque l\'interrupteur est activé, les paramètres ne peuvent pas être modifiés.</string>
-    <string name="permissions_granted">Toutes les autorisations sont accordées, l\'interrupteur peut être activé.</string>
-
     <string name="alarm_permission_granted">Permission de l\'alarme accordée.</string>
     <string name="grant_location_permission">Veuillez accorder l\'autorisation de localisation.</string>
-    <string name="grant_alarm_permission">Veuillez accorder l\'autorisation de l\'alarme.</string>
     <string name="grant_dnd_permission">Permission Ne Pas Déranger nécessaire pour le mode silencieux automatique.</string>
     <string name="background_location_denied_message">Accès à la localisation en arrière-plan nécessaire pour MàJ les heures de prière.</string>
     <string name="no_location_internet">Il n\'est pas possible d\'activer l\'interrupteur, veuillez activer le service de localisation et/ou la connexion Internet.</string>
@@ -296,8 +322,9 @@ Vous pouvez faire un don en utilisant [DONATION_LINK].<br/><br/>
     <string name="accept">Accepter</string>
 
     <string name="today_fajr_time_is">Aujourd\'hui la prière du Fajr est à %1$s.</string>
-    <string name="today_dhuhr_time_is">Aujourd\'hui la prière d\'Al Joumoua est à %1$s.</string>
-    <string name="silent_mode_activated_for">Ne Pas Déranger activé pour %1$s.</string>
+    <string name="today_dhuhr_time_is">Aujourd\'hui la prière d\'Al-Jumua est à %1$s.</string>
+    <string name="silent_mode_activated_for">Mode Ne Pas Déranger activé pour %1$s.</string>
+    <string name="ablution_silent_mode_activation">Mode Ne Pas Déranger activé pour %1$s 10 minutes avant l\'Adhan.</string>
     <string name="today_imsak_time_is">Aujourd\'hui l\'heure de l\'Imsak est à %1$s.</string>
     <string name="back_to_normal_mode">Mode Ne Pas Déranger désactivé.</string>
     <string name="location_title">Service de localisation.</string>
@@ -307,11 +334,13 @@ Vous pouvez faire un don en utilisant [DONATION_LINK].<br/><br/>
     <string name="dnd_already_on">Mode Ne Pas Déranger déjà activé par l\'utilisateur ou le système lors de la tentative d\'activation NPD pour %1$s et restera donc actif pour respecter vos réglages actuels.</string>
 
     <string name="location_service_disabled">Veuillez activer le service de localisation pour que l\'appli puisse fonctionner correctement.</string>
-    <string name="travelled_distance">Vous avez parcouru %1$s km. Adaptation des horaires de prière à votre nouvelle position.</string>
-    <string name="location_name">Récupération des heures de prière pour %1$s. Localisation incorrecte ? Veuillez ajuster les paramètres de localisation de votre appareil.</string>
+    <string name="travelled_distance">Adaptation des horaires de prière à la nouvelle position.</string>
+    <string name="location_name">Récupération des heures de prière pour %1$s.</string>
+    <string name="location_fetch">Obtention de la localisation, veuillez vous déplacer vers un espace ouvert ou près d\'une fenêtre.</string>
 
     <string name="open_prayer">Ouvrir l\'application</string>
 
+    <string name="jumua">Al-Jumua</string>
     <string name="eid">Al Aïd</string>
     <string name="imsak">Imsak</string>
     <string name="fajr">Fajr</string>
@@ -320,7 +349,7 @@ Vous pouvez faire un don en utilisant [DONATION_LINK].<br/><br/>
     <string name="asr">Asr</string>
     <string name="maghrib">Maghrib</string>
     <string name="isha">Isha</string>
-    <string name="tarawih">Tarawih</string>
+    <string name="taraweeh">Taraweeh</string>
     <string name="tahajjud">Tahajjoud</string>
     <string name="prayer_name_unknown">Prayer</string>
 
@@ -333,7 +362,7 @@ Vous pouvez faire un don en utilisant [DONATION_LINK].<br/><br/>
 
     <string name="update_notification_title">MàJ du Mode Prière</string>
     <string name="update_notification_message">La version %1$s est maintenant disponible.</string>
-    <string name="update">Mettre à jour</string>
+    <string name="update">Ouvrir les notes de version</string>
     <string name="silent_schedule_success">Programmation des heures de prière réussie.</string>
 
     <string name="welcome_title">Bienvenue dans Mode Prière</string>
@@ -347,13 +376,47 @@ Vous pouvez faire un don en utilisant [DONATION_LINK].<br/><br/>
     </string>
     <string name="next">Suivant</string>
 
+    <string name="education_title">Bon à savoir</string>
+    <string name="education_message">
+🔁 Mise à jour des heures de prière\n
+\u2022 Mensuellement via Aladhan.com\n
+\u2022 Lorsqu\'un déplacement important est détecté\n\n
+🚨 L\'interrupteur peut ne pas s\'activer si\n
+\u2022 La localisation est désactivée\n
+\u2022 Signal GPS faible\n
+\u2022 Pas de connexion Internet\n
+\u2022 Les autorisations essentielles sont révoquées\n\n
+✅ Nécessaire pour un fonctionnement optimal\n
+\u2022 Toutes les autorisations\n
+\u2022 Localisation toujours active - Assurez un bon signal GPS\n
+\u2022 Connexion Internet persistante\n\n
+💡 L\'application peut utiliser votre dernière position connue si le signal GPS est temporairement indisponible.\n</string>
+    <string name="got_it">Compris</string>
+
+    <!-- Language Section -->
+    <string name="language_section">Langue</string>
+    <string name="language">Langue de l\'application</string>
+    <string name="select_language">Sélectionner la langue</string>
+
+    <!-- App Performance Strings -->
+    <string name="app_performance_section">Performance de l\'application</string>
+    <string name="battery_optimization_title">Accès à la localisation en arrière-plan</string>
+    <string name="battery_optimization_checking">Vérification du statut…</string>
+    <string name="battery_optimization_enabled">✓ Illimité (Recommandé)</string>
+    <string name="battery_optimization_active">Limité - Appuyez pour modifier</string>
+    <string name="battery_optimization_dialog_title">Améliorer le suivi de localisation</string>
+    <string name="battery_optimization_dialog_message">Pour des mises à jour fiables des heures de prière lors de vos déplacements, veuillez autoriser l\'utilisation de la batterie en arrière-plan pour cette application.\n\nCela aide l\'application à adapter automatiquement les heures de prière.\n\nAllez dans Batterie/Utilisation de la batterie de l\'app → Non restreint ou Autoriser l\'utilisation en arrière-plan ou Ne pas optimiser.</string>
+    <string name="battery_optimization_dialog_negative">Plus tard</string>
+    <string name="battery_optimization_error">Impossible d\'ouvrir les paramètres de batterie</string>
+    <string name="battery_optimization_already_enabled">L\'optimisation de la batterie est déjà activée pour cette appli. Cela permet de maintenir un suivi de localisation fiable pour les mises à jour des heures de prière lors de vos déplacements.</string>
+
     <!-- Catch & blocks -->
     <string name="failed_writing">Veuillez vous assurer que vous disposez de suffisamment d\'espace de stockage.</string>
     <string name="permission_denied_writing">Une erreur inattendue s\'est produite lors de l\'enregistrement du fichier des heures de prière, veuillez redémarrer l\'application et vérifier les mises à jour.</string>
 
     <!-- For debugging only -->
-    <string name="monthly_update">MàJ des horaires de prière pour ce mois %1$s.</string>
-    <string name="monthly_update_default_method">MàJ des horaires de prière pour ce mois %1$s en utilisant la méthode par défaut.</string>
+    <string name="monthly_update">MàJ des horaires de prière pour le mois de %1$s.</string>
+    <string name="monthly_update_default_method">MàJ des horaires de prière pour le mois de %1$s (méthode par défaut).</string>
 
     <string name="worker_failed">Worker failed.</string>
     <string name="process_prayer">Process prayer times</string>

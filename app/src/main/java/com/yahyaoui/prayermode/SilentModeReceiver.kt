@@ -9,25 +9,22 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
-
 class SilentModeReceiver : BroadcastReceiver() {
-
     private val tag = "SilentModeReceiver"
-
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
         if (BuildConfig.DEBUG) Log.d(tag, "Received intent: ${intent.toUri(Intent.URI_INTENT_SCHEME)}")
 
         when (action) {
             "START_SILENT_MODE" -> {
-                val mode = true
                 val prayerName = intent.getStringExtra("prayerName") ?: "unknown"
-                handleSilentMode(context, mode, prayerName)
+                val isImmediate = intent.getBooleanExtra("isImmediate", false)
+                val isBeforeAdhan = intent.getBooleanExtra("isBeforeAdhan", false)
+                handleSilentMode(context, mode = true, prayerName, isImmediate, isBeforeAdhan)
             }
             "END_SILENT_MODE" -> {
-                val mode = false
                 val prayerName = intent.getStringExtra("prayerName") ?: "unknown"
-                handleSilentMode(context, mode, prayerName)
+                handleSilentMode(context, mode = false, prayerName, isImmediate = false, isBeforeAdhan = false)
             }
             "DAILY_WORKER_ALARM" -> {
                 if (BuildConfig.DEBUG) Log.d(tag, "Handling DAILY_WORKER_ALARM...")
@@ -38,13 +35,14 @@ class SilentModeReceiver : BroadcastReceiver() {
             }
         }
     }
-
-    private fun handleSilentMode(context: Context, mode: Boolean, prayerName: String) {
+    private fun handleSilentMode(context: Context, mode: Boolean, prayerName: String, isImmediate: Boolean, isBeforeAdhan: Boolean) {
         val uniqueTag = "SilentModeWorker_${prayerName}_${if (mode) "Start" else "End"}"
         try {
             val inputData = Data.Builder()
                 .putBoolean("mode", mode)
                 .putString("prayerName", prayerName)
+                .putBoolean("isImmediate", isImmediate)
+                .putBoolean("isBeforeAdhan", isBeforeAdhan)
                 .build()
 
             val workRequest = OneTimeWorkRequestBuilder<SilentModeWorker>()
@@ -58,7 +56,6 @@ class SilentModeReceiver : BroadcastReceiver() {
             Log.e(tag, "Failed to set mode for $uniqueTag: ${e.message}",e)
         }
     }
-
     private fun scheduleDailyWorker(context: Context) {
         val inputData = Data.Builder()
             .putString("prayerName", "DailyWorker")

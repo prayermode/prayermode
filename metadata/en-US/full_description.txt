@@ -1,33 +1,33 @@
-Are you tired of remembering to put your smartphone on silent mode before every prayer? Have you ever forgotten 
-to activate silent mode, then your humility diminishes when notifications or a call interrupt your prayer? And perhaps you might disturb the worshippers next to you?
+Are you tired of remembering to silence your phone before every prayer? Have you ever been interrupted by notifications during Salah or worried about disturbing others?
 
-With the precisely designed Prayer mode app, no more worry or embarrassment. Our app activates Do Not Disturb mode 
-on your behalf, allowing you to focus deeply in prayer and avoid distracting those praying around you.
+Prayer Mode solves this by automatically activating Do Not Disturb mode at precise prayer times, allowing you to focus completely on worship without distractions.
 
-Set it once, the app does the rest! It works automatically in the background, keeping you informed via notifications.
+🎯 Set It Once, It Works Automatically:
+• Smart Automation: Activates DND mode at exact prayer times
+• 23 Calculation Methods: Choose from established prayer time calculations (aladhan.com API)
+• Location-Aware: Automatically adjusts when you travel
+• Complete Customization: Individual settings for every prayer scenario
 
-Customize Your Prayer Settings:
-•	Calculation Methods: Access 23 Prayer Calculation Methods powered by aladhan.com API.
-•	The Five Daily Prayers: Adjust silent duration for all prayers.
-•	Friday Prayer: Set silent periods before and after Adhan.
-•	Ramadan Nights: Customizable durations for Taraweeh and Tahajjud.
-•	Eid Prayers: Customizable time and silent duration for Eid al-Fitr and Eid al-Adha.
-•	Smart Location Detection: Automatically adjusts prayer times based on your precise location and reschedule DND mode for the next prayers.
+🕌 Prayer-Specific Features:
+• Five Daily Prayers: Custom silent durations for Fajr, Dhuhr, Asr, Maghrib, Isha
+• Friday Prayer: Silent periods before and after Adhan
+• Ramadan Nights: Settings for Taraweeh and Tahajjud
+• Eid Prayers: Custom timing for Eid al-Fitr and Eid al-Adha
+• Audio Takbir: Optional sound notification before silence
+• Ablution Time: DND 10 minutes before Adhan for preparation
 
-In addition to automatic Do Not Disturb mode and smart location adaptation, receive important and timely notifications:
-•	Alerts for Do Not Disturb activation and deactivation at each prayer.
-•	Notification of time adjustments when travelling.
-•	Reminder for Fajr time, Dhuhr on Friday, and the start of Imsak during Ramadan.
+🔔 Stay Informed:
+• Notifications for DND activation/deactivation
+• Prayer time updates when travelling
+• Reminders for Fajr, Friday Dhuhr, and Ramadan Imsak
 
-Our app is designed with a comfortable and user-friendly interface, also featuring Light and Dark modes for 
-comfortable viewing. You can also use the Prayer mode Quick Settings Tile for faster access to the app. 
-Your privacy is our utmost priority; we are committed to protecting your data and do not collect any personal 
-information, ensuring a safe and trustworthy experience.
+✨ User Experience:
+• Clean interface with Light/Dark themes
+• Quick Settings Tile for instant access
+• Multi-language support (Arabic, English, French, Urdu, Indonesian, Malaysian, Turkish, Bengali, Spanish + more coming)
+• Privacy First: No data collection - all processing happens on your device
 
-Our app is designed to serve the Muslim Ummah and supports multiple languages including Arabic, English, French, 
-Urdu, Indonesian, Malaysian, Turkish, as well as languages that will be added later.
+🌍 Serving the Muslim Ummah:
+We're committed to providing a respectful, accurate tool for prayer focus. Expect regular free updates with new features and improvements.
 
-We are working hard to provide the best experience with our app, so expect more functionalities in upcoming 
-free updates.
-
-Download the app today, and make your prayer surrounded by devotion and tranquillity.
+Download Prayer Mode today and experience uninterrupted, focused prayer.

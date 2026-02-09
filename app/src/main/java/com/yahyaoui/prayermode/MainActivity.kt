@@ -18,74 +18,66 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.TextView
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.yahyaoui.prayermode.TermsAndConditions.TermsAndConditionsListener
-import androidx.core.net.toUri
-import com.yahyaoui.prayermode.TermsAndConditions.Companion.TERMS_URL
 import android.Manifest
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-
+import kotlinx.coroutines.withContext
 private const val IS_APP_RESTARTED_KEY = "isAppRestarted"
+data class ContainerConfig(
+    val container: View,
+    val titleResId: Int,
+    val optionsResId: Int,
+    val selectedIndexKey: String,
+    val defaultIndex: Int,
+    val launcherKey: String
+)
 
 class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDialog.WelcomeDialogListener {
 
     override fun attachBaseContext(newBase: Context) {
-        val locale = LocaleHelper.getPersistedLocale()
-        if (BuildConfig.DEBUG) Log.d("MainActivity", "Attaching base context for locale: $locale")
+        val savedLocale = SharedHelper(newBase).getSavedLocale()
+        val locale = savedLocale ?: LocaleHelper.getPersistedLocale()
+        if (BuildConfig.DEBUG) Log.d(tag, "Attaching base context for locale: $locale")
         super.attachBaseContext(LocaleHelper.setLocale(newBase, locale))
     }
-
     private lateinit var activateSwitch: SwitchCompat
-    private lateinit var switchButtonContainer: View
     private lateinit var tvSwitchState: TextView
-    private lateinit var calculationMethodsContainer: View
-    private lateinit var tvCalculationMethod: TextView
-    private lateinit var durationContainer: View
-    private lateinit var tvSilentDuration: TextView
-    private lateinit var beforeDhuhrContainer: View
-    private lateinit var tvBeforeDhuhr: TextView
-    private lateinit var afterDhuhrContainer: View
-    private lateinit var tvAfterDhuhr: TextView
-    private lateinit var tarawihContainer: View
-    private lateinit var tvTarawih: TextView
-    private lateinit var tahajjudContainer: View
-    private lateinit var tvTahajjud: TextView
-    private lateinit var eidTimeContainer: View
-    private lateinit var tvEidTime: TextView
-    private lateinit var eidDurationContainer: View
-    private lateinit var tvEidDuration: TextView
-    private lateinit var privacyContainer: MaterialCardView
-    private lateinit var termsContainer: MaterialCardView
-    private lateinit var permissionsContainer: MaterialCardView
-    private lateinit var helpContainer: MaterialCardView
-    private lateinit var donationContainer: MaterialCardView
-
+    private lateinit var menuButton: ImageView
     private lateinit var audioSwitch: SwitchCompat
-    private lateinit var audioSwitchContainer: View
-
-    private val tools : Tools by lazy { Tools(this) }
+    private lateinit var ablutionSwitch: SwitchCompat
+    private val textViewsMap = mutableMapOf<String, TextView>()
+    private val tools: Tools by lazy { Tools(this) }
     private val sharedHelper: SharedHelper by lazy { SharedHelper(this) }
     private val permissionsHelper: PermissionsHelper by lazy { PermissionsHelper(this) }
     private val tag = "MainActivity"
     private var isAppRestarted = true
     private var isRestoringSwitchState = false
-
     private val locationLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) handleLocationGranted() else showLocationDenied()
     }
     private val notificationLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) handleNotificationGranted() else showNotificationDenied()
+    }
+    private val selectionLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            result.data?.getIntExtra("SELECTED_INDEX", -1)?.let { selectedIndex ->
+                result.data?.getStringExtra("SELECTED_INDEX_KEY")?.let { key ->
+                    sharedHelper.saveIntValue(key, selectedIndex)
+                    updateTextViewForKey(key)
+                }
+            }
+        }
     }
     private val dndStateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -94,284 +86,70 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
             }
         }
     }
-    private val calculationMethodLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val selectedMethodIndex = result.data?.getIntExtra("SELECTED_INDEX", 0) ?: 0
-            sharedHelper.saveIntValue(SharedHelper.SELECTED_METHOD_RES_ID, selectedMethodIndex)
-            tvCalculationMethod.text = sharedHelper.getStringFromArray(R.array.calculation_methods, SharedHelper.SELECTED_METHOD_RES_ID, 3)
-        }
-    }
-    private val silentDurationLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val selectedDurationIndex = result.data?.getIntExtra("SELECTED_INDEX", 3) ?: 3
-            sharedHelper.saveIntValue(SharedHelper.DURATION_VALUE, selectedDurationIndex)
-            tvSilentDuration.text = sharedHelper.getStringFromArray(R.array.silent_durations, SharedHelper.DURATION_VALUE, 3)
-        }
-    }
-    private val durationBeforeDhuhrLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val selectedDurationBeforeDhuhrIndex = result.data?.getIntExtra("SELECTED_INDEX", 0) ?: 0
-            sharedHelper.saveIntValue(SharedHelper.DURATION_BEFORE_DHUHR, selectedDurationBeforeDhuhrIndex)
-            tvBeforeDhuhr.text = sharedHelper.getStringFromArray(R.array.before_dhuhr_duration, SharedHelper.DURATION_BEFORE_DHUHR, 0)
-        }
-    }
-    private val durationAfterDhuhrLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val selectedDurationAfterDhuhrIndex = result.data?.getIntExtra("SELECTED_INDEX", 3) ?: 3
-            sharedHelper.saveIntValue(SharedHelper.DURATION_AFTER_DHUHR, selectedDurationAfterDhuhrIndex)
-            tvAfterDhuhr.text = sharedHelper.getStringFromArray(R.array.after_dhuhr_duration, SharedHelper.DURATION_AFTER_DHUHR, 3)
-        }
-    }
-    private val durationTarawihLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val selectedDurationTarawihIndex = result.data?.getIntExtra("SELECTED_INDEX", 4) ?: 4
-            sharedHelper.saveIntValue(SharedHelper.DURATION_TARAWIH, selectedDurationTarawihIndex)
-            tvTarawih.text = sharedHelper.getStringFromArray(R.array.tarawih_duration, SharedHelper.DURATION_TARAWIH, 4)
-        }
-    }
-    private val durationTahajjudLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val selectedDurationTahajjudIndex = result.data?.getIntExtra("SELECTED_INDEX", 0) ?: 0
-            sharedHelper.saveIntValue(SharedHelper.DURATION_TAHAJJUD, selectedDurationTahajjudIndex)
-            tvTahajjud.text = sharedHelper.getStringFromArray(R.array.tahajjud_duration, SharedHelper.DURATION_TAHAJJUD, 0)
-        }
-    }
-    private val eidTimeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val selectedEidTimeIndex = result.data?.getIntExtra("SELECTED_INDEX", 0) ?: 0
-            sharedHelper.saveIntValue(SharedHelper.SELECTED_TIME_EID, selectedEidTimeIndex)
-            tvEidTime.text = sharedHelper.getStringFromArray(R.array.eid_time, SharedHelper.SELECTED_TIME_EID, 0)
-        }
-    }
-    private val eidDurationLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val selectedEidDurationIndex = result.data?.getIntExtra("SELECTED_INDEX", 1) ?: 1
-            sharedHelper.saveIntValue(SharedHelper.DURATION_EID, selectedEidDurationIndex)
-            tvEidDuration.text = sharedHelper.getStringFromArray(R.array.eid_duration, SharedHelper.DURATION_EID, 1)
-        }
-    }
+    private val containerConfigs by lazy { createContainerConfigs() }
+    private var loadingSnackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-
-        activateSwitch = findViewById(R.id.activateSwitch)
-        tvSwitchState = findViewById(R.id.tvSwitchState)
-        tvCalculationMethod = findViewById(R.id.tvCalculationMethod)
-        tvSilentDuration = findViewById(R.id.tvSilentDuration)
-        tvBeforeDhuhr = findViewById(R.id.tvBeforeDhuhr)
-        tvAfterDhuhr = findViewById(R.id.tvAfterDhuhr)
-        tvTarawih = findViewById(R.id.tvTarawih)
-        tvTahajjud = findViewById(R.id.tvTahajjud)
-        tvEidTime = findViewById(R.id.tvEidTime)
-        tvEidDuration = findViewById(R.id.tvEidDuration)
-        switchButtonContainer  = findViewById(R.id.switchButtonContainer)
-        calculationMethodsContainer = findViewById(R.id.calculationMethodsContainer)
-        durationContainer = findViewById(R.id.durationContainer)
-        beforeDhuhrContainer = findViewById(R.id.beforeDhuhrContainer)
-        afterDhuhrContainer = findViewById(R.id.afterDhuhrContainer)
-        tarawihContainer = findViewById(R.id.tarawihContainer)
-        tahajjudContainer = findViewById(R.id.tahajjudContainer)
-        eidTimeContainer = findViewById(R.id.eidTimeContainer)
-        eidDurationContainer = findViewById(R.id.eidDurationContainer)
-        privacyContainer = findViewById(R.id.privacyContainer)
-        termsContainer = findViewById(R.id.termsContainer)
-        permissionsContainer = findViewById(R.id.permissionsContainer)
-        helpContainer = findViewById(R.id.helpContainer)
-        donationContainer = findViewById(R.id.donationContainer)
-        audioSwitch = findViewById(R.id.audioSwitch)
-        audioSwitchContainer  = findViewById(R.id.audioSwitchContainer)
-
-        titlePadding()
-        layoutDirection()
+        initializeViews()
+        setupEdgeToEdge()
+        LocaleHelper.setupLayoutDirection(this,window)
 
         if (!sharedHelper.getTermsAccepted()) showWelcomeDialog() else requestLocationPermission()
-        if (savedInstanceState != null) isAppRestarted = savedInstanceState.getBoolean(IS_APP_RESTARTED_KEY, true)
-        if (intent.getBooleanExtra("TOGGLE_SWITCH_TWICE", false)) {
-            sharedHelper.saveSwitchState(false)
-            activateSwitch.isChecked = false
-            Handler(Looper.getMainLooper()).postDelayed({
-                sharedHelper.saveSwitchState(true)
-                activateSwitch.isChecked = true
-            }, 500)
-        }
-
-        tvCalculationMethod.text = sharedHelper.getStringFromArray(R.array.calculation_methods, SharedHelper.SELECTED_METHOD_RES_ID, 0)
-        tvSilentDuration.text = sharedHelper.getStringFromArray(R.array.silent_durations, SharedHelper.DURATION_VALUE, 3)
-        tvBeforeDhuhr.text = sharedHelper.getStringFromArray(R.array.before_dhuhr_duration, SharedHelper.DURATION_BEFORE_DHUHR, 0)
-        tvAfterDhuhr.text = sharedHelper.getStringFromArray(R.array.after_dhuhr_duration, SharedHelper.DURATION_AFTER_DHUHR, 3)
-        tvTarawih.text = sharedHelper.getStringFromArray(R.array.tarawih_duration, SharedHelper.DURATION_TARAWIH, 4)
-        tvTahajjud.text = sharedHelper.getStringFromArray(R.array.tahajjud_duration, SharedHelper.DURATION_TAHAJJUD, 0)
-        tvEidTime.text = sharedHelper.getStringFromArray(R.array.eid_time, SharedHelper.SELECTED_TIME_EID, 0)
-        tvEidDuration.text = sharedHelper.getStringFromArray(R.array.eid_duration, SharedHelper.DURATION_EID, 1)
-
-        setupListeners()
-        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.cancel(1001)
-    }
-
-    private fun setupListeners() {
-        switchButtonContainer.setOnClickListener { activateSwitch.toggle() }
-        activateSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isRestoringSwitchState) return@setOnCheckedChangeListener
-            sharedHelper.saveSwitchState(isChecked)
-            if (isChecked) switchOn() else switchOff()
-        }
-
-        audioSwitchContainer.setOnClickListener { audioSwitch.toggle() }
-        audioSwitch.setOnCheckedChangeListener { _, isChecked ->
-            sharedHelper.saveAudioSwitchState(isChecked)
-            if (BuildConfig.DEBUG) Log.d(tag, "Audio takbir changed to: $isChecked")
-        }
-
-        handleContainerClick(calculationMethodsContainer, R.string.select_calculation_method, R.array.calculation_methods, SharedHelper.SELECTED_METHOD_RES_ID, 0, calculationMethodLauncher)
-        handleContainerClick(durationContainer, R.string.select_silent_duration, R.array.silent_durations, SharedHelper.DURATION_VALUE, 3, silentDurationLauncher)
-        handleContainerClick(beforeDhuhrContainer, R.string.select_before_dhuhr_duration, R.array.before_dhuhr_duration, SharedHelper.DURATION_BEFORE_DHUHR, 0, durationBeforeDhuhrLauncher)
-        handleContainerClick(afterDhuhrContainer, R.string.select_after_dhuhr_duration, R.array.after_dhuhr_duration, SharedHelper.DURATION_AFTER_DHUHR, 3, durationAfterDhuhrLauncher)
-        handleContainerClick(tarawihContainer, R.string.select_tarawih_duration, R.array.tarawih_duration, SharedHelper.DURATION_TARAWIH, 4, durationTarawihLauncher)
-        handleContainerClick(tahajjudContainer, R.string.select_tahajjud_duration, R.array.tahajjud_duration, SharedHelper.DURATION_TAHAJJUD, 0, durationTahajjudLauncher)
-        handleContainerClick(eidTimeContainer, R.string.select_eid_time, R.array.eid_time, SharedHelper.SELECTED_TIME_EID, 0, eidTimeLauncher)
-        handleContainerClick(eidDurationContainer, R.string.select_eid_duration, R.array.eid_duration, SharedHelper.DURATION_EID, 1, eidDurationLauncher)
-
-        setupContainer(R.id.privacyContainer, R.string.privacy_notice, R.string.privacy_content, "PRIVACY")
-        setupContainer(R.id.permissionsContainer, R.string.permission, R.string.permissions_content,"PERMISSIONS")
-        setupContainer(R.id.helpContainer, R.string.help, R.string.bulb_content,"HELP")
-        setupContainer(R.id.donationContainer, R.string.donation, R.string.donation_content,"DONATION")
-
-        termsContainer.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, TERMS_URL.toUri())
-            startActivity(intent)
-        }
-    }
-
-    private fun switchOn() {
-        tvSwitchState.text = getString(R.string.On)
-        if (BuildConfig.DEBUG) Log.d(tag, "Main Switch is turned on")
-        if (!permissionsHelper.checkLocationPermission()) {
-            requestLocationPermission()
-            runOnUiThread { switchStateOff(R.string.grant_location_permission)}
-        } else if (!permissionsHelper.checkDNDPermission(this)) {
-            permissionsHelper.requestDNDPermission(this)
-            runOnUiThread {switchStateOff(R.string.grant_dnd_permission)}}
-        else if (!permissionsHelper.checkAlarmPermission()) {
-            permissionsHelper.requestAlarmPermission(this)
-            runOnUiThread {switchStateOff(R.string.grant_alarm_permission)}
-        } else if (!permissionsHelper.checkBackgroundLocationPermission()) {
-            permissionsHelper.requestBackgroundLocationPermission(this)
-            runOnUiThread {switchStateOff(R.string.background_location_denied_message)}
-        } else {
-            startLocationService()
-            lifecycleScope.launch(Dispatchers.IO) {
-                val selectedMethodIndex = sharedHelper.getIntValue(SharedHelper.SELECTED_METHOD_RES_ID, 0)
-                if (tools.checkIfDataAvailable() && !tools.processMethodChange(selectedMethodIndex)) {
-                    if (BuildConfig.DEBUG) Log.i(tag, "Prayer times data already available, processing...")
-                    tools.processPrayerTimes()
-                    AlarmScheduler(this@MainActivity).scheduleDailyAlarm()
-                    Snackbar.make(findViewById(android.R.id.content), getString(R.string.app_enabled), Snackbar.LENGTH_SHORT).show()
-                } else {
-                    if (BuildConfig.DEBUG) Log.i(tag, "Prayer times data not available/obsolete or method changed, retrieving...")
-                    if (tools.findLocation(selectedMethodIndex) && tools.isInternetAvailable()) {
-                        sharedHelper.saveIntValue(SharedHelper.SELECTED_METHOD_RES_ID, selectedMethodIndex)
-                        sharedHelper.saveLastCheckedMethodIndex(selectedMethodIndex)
-                        AlarmScheduler(this@MainActivity).scheduleDailyAlarm()
-                        Snackbar.make(findViewById(android.R.id.content), getString(R.string.app_enabled), Snackbar.LENGTH_SHORT).show()
-                    } else {
-                        Log.e(tag, "Location disabled or No Internet connexion")
-                        runOnUiThread { switchStateOff(R.string.no_location_internet) }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun switchOff() {
-        tools.exitSilentMode()
-        tools.cancelAllSilentModes()
-        tools.cancelScheduledSilentMode()
-        AlarmScheduler(this@MainActivity).cancelDailyAlarm()
-        stopLocationService()
-        tvSwitchState.text = getString(R.string.Off)
-        sharedHelper.saveSwitchState(false)
-        Snackbar.make(findViewById(android.R.id.content), getString(R.string.app_disabled), Snackbar.LENGTH_SHORT).show()
-        if (BuildConfig.DEBUG) Log.d(tag, "Main Switch is turned off.")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        isRestoringSwitchState = true
-        activateSwitch.isChecked = sharedHelper.getSwitchState()
-        isRestoringSwitchState = false
-        if (BuildConfig.DEBUG) Log.d(tag, "Switch state restored in onResume: ${activateSwitch.isChecked}")
-        tvSwitchState.text = if (activateSwitch.isChecked) getString(R.string.On) else getString(R.string.Off)
-
-        registerReceiver(dndStateReceiver, IntentFilter(NotificationManager.ACTION_NOTIFICATION_POLICY_ACCESS_GRANTED_CHANGED))
-        checkDndAndUpdateSwitch()
-
-        if (sharedHelper.getTermsAccepted() && permissionsHelper.checkLocationPermission() && permissionsHelper.checkNotificationPermission() && permissionsHelper.checkDNDPermission(this) && !permissionsHelper.checkAlarmPermission())
-            permissionsHelper.requestAlarmPermission(this)
-        else if (sharedHelper.getTermsAccepted() && permissionsHelper.checkLocationPermission() && permissionsHelper.checkNotificationPermission() && permissionsHelper.checkDNDPermission(this) && permissionsHelper.checkAlarmPermission() && !permissionsHelper.checkBackgroundLocationPermission())
-            permissionsHelper.requestBackgroundLocationPermission(this)
-        else if (permissionsHelper.areAllPermissionsGranted() && !sharedHelper.isPermissionsSnackbarShown()) {
-            Snackbar.make(findViewById(android.R.id.content), getString(R.string.permissions_granted), Snackbar.LENGTH_SHORT).show()
-            sharedHelper.setPermissionsSnackbarShown(true)
-        }
-
-        tvCalculationMethod.text = sharedHelper.getStringFromArray(R.array.calculation_methods, SharedHelper.SELECTED_METHOD_RES_ID, 0)
-        tvSilentDuration.text = sharedHelper.getStringFromArray(R.array.silent_durations, SharedHelper.DURATION_VALUE, 3)
-        tvBeforeDhuhr.text = sharedHelper.getStringFromArray(R.array.before_dhuhr_duration, SharedHelper.DURATION_BEFORE_DHUHR, 0)
-        tvAfterDhuhr.text = sharedHelper.getStringFromArray(R.array.after_dhuhr_duration, SharedHelper.DURATION_AFTER_DHUHR, 3)
-        tvTarawih.text = sharedHelper.getStringFromArray(R.array.tarawih_duration, SharedHelper.DURATION_TARAWIH, 4)
-        tvTahajjud.text = sharedHelper.getStringFromArray(R.array.tahajjud_duration, SharedHelper.DURATION_TAHAJJUD, 0)
-        tvEidTime.text = sharedHelper.getStringFromArray(R.array.eid_time, SharedHelper.SELECTED_TIME_EID, 0)
-        tvEidDuration.text = sharedHelper.getStringFromArray(R.array.eid_duration, SharedHelper.DURATION_EID, 1)
+        tools.hideNavigationBarIfNeeded(this)
+        updateAllTextViews()
         audioSwitch.isChecked = sharedHelper.getAudioSwitchState()
-    }
+        ablutionSwitch.isChecked = sharedHelper.getAblutionSwitchState()
+        setupListeners()
+        NotificationHelper.cancelNotification(this,1001)
 
-    override fun onPause() {
-        super.onPause()
-        sharedHelper.saveSwitchState(activateSwitch.isChecked)
-        sharedHelper.saveAudioSwitchState(audioSwitch.isChecked)
-        unregisterReceiver(dndStateReceiver)
-        if (BuildConfig.DEBUG) Log.d(tag, "Switch state saved in onPause: ${activateSwitch.isChecked}")
+        if (savedInstanceState != null) {
+            isAppRestarted = savedInstanceState.getBoolean(IS_APP_RESTARTED_KEY, true)
+        }
+        handleToggleSwitchIntent()
+        checkForUpdateRefresh()
     }
+    private fun initializeViews() {
+        activateSwitch = findViewById(R.id.activateSwitch)
+        tvSwitchState = findViewById(R.id.tvSwitchState)
+        menuButton = findViewById(R.id.menuButton)
+        audioSwitch = findViewById(R.id.audioSwitch)
+        ablutionSwitch = findViewById(R.id.ablutionSwitch)
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (BuildConfig.DEBUG) Log.d(tag, "onDestroy accessed")
+        textViewsMap.apply {
+            put(SharedHelper.SELECTED_METHOD_RES_ID, findViewById(R.id.tvCalculationMethod))
+            put(SharedHelper.DURATION_FAJR, findViewById(R.id.tvFajr))
+            put(SharedHelper.DURATION_DHUHR, findViewById(R.id.tvDhuhr))
+            put(SharedHelper.DURATION_ASR, findViewById(R.id.tvAsr))
+            put(SharedHelper.DURATION_MAGHRIB, findViewById(R.id.tvMaghrib))
+            put(SharedHelper.DURATION_ISHA, findViewById(R.id.tvIsha))
+            put(SharedHelper.DURATION_BEFORE_JUMUA, findViewById(R.id.tvBeforeJumua))
+            put(SharedHelper.DURATION_AFTER_JUMUA, findViewById(R.id.tvAfterJumua))
+            put(SharedHelper.DURATION_TARAWEEH, findViewById(R.id.tvTaraweeh))
+            put(SharedHelper.DURATION_TAHAJJUD, findViewById(R.id.tvTahajjud))
+            put(SharedHelper.SELECTED_TIME_EID, findViewById(R.id.tvEidTime))
+            put(SharedHelper.DURATION_EID, findViewById(R.id.tvEidDuration))
+        }
     }
-
-    private fun showWelcomeDialog() {
-        val dialog = WelcomeDialog()
-        dialog.show(supportFragmentManager, "WelcomeDialog")
+    private fun createContainerConfigs(): List<ContainerConfig> {
+        return listOf(
+            ContainerConfig(findViewById(R.id.calculationMethodsContainer), R.string.select_calculation_method, R.array.calculation_methods, SharedHelper.SELECTED_METHOD_RES_ID, 0, "calculation_method"),
+            ContainerConfig(findViewById(R.id.fajrContainer), R.string.select_fajr_duration, R.array.silent_durations, SharedHelper.DURATION_FAJR, 3, "fajr"),
+            ContainerConfig(findViewById(R.id.dhuhrContainer), R.string.select_dhuhr_duration, R.array.silent_durations, SharedHelper.DURATION_DHUHR, 3, "dhuhr"),
+            ContainerConfig(findViewById(R.id.asrContainer), R.string.select_asr_duration, R.array.silent_durations, SharedHelper.DURATION_ASR, 3, "asr"),
+            ContainerConfig(findViewById(R.id.maghribContainer), R.string.select_maghrib_duration, R.array.silent_durations, SharedHelper.DURATION_MAGHRIB, 3, "maghrib"),
+            ContainerConfig(findViewById(R.id.ishaContainer), R.string.select_isha_duration, R.array.silent_durations, SharedHelper.DURATION_ISHA, 3, "isha"),
+            ContainerConfig(findViewById(R.id.beforeJumuaContainer), R.string.select_before_jumua_duration, R.array.before_jumua_duration, SharedHelper.DURATION_BEFORE_JUMUA, 0, "before_jumua"),
+            ContainerConfig(findViewById(R.id.afterJumuaContainer), R.string.select_after_jumua_duration, R.array.after_jumua_duration, SharedHelper.DURATION_AFTER_JUMUA, 3, "after_jumua"),
+            ContainerConfig(findViewById(R.id.taraweehContainer), R.string.select_taraweeh_duration, R.array.taraweeh_duration, SharedHelper.DURATION_TARAWEEH, 4, "taraweeh"),
+            ContainerConfig(findViewById(R.id.tahajjudContainer), R.string.select_tahajjud_duration, R.array.tahajjud_duration, SharedHelper.DURATION_TAHAJJUD, 0, "tahajjud"),
+            ContainerConfig(findViewById(R.id.eidTimeContainer), R.string.select_eid_time, R.array.eid_time, SharedHelper.SELECTED_TIME_EID, 0, "eid_time"),
+            ContainerConfig(findViewById(R.id.eidDurationContainer), R.string.select_eid_duration, R.array.eid_duration, SharedHelper.DURATION_EID, 2, "eid_duration")
+        )
     }
-
-    override fun onNextClicked() {
-        if (BuildConfig.DEBUG) Log.d(tag, "Welcome dialog next clicked. Showing terms.")
-        showTermsAndConditionsDialog()
-    }
-
-    private fun showTermsAndConditionsDialog() {
-        val dialog = TermsAndConditions()
-        dialog.show(supportFragmentManager, "TermsAndConditionsDialog")
-    }
-
-    override fun onTermsAccepted() {
-        if (BuildConfig.DEBUG) Log.d(tag, "Terms accepted callback received. Proceeding with permissions.")
-        requestLocationPermission()
-    }
-
-    override fun onTermsDeclined() {
-        if (BuildConfig.DEBUG) Log.d(tag, "Terms declined callback received. Exiting app.")
-        finish()
-    }
-
-    private fun checkDndAndUpdateSwitch() {
-        if (activateSwitch.isChecked && !permissionsHelper.checkDNDPermission(this))
-            runOnUiThread { switchStateOff(R.string.grant_dnd_permission) }
-    }
-
-    private fun titlePadding () {
+    private fun setupEdgeToEdge() {
         val mainLinearLayout = findViewById<LinearLayout>(R.id.main_linear_layout)
         ViewCompat.setOnApplyWindowInsetsListener(mainLinearLayout) { view, insets ->
             val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -387,27 +165,247 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
             WindowInsetsCompat.CONSUMED
         }
     }
-
-    private fun layoutDirection() {
-        if (LocaleHelper.getPersistedLocale() == "ar" || LocaleHelper.getPersistedLocale() == "ur")
-            window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
-        else window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
+    private fun handleToggleSwitchIntent() {
+        if (intent.getBooleanExtra("TOGGLE_SWITCH_TWICE", false)) {
+            sharedHelper.saveSwitchState(false)
+            activateSwitch.isChecked = false
+            Handler(Looper.getMainLooper()).postDelayed({
+                sharedHelper.saveSwitchState(true)
+                activateSwitch.isChecked = true
+            }, 500)
+        }
+    }
+    private fun setupListeners() {
+        findViewById<View>(R.id.switchButtonContainer).setOnClickListener { activateSwitch.toggle() }
+        activateSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isRestoringSwitchState) return@setOnCheckedChangeListener
+            sharedHelper.saveSwitchState(isChecked)
+            if (isChecked) switchOn() else switchOff()
+        }
+        findViewById<View>(R.id.audioSwitchContainer).setOnClickListener { audioSwitch.toggle() }
+        audioSwitch.setOnCheckedChangeListener { _, isChecked ->
+            sharedHelper.saveAudioSwitchState(isChecked)
+            if (BuildConfig.DEBUG) Log.d(tag, "Audio takbir changed to: $isChecked")
+        }
+        findViewById<View>(R.id.ablutionSwitchContainer).setOnClickListener {
+            if (activateSwitch.isChecked) showSnackbar(R.string.cannot_change_settings)
+            else ablutionSwitch.toggle()
+        }
+        ablutionSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (activateSwitch.isChecked) {
+                ablutionSwitch.isChecked = !isChecked
+                return@setOnCheckedChangeListener
+            }
+            sharedHelper.saveAblutionSwitchState(isChecked)
+            if (BuildConfig.DEBUG) Log.d(tag, "Ablution switch changed to: $isChecked")
+        }
+        menuButton.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+        containerConfigs.forEach { config ->
+            config.container.setOnClickListener {
+                if (activateSwitch.isChecked) {
+                    showSnackbar(R.string.cannot_change_settings)
+                    return@setOnClickListener
+                }
+                val intent = Intent(this, SelectionActivity::class.java).apply {
+                    putExtra("TITLE", getString(config.titleResId))
+                    putExtra("OPTIONS", resources.getStringArray(config.optionsResId))
+                    putExtra("SELECTED_INDEX_KEY", config.selectedIndexKey)
+                    putExtra("DEFAULT_INDEX", config.defaultIndex)
+                }
+                selectionLauncher.launch(intent)
+            }
+        }
+    }
+    private fun checkAndRequestPermissions(): Boolean {
+        val permissionsToCheck = listOf(
+            { permissionsHelper.checkLocationPermission() } to { requestLocationPermission() },
+            { permissionsHelper.checkDNDPermission(this) } to { permissionsHelper.requestDNDPermission(this) },
+            { permissionsHelper.checkAlarmPermission() } to { permissionsHelper.requestAlarmPermission(this) },
+            { permissionsHelper.checkBackgroundLocationPermission() } to { permissionsHelper.requestBackgroundLocationPermission(this) }
+        )
+        permissionsToCheck.forEach { (check, request) ->
+            if (!check()) {
+                request()
+                return false
+            }
+        }
+        return true
+    }
+    private fun switchOn() {
+        tvSwitchState.text = getString(R.string.On)
+        if (BuildConfig.DEBUG) Log.d(tag, "Main Switch is turned on")
+        if (!checkAndRequestPermissions()) return
+        LocationService.start(this)
+        lifecycleScope.launch(Dispatchers.IO) {
+            handlePrayerTimesSetup()
+        }
+    }
+    private fun switchOff() {
+        tools.exitSilentMode()
+        tools.cancelAllSilentModes()
+        tools.cancelScheduledSilentMode()
+        AlarmScheduler(this).cancelDailyAlarm()
+        LocationService.stop(this)
+        tvSwitchState.text = getString(R.string.Off)
+        sharedHelper.saveSwitchState(false)
+        showSnackbar(R.string.app_disabled)
+        if (BuildConfig.DEBUG) Log.d(tag, "Main Switch is turned off.")
+    }
+    private suspend fun handlePrayerTimesSetup() {
+        val selectedMethodIndex = sharedHelper.getIntValue(SharedHelper.SELECTED_METHOD_RES_ID, 0)
+        if (tools.checkIfDataAvailable() && !tools.processMethodChange(selectedMethodIndex)) {
+            if (BuildConfig.DEBUG) Log.i(tag, "Prayer times data already available, processing...")
+            tools.processPrayerTimes()
+            AlarmScheduler(this@MainActivity).scheduleDailyAlarm()
+            withContext(Dispatchers.Main) { showSnackbar(R.string.app_enabled) }
+        } else {
+            withContext(Dispatchers.Main) { loadingSnackbar = tools.showLoadingSnackbar(this@MainActivity) }
+            if (BuildConfig.DEBUG) Log.i(tag, "Prayer times data not available/obsolete or method changed, retrieving...")
+            val success = tools.findLocation(selectedMethodIndex) && tools.isInternetAvailable()
+            withContext(Dispatchers.Main) {
+                loadingSnackbar?.dismiss()
+                if (success) {
+                    sharedHelper.saveIntValue(SharedHelper.SELECTED_METHOD_RES_ID, selectedMethodIndex)
+                    sharedHelper.saveLastCheckedMethodIndex(selectedMethodIndex)
+                    AlarmScheduler(this@MainActivity).scheduleDailyAlarm()
+                    showSnackbar(R.string.app_enabled)
+                } else {
+                    Log.e(tag, "Location disabled or No Internet connexion")
+                    runOnUiThread { switchStateOff(R.string.no_location_internet) }
+                }
+            }
+        }
+    }
+    private fun updateAllTextViews() {
+        textViewsMap.forEach { (key, textView) -> updateTextViewForKey(key, textView) }
+    }
+    private fun updateTextViewForKey(key: String, textView: TextView? = null) {
+        val targetTextView = textView ?: textViewsMap[key] ?: return
+        val (arrayResId, defaultIndex) = when (key) {
+            SharedHelper.SELECTED_METHOD_RES_ID -> R.array.calculation_methods to 0
+            SharedHelper.DURATION_BEFORE_JUMUA -> R.array.before_jumua_duration to 0
+            SharedHelper.DURATION_AFTER_JUMUA -> R.array.after_jumua_duration to 3
+            SharedHelper.DURATION_TARAWEEH -> R.array.taraweeh_duration to 4
+            SharedHelper.DURATION_TAHAJJUD -> R.array.tahajjud_duration to 0
+            SharedHelper.SELECTED_TIME_EID -> R.array.eid_time to 0
+            SharedHelper.DURATION_EID -> R.array.eid_duration to 2
+            else -> R.array.silent_durations to 3
+        }
+        targetTextView.text = sharedHelper.getStringFromArray(arrayResId, key, defaultIndex)
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkForUpdateRefresh()
+        tools.hideNavigationBarIfNeeded(this)
+        isRestoringSwitchState = true
+        activateSwitch.isChecked = sharedHelper.getSwitchState()
+        isRestoringSwitchState = false
+        if (BuildConfig.DEBUG) Log.d(tag, "Switch state restored in onResume: ${activateSwitch.isChecked}")
+        tvSwitchState.text = if (activateSwitch.isChecked) getString(R.string.On) else getString(R.string.Off)
+
+        registerReceiver(dndStateReceiver, IntentFilter(NotificationManager.ACTION_NOTIFICATION_POLICY_ACCESS_GRANTED_CHANGED))
+        checkDndAndUpdateSwitch()
+
+        if (sharedHelper.getTermsAccepted() && permissionsHelper.areLocNotifDNDGranted() && !permissionsHelper.checkAlarmPermission()) {
+            permissionsHelper.requestAlarmPermission(this)
+        } else if (sharedHelper.getTermsAccepted() && permissionsHelper.areLocNotifDNDAlarmGranted() && !permissionsHelper.checkBackgroundLocationPermission()) {
+            permissionsHelper.requestBackgroundLocationPermission(this)
+        } else if (permissionsHelper.areAllPermissionsGranted() && !sharedHelper.isPermissionsSnackbarShown()) {
+            showEducationDialog()
+            sharedHelper.setPermissionsSnackbarShown(true)
+        }
+        updateAllTextViews()
+        audioSwitch.isChecked = sharedHelper.getAudioSwitchState()
+        ablutionSwitch.isChecked = sharedHelper.getAblutionSwitchState()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sharedHelper.saveSwitchState(activateSwitch.isChecked)
+        sharedHelper.saveAudioSwitchState(audioSwitch.isChecked)
+        sharedHelper.saveAblutionSwitchState(ablutionSwitch.isChecked)
+        try {
+            unregisterReceiver(dndStateReceiver)
+        } catch (e: IllegalArgumentException) {
+            Log.e(tag, "Receiver was not registered, ignore. ${e.message}", e)
+        }
+        if (BuildConfig.DEBUG) Log.d(tag, "Switch state saved in onPause: ${activateSwitch.isChecked}")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (BuildConfig.DEBUG) Log.d(tag, "onDestroy accessed")
+    }
+    private fun checkForUpdateRefresh() {
+        val lastVersion = sharedHelper.getLastLaunchVersion()
+        val currentVersion = BuildConfig.VERSION_CODE
+        if (currentVersion > lastVersion) {
+            if (sharedHelper.getSwitchState()) triggerSoftReset()
+            sharedHelper.saveLastLaunchVersion(currentVersion)
+        }
+    }
+    private fun triggerSoftReset() {
+        activateSwitch.isChecked = false
+        sharedHelper.saveSwitchState(false)
+        Handler(Looper.getMainLooper()).postDelayed({
+            activateSwitch.isChecked = true
+            sharedHelper.saveSwitchState(true)
+            if (BuildConfig.DEBUG) Log.d(tag, "App updated: Service and Worker refreshed.")
+        }, 800)
+    }
+    private fun showSnackbar(@androidx.annotation.StringRes messageRes: Int) {
+        Snackbar.make(findViewById(android.R.id.content), getString(messageRes), Snackbar.LENGTH_SHORT).show()
+    }
+    fun switchStateOff(@androidx.annotation.StringRes message: Int) {
+        sharedHelper.saveSwitchState(false)
+        activateSwitch.isChecked = false
+        tvSwitchState.text = getString(R.string.Off)
+        showSnackbar(message)
+    }
+    private fun showWelcomeDialog() {
+        val dialog = WelcomeDialog()
+        dialog.show(supportFragmentManager, "WelcomeDialog")
+    }
+    private fun showEducationDialog() {
+        val dialog = EducationDialog()
+        dialog.show(supportFragmentManager, "EducationDialog")
+    }
+
+    override fun onNextClicked() {
+        if (BuildConfig.DEBUG) Log.d(tag, "Welcome dialog next clicked. Showing terms.")
+        showTermsAndConditionsDialog()
+    }
+    private fun showTermsAndConditionsDialog() {
+        val dialog = TermsAndConditions()
+        dialog.show(supportFragmentManager, "TermsAndConditionsDialog")
+    }
+
+    override fun onTermsAccepted() {
+        if (BuildConfig.DEBUG) Log.d(tag, "Terms accepted callback received. Proceeding with permissions.")
+        requestLocationPermission()
+    }
+
+    override fun onTermsDeclined() {
+        if (BuildConfig.DEBUG) Log.d(tag, "Terms declined callback received. Exiting app.")
+        finish()
+    }
+    private fun checkDndAndUpdateSwitch() {
+        if (activateSwitch.isChecked && !permissionsHelper.checkDNDPermission(this))
+            runOnUiThread { switchStateOff(R.string.grant_dnd_permission) }
+    }
     private fun requestLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             locationLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
          else handleLocationGranted()
     }
-
     private fun handleLocationGranted() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-            != PackageManager.PERMISSION_GRANTED)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
             notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         else handleNotificationGranted()
     }
-
     private fun handleNotificationGranted() {
         when {
             !permissionsHelper.checkDNDPermission(this) -> permissionsHelper.requestDNDPermission(this)
@@ -416,7 +414,6 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
             else -> {}
         }
     }
-
     private fun showLocationDenied() {
         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
             AlertDialog.Builder(this)
@@ -438,10 +435,8 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
                 .show()
         }
     }
-
     private fun showNotificationDenied() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
             AlertDialog.Builder(this)
                 .setTitle(R.string.notification_recommended_title)
                 .setMessage(R.string.notification_recommended_message)
@@ -451,52 +446,6 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         } else {
             handleNotificationGranted()
             Snackbar.make(findViewById(android.R.id.content), getString(R.string.notification_disabled), Snackbar.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun handleContainerClick(container: View, titleResId: Int, optionsResId: Int, selectedIndexKey: String, defaultIndex: Int, launcher: ActivityResultLauncher<Intent>) {
-        container.setOnClickListener {
-            if (activateSwitch.isChecked) {
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.cannot_change_settings), Snackbar.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val intent = Intent(this, SelectionActivity::class.java).apply {
-                putExtra("TITLE", getString(titleResId))
-                putExtra("OPTIONS", resources.getStringArray(optionsResId))
-                putExtra("SELECTED_INDEX_KEY", selectedIndexKey)
-                putExtra("DEFAULT_INDEX", defaultIndex)
-            }
-            launcher.launch(intent)
-        }
-    }
-
-    fun switchStateOff(message: Int) {
-        sharedHelper.saveSwitchState(false)
-        activateSwitch.isChecked = false
-        tvSwitchState.text = getString(R.string.Off)
-        Snackbar.make(findViewById(android.R.id.content), getString(message), Snackbar.LENGTH_SHORT).show()
-    }
-
-    private fun startLocationService() {
-        val serviceIntent = Intent(this, LocationService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            ContextCompat.startForegroundService(this, serviceIntent)
-        else startService(serviceIntent)
-    }
-
-    private fun stopLocationService() {
-        val serviceIntent = Intent(this, LocationService::class.java)
-        stopService(serviceIntent)
-    }
-
-    private fun setupContainer(containerId: Int, titleResId: Int, contentResId: Int, screenType: String) {
-        findViewById<MaterialCardView>(containerId).setOnClickListener {
-            val intent = Intent(this, InformationActivity::class.java).apply {
-                putExtra("TITLE", getString(titleResId))
-                putExtra("CONTENT", getString(contentResId))
-                putExtra("SCREEN_TYPE", screenType)
-            }
-            startActivity(intent)
         }
     }
 }

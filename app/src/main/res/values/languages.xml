@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="english" translatable="false">English</string>
+    <!--<string name="arabic_eastern" translatable="false">العربية (الأرقام العربية)</string>
+    <string name="arabic_western" translatable="false">العربية (الأرقام اللاتينية)</string>
+    <string name="french" translatable="false">Français</string>
+    <string name="spanish" translatable="false">Español</string>
+    <string name="bengali" translatable="false">বাংলা</string>
+    <string name="indonesian" translatable="false">Bahasa Indonesia</string>
+    <string name="malay" translatable="false">Bahasa Melayu</string>
+    <string name="urdu_eastern" translatable="false">اردو (ہندسی)</string>
+    <string name="urdu_western" translatable="false">اردو (انگریزی)</string>
+    <string name="turkish" translatable="false">Türkçe</string>-->
+
+    <string-array name="language_names">
+        <item>English</item>
+        <item>العربية (الأرقام العربية)</item>
+        <item>العربية (الأرقام اللاتينية)</item>
+        <item>Français</item>
+        <item>Español</item>
+        <item>বাংলা</item>
+        <item>Bahasa Indonesia</item>
+        <item>Bahasa Melayu</item>
+        <item>اردو (ہندسی)</item>
+        <item>اردو (انگریزی)</item>
+        <item>Türkçe</item>
+    </string-array>
+
+    <string-array name="language_codes" translatable="false">
+        <item>en</item>
+        <item>ar</item>
+        <item>ar-MA</item>
+        <item>fr</item>
+        <item>es</item>
+        <item>bn</item>
+        <item>id</item>
+        <item>ms</item>
+        <item>ur</item>
+        <item>ur-PK</item>
+        <item>tr</item>
+    </string-array>
+</resources>

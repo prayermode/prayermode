@@ -1,0 +1,114 @@
+<resources>
+
+    <string-array name="calculation_methods">
+        <item>جامعہ ام القریٰ، مکہ</item>
+        <item>رابطہ عالم اسلامی</item>
+        <item>اسلامک سوسائٹی آف نارتھ امریکہ</item>
+        <item>مصری جنرل اتھارٹی آف سروے</item>
+        <item>جامعہ اسلامیہ، کراچی</item>
+        <item>خلیجی علاقہ</item>
+        <item>کویت</item>
+        <item>قطر</item>
+        <item>مجلس اگاما اسلام سنگاپور، سنگاپور</item>
+        <item>یونین آرگنائزیشن اسلامک ڈی فرانس</item>
+        <item>دیانت İşleri Başkanlığı، ترکی</item>
+        <item>روحانی انتظامیہ برائے مسلمانان روس</item>
+        <item>چاند دیکھنے کی کمیٹی</item> <!-- Moonsighting Committee -->
+        <item>دبئی، متحدہ عرب امارات</item>
+        <item>جاباتن کیمجان اسلام ملائیشیا (JAKIM)</item>
+        <item>تیونس</item>
+        <item>الجزائر</item>
+        <item>وزارت مذہبی امور جمہوریہ انڈونیشیا</item>
+        <item>مراکش</item>
+        <item>کومونیداد اسلامیکا دی لزبوا، پرتگال</item>
+        <item>وزارت اوقاف، اسلامی امور اور مقدس مقامات، اردن</item>
+        <item>جیو فزکس انسٹی ٹیوٹ، تہران یونیورسٹی</item>
+        <item>شیعہ اثناء عشری، لیوا انسٹی ٹیوٹ، قم</item>
+    </string-array>
+
+     <string-array name="silent_durations">
+        <item>١٥ منٹ</item>
+        <item>٢٠ منٹ</item>
+        <item>٢٥ منٹ</item>
+        <item>٣٠ منٹ</item>
+        <item>٣٥ منٹ</item>
+        <item>٤٠ منٹ</item>
+        <item>٤٥ منٹ</item>
+        <item>٥٠ منٹ</item>
+        <item>٥٥ منٹ</item>
+        <item>٦٠ منٹ</item>
+    </string-array>
+
+     <string-array name="before_jumua_duration">
+        <item>بند</item>
+        <item>١٠ منٹ</item>
+        <item>١٥ منٹ</item>
+        <item>٢٠ منٹ</item>
+        <item>٢٥ منٹ</item>
+        <item>٣٠ منٹ</item>
+        <item>٣٥ منٹ</item>
+        <item>٤٠ منٹ</item>
+        <item>٤٥ منٹ</item>
+        <item>٥٠ منٹ</item>
+        <item>٥٥ منٹ</item>
+        <item>٦٠ منٹ</item>
+    </string-array>
+
+     <string-array name="after_jumua_duration">
+        <item>١٥ منٹ</item>
+        <item>٢٠ منٹ</item>
+        <item>٢٥ منٹ</item>
+        <item>٣٠ منٹ</item>
+        <item>٣٥ منٹ</item>
+        <item>٤٠ منٹ</item>
+        <item>٤٥ منٹ</item>
+        <item>٥٠ منٹ</item>
+        <item>٥٥ منٹ</item>
+        <item>٦٠ منٹ</item>
+    </string-array>
+
+      <string-array name="taraweeh_duration">
+        <item>٢٠ منٹ</item>
+        <item>٣٠ منٹ</item>
+        <item>٤٠ منٹ</item>
+        <item>٥٠ منٹ</item>
+        <item>١ گھنٹہ</item>
+        <item>١ گھنٹہ ٣٠ منٹ</item>
+        <item>٢ گھنٹے</item>
+        <item>٢ گھنٹے ٣٠ منٹ</item>
+        <item>٣ گھنٹے</item>
+    </string-array>
+
+     <string-array name="tahajjud_duration">
+        <item>بند</item>
+        <item>١٥ منٹ</item>
+        <item>٣٠ منٹ</item>
+        <item>٤٥ منٹ</item>
+        <item>١ گھنٹہ</item>
+        <item>١ گھنٹہ ٣٠ منٹ</item>
+        <item>٢ گھنٹے</item>
+        <item>٢ گھنٹے ٣٠ منٹ</item>
+        <item>٣ گھنٹے</item>
+    </string-array>
+
+    <string-array name="eid_time">
+        <item>طلوع آفتاب کے ٢٠ منٹ بعد</item>
+        <item>٠٦:٠٠</item>
+        <item>٠٦:٣٠</item>
+        <item>٠٧:٠٠</item>
+        <item>٠٧:٣٠</item>
+        <item>٠٨:٠٠</item>
+        <item>٠٨:٣٠</item>
+        <item>٠٩:٠٠</item>
+        <item>١٠:٠٠</item>
+    </string-array>
+
+    <string-array name="eid_duration">
+        <item>بند</item>
+        <item>٢٠ منٹ</item>
+        <item>٣٠ منٹ</item>
+        <item>٤٠ منٹ</item>
+        <item>٥٠ منٹ</item>
+        <item>٦٠ منٹ</item>
+    </string-array>
+</resources>

@@ -8,9 +8,12 @@
         <item>35 دقيقة</item>
         <item>40 دقيقة</item>
         <item>45 دقيقة</item>
+        <item>50 دقيقة</item>
+        <item>55 دقيقة</item>
+        <item>60 دقيقة</item>
     </string-array>
 
-    <string-array name="before_dhuhr_duration">
+    <string-array name="before_jumua_duration">
         <item>إيقاف</item>
         <item>10 دقائق</item>
         <item>15 دقيقة</item>
@@ -25,7 +28,7 @@
         <item>60 دقيقة</item>
     </string-array>
 
-    <string-array name="after_dhuhr_duration">
+    <string-array name="after_jumua_duration">
         <item>15 دقيقة</item>
         <item>20 دقيقة</item>
         <item>25 دقيقة</item>
@@ -38,7 +41,7 @@
         <item>60 دقيقة</item>
     </string-array>
 
-    <string-array name="tarawih_duration">
+    <string-array name="taraweeh_duration">
         <item>20 دقيقة</item>
         <item>30 دقيقة</item>
         <item>40 دقيقة</item>
@@ -75,6 +78,7 @@
     </string-array>
 
     <string-array name="eid_duration">
+        <item>إيقاف</item>
         <item>20 دقيقة</item>
         <item>30 دقيقة</item>
         <item>40 دقيقة</item>

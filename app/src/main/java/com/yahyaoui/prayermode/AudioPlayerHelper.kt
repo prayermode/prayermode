@@ -115,7 +115,7 @@ class AudioPlayerHelper(private val context: Context) {
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .build()
 
-            val focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
+            val focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
                 .setAudioAttributes(audioAttributes)
                 .setAcceptsDelayedFocusGain(false)
                 .setWillPauseWhenDucked(true)
@@ -138,7 +138,7 @@ class AudioPlayerHelper(private val context: Context) {
                     if (BuildConfig.DEBUG) Log.d(tag, "Audio focus change: $focusChange")
                 },
                 AudioManager.STREAM_MUSIC,
-                AudioManager.AUDIOFOCUS_GAIN_TRANSIENT
+                AudioManager.AUDIOFOCUS_GAIN
             )
             hasAudioFocus = (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED)
 

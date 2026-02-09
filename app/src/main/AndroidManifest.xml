@@ -49,6 +49,11 @@
             android:label="@string/select_option"/>
 
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+
+        <activity
             android:name=".InformationActivity"
             android:exported="false"
             android:label="@string/select_option"/>

@@ -17,25 +17,37 @@ class SilentModeWorker(appContext: Context, workerParams: WorkerParameters) : Co
     private val tag = "SilentModeWorker"
     private val audioPlayerHelper: AudioPlayerHelper by lazy { AudioPlayerHelper(appContext) }
 
-
     override suspend fun doWork(): Result {
         val mode = inputData.getBoolean("mode", false)
         val prayerName = inputData.getString("prayerName") ?: "unknown"
         val isBackup = inputData.getBoolean("isBackup", false)
+        val isImmediate = inputData.getBoolean("isImmediate", false)
+        val ablutionEnabled = sharedHelper.getAblutionSwitchState()
+        val isBeforeAdhan = inputData.getBoolean("isBeforeAdhan", false)
+
         if (BuildConfig.DEBUG) {
             if (isBackup) Log.w(tag, "BACKUP worker executing for $prayerName: mode=$mode")
+            else if (isImmediate) Log.w(tag, "IMMEDIATE worker executing for $prayerName: mode=$mode")
             else Log.d(tag, "Executing worker for $prayerName: mode=$mode")
         }
-        val shouldPlayAudio = when (prayerName) {
-            "Joumoua" -> {
-                val beforeDhuhrInt = sharedHelper.getIntValue(SharedHelper.DURATION_BEFORE_DHUHR, 0)
-                if (BuildConfig.DEBUG) Log.i(tag, "Jumua: beforeDhuhr index=$beforeDhuhrInt")
-                beforeDhuhrInt == 0
+        val shouldPlayAudio = when {
+            prayerName == "jumua" -> {
+                val beforeJumuaInt = sharedHelper.getIntValue(SharedHelper.DURATION_BEFORE_JUMUA, 0)
+                if (BuildConfig.DEBUG) Log.i(tag, "Jumua: beforeDhuhr index=$beforeJumuaInt, ablution=$ablutionEnabled")
+                beforeJumuaInt == 0 && !ablutionEnabled
             }
-            "Tahajjud" -> {
+            prayerName == "Tahajjud" -> {
                 val tahajjudInt = sharedHelper.getIntValue(SharedHelper.DURATION_TAHAJJUD, 0)
-                if (BuildConfig.DEBUG) Log.i(tag, "Tahajjud: tahajjud index=$tahajjudInt")
-                tahajjudInt == 0
+                if (BuildConfig.DEBUG) Log.i(tag, "Tahajjud: tahajjud index=$tahajjudInt, ablution=$ablutionEnabled")
+                tahajjudInt == 0 && !ablutionEnabled
+            }
+            prayerName == "Eid" -> {
+                if (BuildConfig.DEBUG) Log.i(tag, "Eid prayer: skipping takbir playback (special prayer)")
+                false
+            }
+            ablutionEnabled && prayerName in listOf("Fajr", "Dhuhr", "Asr", "Maghrib", "Isha", "Taraweeh") -> {
+                if (BuildConfig.DEBUG) Log.i(tag, "$prayerName: ablution enabled, skipping takbir")
+                false
             }
             else -> true
         }
@@ -55,17 +67,20 @@ class SilentModeWorker(appContext: Context, workerParams: WorkerParameters) : Co
                     val selectedMethodIndex = sharedHelper.getIntValue(SharedHelper.SELECTED_METHOD_RES_ID, 0)
                     if (BuildConfig.DEBUG) Log.i(tag, "Daily worker processing, gregorian day is $gregorianDay")
 
-                     if (gregorianDay == 1) {
+                    if (gregorianDay == 1  || !tools.checkIfDataAvailable()) {
                         if (selectedMethodIndex != -1) {
                             if (BuildConfig.DEBUG) {
-                                Log.i(tag, "Fetching for $gregorianMonthName prayer times, Method Index is $selectedMethodIndex")
-                                NotificationHelper.sendNotification(applicationContext, R.string.fetch_title, R.string.monthly_update, 200, gregorianMonthName)
+                                if (gregorianDay == 1) {
+                                    Log.i(tag, "Updating for prayer times for $gregorianMonthName, using method $selectedMethodIndex.")
+                                    NotificationHelper.sendNotification(applicationContext, R.string.fetch_title, R.string.monthly_update, 200, gregorianMonthName)
+                                }
+                                else Log.i(tag, "Data is obsolete.")
                             }
                             tools.findLocation(selectedMethodIndex)
                             AlarmScheduler(applicationContext).scheduleDailyAlarm()
                         } else {
                             if (BuildConfig.DEBUG) {
-                                Log.i(tag, "Method index is not set. Using default method.")
+                                Log.i(tag, "Fetching for $gregorianMonthName prayer times, using default method.")
                                 NotificationHelper.sendNotification(applicationContext, R.string.fetch_title, R.string.monthly_update_default_method, 200, gregorianMonthName)
                             }
                             tools.findLocation(4)
@@ -78,13 +93,23 @@ class SilentModeWorker(appContext: Context, workerParams: WorkerParameters) : Co
                     return@withContext Result.success()
                 } else {
                     val silentModeSetSuccess = if (mode) {
-                        if (sharedHelper.getAudioSwitchState() && sharedHelper.getSwitchState() && shouldPlayAudio && !tools.isInCall()) {
-                            if (BuildConfig.DEBUG) Log.i(tag, "Main & Audio switches are on, Before Dhuhr or Tahajjud duration is 0, not in Call, playing audio...")
+                        if (sharedHelper.getAudioSwitchState() && sharedHelper.getSwitchState() && shouldPlayAudio && !tools.isInCall() && !isImmediate) {
+                            if (BuildConfig.DEBUG) Log.i(tag, "Main & Audio switches are on, Before Jumua or Tahajjud duration is 0, not in Call, playing audio...")
                             val audioPlayedSuccessfully = audioPlayerHelper.playAudioFromRaw(R.raw.takbir)
                             if (BuildConfig.DEBUG) Log.i(tag, "Audio playback result: $audioPlayedSuccessfully")
+                        } else {
+                            if (BuildConfig.DEBUG) {
+                                val reasons = mutableListOf<String>()
+                                if (!sharedHelper.getAudioSwitchState()) reasons.add("audio switch off")
+                                if (!sharedHelper.getSwitchState()) reasons.add("main switch off")
+                                if (!shouldPlayAudio) reasons.add("shouldPlayAudio false")
+                                if (tools.isInCall()) reasons.add("in call")
+                                if (isImmediate) reasons.add("immediate activation")
+                                Log.i(tag, "Skipping audio for $prayerName: ${reasons.joinToString(", ")}")
+                            }
                         }
                         if (BuildConfig.DEBUG) Log.i(tag, "Activating silent mode for $prayerName.")
-                        tools.setSilentMode(true, prayerName)
+                        tools.setSilentMode(true, prayerName, isBeforeAdhan)
                     } else {
                         if (isBackup) {
                             val isDndActive = sharedHelper.getBoolean(SharedHelper.IS_APP_CONTROLLED_DND_ACTIVE, false)
@@ -96,7 +121,7 @@ class SilentModeWorker(appContext: Context, workerParams: WorkerParameters) : Co
                             }
                         }
                         if (BuildConfig.DEBUG) Log.i(tag, "Deactivating silent mode for $prayerName.")
-                        tools.setSilentMode(false, prayerName)
+                        tools.setSilentMode(false, prayerName, false)
                     }
 
                     if (!silentModeSetSuccess) {

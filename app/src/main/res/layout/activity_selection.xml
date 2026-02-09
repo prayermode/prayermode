@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?attr/colorSurface"
     android:fitsSystemWindows="true"
     android:padding="16dp">
 
@@ -20,7 +19,7 @@
             android:id="@+id/selectionBackButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/baseline_arrow_back_ios_new_24"
+            android:src="@drawable/ic_arrow_back"
             app:tint="?android:textColorPrimary"
             android:contentDescription="@string/back_button"
             android:background="@drawable/circular_ripple"

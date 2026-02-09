@@ -1,7 +1,6 @@
 package com.yahyaoui.prayermode
 
 import android.app.Dialog
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -13,19 +12,7 @@ import android.widget.Button
 import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.DialogFragment
 
-class WelcomeDialog : DialogFragment() {
-
-    interface WelcomeDialogListener {
-        fun onNextClicked()
-    }
-
-    private var listener: WelcomeDialogListener? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is WelcomeDialogListener) listener = context
-        else throw ClassCastException("$context must implement WelcomeDialogListener")
-    }
+class EducationDialog : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +20,10 @@ class WelcomeDialog : DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.dialog_welcome, container, false)
-        val btnNext: Button = view.findViewById(R.id.btnNext)
-        btnNext.setOnClickListener {
-            if (BuildConfig.DEBUG) Log.d("WelcomeDialog", "Next button clicked.")
-            listener?.onNextClicked()
+        val view = inflater.inflate(R.layout.dialog_education, container, false)
+        val btnGotIt: Button = view.findViewById(R.id.btnGotIt)
+        btnGotIt.setOnClickListener {
+            if (BuildConfig.DEBUG) Log.d("EducationDialog", "Got it button clicked.")
             dismiss()
         }
         return view

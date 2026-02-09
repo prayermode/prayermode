@@ -12,28 +12,20 @@ import androidx.core.net.toUri
 import android.app.*
 import android.content.pm.InstallSourceInfo
 import android.os.Build
-import androidx.core.app.NotificationCompat
-
 data class AppVersion(
     val versionCode: Int,
     val versionName: String,
     val apkUrl: String,
     val minRequired: Boolean = false
 )
-
 object NotificationIds {
     const val UPDATE_AVAILABLE = 1
 }
-
 class UpdateChecker(private val context: Context) {
-
     private companion object {
         const val VERSION_JSON_URL = "https://prayermode.github.io/apk/version.json"
-        const val UPDATE_CHANNEL_ID = "update_channel"
     }
-
     private val tag = "UpdateChecker"
-
     private suspend fun getLatestVersion(): AppVersion? {
         return try {
             val jsonString = withContext(Dispatchers.IO) {
@@ -51,7 +43,6 @@ class UpdateChecker(private val context: Context) {
             null
         }
     }
-
     private fun getCurrentVersionCode(): Int {
         return try {
             PackageInfoCompat.getLongVersionCode(context.packageManager.getPackageInfo(context.packageName, 0)).toInt()
@@ -60,7 +51,6 @@ class UpdateChecker(private val context: Context) {
             -1
         }
     }
-
     suspend fun checkForUpdate() {
         if (BuildConfig.DEBUG) Log.d(tag, "Checking for updates...")
         val latestVersion = getLatestVersion() ?: return
@@ -101,49 +91,22 @@ class UpdateChecker(private val context: Context) {
             false
         }
     }
-
     private fun showUpdateNotification(version: AppVersion) {
-        createNotificationChannel()
-
-        val title = context.getString(R.string.update_notification_title)
-        val message = context.getString(R.string.update_notification_message, version.versionName)
-
+        val localizedVersionName = LocaleHelper.formatStringWithLocaleNumerals(context, version.versionName)
         val updateIntent = Intent(Intent.ACTION_VIEW, version.apkUrl.toUri())
-        val updatePendingIntent = PendingIntent.getActivity(
-            context,
-            1,
-            updateIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        val updatePendingIntent = PendingIntent.getActivity(context, 1, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+        NotificationHelper.sendNotificationWithAction(
+            context = context,
+            titleResId = R.string.update_notification_title,
+            messageResId = R.string.update_notification_message,
+            notificationId = NotificationIds.UPDATE_AVAILABLE,
+            channelId = "update_channel",
+            pendingIntent = null,
+            actionTitleResId = R.string.update,
+            actionPendingIntent = updatePendingIntent,
+            autoCancel = true,
+            localizedVersionName
         )
-
-        val notification = NotificationCompat.Builder(context, UPDATE_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_prayer_mat_vector)
-            .setContentTitle(title)
-            .setContentText(message)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
-            .addAction(0, context.getString(R.string.update), updatePendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setAutoCancel(true)
-            .build()
-
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(NotificationIds.UPDATE_AVAILABLE, notification)
-
-        if (BuildConfig.DEBUG) Log.d("UpdateChecker", "Update notification sent for version ${version.versionName}")
-    }
-
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                UPDATE_CHANNEL_ID,
-                "App Updates",
-                NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                description = "Notifications for new app updates"
-            }
-
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
     }
 }

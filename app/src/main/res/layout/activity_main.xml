@@ -4,25 +4,51 @@
     android:id="@+id/main_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
     android:orientation="vertical"
     android:layoutDirection="locale">
 
-    <!-- App Title -->
-    <TextView
+    <!-- App Title with Menu -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        android:gravity="center"
-        android:layoutDirection="locale"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textColor="?android:textColorPrimary"
-        android:textDirection="locale"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layoutDirection="locale">
+
+        <Space
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textAlignment="center"
+            android:textColor="?android:textColorPrimary"
+            android:textDirection="locale"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/menuButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/circular_ripple"
+            android:clickable="true"
+            android:contentDescription="@string/menu"
+            android:focusable="true"
+            android:outlineProvider="background"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/baseline_more_vert_24"
+            app:tint="?android:textColorPrimary" />
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -35,7 +61,7 @@
             android:paddingStart="8dp"
             android:paddingTop="8dp"
             android:paddingEnd="8dp"
-            android:paddingBottom="80dp">
+            android:paddingBottom="24dp">
             <!-- Switch Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/switchButtonContainer"
@@ -66,7 +92,7 @@
                         android:textAlignment="viewStart"
                         android:textColor="?android:textColorPrimary"
                         android:textDirection="locale"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/activateSwitch"
@@ -77,13 +103,12 @@
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
-            <!-- Daily Schedule Section -->
+            <!-- Prayer Options Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:text="@string/daily_schedule"
+                android:text="@string/prayer_options"
                 android:textAlignment="viewStart"
                 android:textColor="?android:textColorSecondary"
                 android:textSize="12sp"
@@ -101,39 +126,41 @@
                 app:cardElevation="0dp"
                 app:shapeAppearanceOverlay="@style/TopRoundedCorners">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvCalcMethodLabel"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/calculation_method"
                         android:textColor="?android:textColorPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
                         android:id="@+id/tvCalculationMethod"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
                         android:text="@string/calculation_method"
                         android:textColor="@color/tvTextColor"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/tvCalcMethodLabel"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
-            <!-- Mid line -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor" />
-            <!-- Duration Card -->
+            <!-- Audio Switch -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/durationContainer"
+                android:id="@+id/audioSwitchContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -141,91 +168,89 @@
                 app:cardCornerRadius="0dp"
                 app:cardElevation="0dp">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="@string/daily_silent_duration_after_adhan"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/tvSilentDuration"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="1dp"
-                        android:text="@string/daily_silent_duration"
-                        android:textColor="@color/tvTextColor"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-            <!-- Mid line -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor" />
-            <!-- Audio Switch -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/audioSwitchContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="?attr/cardBackground"
-                app:cardElevation="0dp"
-                app:shapeAppearanceOverlay="@style/BottomRoundedCorners">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layoutDirection="locale"
-                    android:orientation="horizontal"
                     android:padding="16dp">
 
                     <TextView
                         android:id="@+id/tvAudioSwitchState"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/AudioText"
                         android:textAlignment="viewStart"
                         android:textColor="?android:textColorPrimary"
-                        android:textDirection="locale"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/audioSwitch" />
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/audioSwitch"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginEnd="0dp" />
-
-                </LinearLayout>
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
+            <!-- Ablution Switch -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/ablutionSwitchContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="?attr/cardBackground"
+                app:cardElevation="0dp"
+                app:cardPreventCornerOverlap="false"
+                app:shapeAppearanceOverlay="@style/BottomRoundedCorners">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
 
-            <!-- Joumoua Section -->
+                    <TextView
+                        android:id="@+id/tvAblutionSwitchState"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/AblutionText"
+                        android:textAlignment="viewStart"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ablutionSwitch" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/ablutionSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <!-- Daily Schedule Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
+                android:text="@string/daily_schedule"
                 android:textAlignment="viewStart"
-                android:text="@string/joumoua"
                 android:textColor="?android:textColorSecondary"
                 android:textSize="12sp"
                 android:textStyle="bold" />
-            <!-- Before Dhuhr Card -->
+            <!-- Fajr Card -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/beforeDhuhrContainer"
+                android:id="@+id/fajrContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-12dp"
@@ -236,39 +261,168 @@
                 app:cardElevation="0dp"
                 app:shapeAppearanceOverlay="@style/TopRoundedCorners">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvFajrTitle"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/before_dhuhr"
+                        android:text="@string/fajr_silent_duration_after_adhan"
                         android:textColor="?android:textColorPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
-                        android:id="@+id/tvBeforeDhuhr"
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvFajr"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:text="@string/duration_before_dhuhr"
+                        android:text="@string/fajr_silent_duration"
                         android:textColor="@color/tvTextColor"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/tvFajrTitle"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
-            <!-- Mid line -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor" />
-            <!-- After Dhuhr Card -->
+            <!-- Dhuhr Card -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/afterDhuhrContainer"
+                android:id="@+id/dhuhrContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="?attr/cardBackground"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvDhuhrTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dhuhr_silent_duration_after_adhan"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvDhuhr"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="@string/dhuhr_silent_duration"
+                        android:textColor="@color/tvTextColor"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvDhuhrTitle" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <!-- Asr Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/asrContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="?attr/cardBackground"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvAsrTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/asr_silent_duration_after_adhan"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvAsr"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="@string/asr_silent_duration"
+                        android:textColor="@color/tvTextColor"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvAsrTitle" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <!-- Maghrib Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/maghribContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="?attr/cardBackground"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvMaghribTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/maghrib_silent_duration_after_adhan"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvMaghrib"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="@string/maghrib_silent_duration"
+                        android:textColor="@color/tvTextColor"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvMaghribTitle" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <!-- Isha Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/ishaContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -276,28 +430,128 @@
                 app:cardElevation="0dp"
                 app:shapeAppearanceOverlay="@style/BottomRoundedCorners">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvIshaTitle"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/after_dhuhr"
+                        android:text="@string/isha_silent_duration_after_adhan"
                         android:textColor="?android:textColorPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tvAfterDhuhr"
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvIsha"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:text="@string/duration_after_dhuhr"
+                        android:text="@string/isha_silent_duration"
                         android:textColor="@color/tvTextColor"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvIshaTitle" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <!-- Jumua Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:textAlignment="viewStart"
+                android:text="@string/jumua_card"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+            <!-- Before Jumua Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/beforeJumuaContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="?attr/cardBackground"
+                app:cardElevation="0dp"
+                app:shapeAppearanceOverlay="@style/TopRoundedCorners">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvBeforeJumuaTitleLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/before_jumua"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvBeforeJumua"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="@string/duration_before_jumua"
+                        android:textColor="@color/tvTextColor"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/tvBeforeJumuaTitleLabel"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <!-- After Dhuhr Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/afterJumuaContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="?attr/cardBackground"
+                app:cardElevation="0dp"
+                app:shapeAppearanceOverlay="@style/BottomRoundedCorners">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvAfterJumuaTitleLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/after_jumua"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvAfterJumua"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="@string/duration_after_jumua"
+                        android:textColor="@color/tvTextColor"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/tvAfterJumuaTitleLabel"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
             <!-- Ramadan Section -->
             <TextView
@@ -309,9 +563,9 @@
                 android:textColor="?android:textColorSecondary"
                 android:textSize="12sp"
                 android:textStyle="bold" />
-            <!-- Tarawih Card -->
+            <!-- Taraweeh Card -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/tarawihContainer"
+                android:id="@+id/taraweehContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-12dp"
@@ -322,39 +576,41 @@
                 app:cardElevation="0dp"
                 app:shapeAppearanceOverlay="@style/TopRoundedCorners">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvTaraweehLabel"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/tarawih_silent_duration"
+                        android:text="@string/taraweeh_silent_duration"
                         android:textColor="?android:textColorPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
-                        android:id="@+id/tvTarawih"
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvTaraweeh"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:text="@string/tarawih_duration"
+                        android:text="@string/taraweeh_duration"
                         android:textColor="@color/tvTextColor"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/tvTaraweehLabel"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
-            <!-- Mid line -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor" />
             <!-- Tahajjud Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/tahajjudContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -362,28 +618,34 @@
                 app:cardElevation="0dp"
                 app:shapeAppearanceOverlay="@style/BottomRoundedCorners">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvTahajjudLabel"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/tahajjud_silent_duration"
                         android:textColor="?android:textColorPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
                         android:id="@+id/tvTahajjud"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
                         android:text="@string/tahajjud_duration"
                         android:textColor="@color/tvTextColor"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/tvTahajjudLabel"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
             <!-- Eid Card -->
             <TextView
@@ -408,39 +670,41 @@
                 app:cardElevation="0dp"
                 app:shapeAppearanceOverlay="@style/TopRoundedCorners">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvEidTimeLabel"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/eid_time_prayer"
                         android:textColor="?android:textColorPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
                         android:id="@+id/tvEidTime"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
                         android:text="@string/eid_time"
                         android:textColor="@color/tvTextColor"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/tvEidTimeLabel"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
-            <!-- Mid line -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor" />
             <!-- Eid duration Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/eidDurationContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -448,166 +712,35 @@
                 app:cardElevation="0dp"
                 app:shapeAppearanceOverlay="@style/BottomRoundedCorners">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvEidDurationLabel"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/eid_silent_duration"
                         android:textColor="?android:textColorPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
                         android:id="@+id/tvEidDuration"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
                         android:text="@string/eid_duration"
                         android:textColor="@color/tvTextColor"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/tvEidDurationLabel"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
-            <!-- Privacy -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:text="@string/privacy"
-                android:textAlignment="viewStart"
-                android:textColor="?android:textColorSecondary"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-            <!-- Privacy Notice Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/privacyContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-12dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="?attr/cardBackground"
-                app:cardElevation="0dp"
-                app:shapeAppearanceOverlay="@style/TopRoundedCorners">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/privacy_notice"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-            <!-- Mid line -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor" />
-            <!-- ToS Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/termsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="?attr/cardBackground"
-                app:cardCornerRadius="0dp"
-                app:cardElevation="0dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="18dp"
-                    android:text="@string/terms"
-                    android:textColor="?android:textColorPrimary"
-                    android:textSize="18sp" />
-
-            </com.google.android.material.card.MaterialCardView>
-            <!-- Mid line -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor" />
-            <!-- Permissions Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/permissionsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="?attr/cardBackground"
-                app:cardElevation="0dp"
-                app:shapeAppearanceOverlay="@style/BottomRoundedCorners">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="18dp"
-                    android:text="@string/permission"
-                    android:textColor="?android:textColorPrimary"
-                    android:textSize="18sp" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!--Help Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/helpContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="?attr/cardBackground"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="18dp"
-                    android:text="@string/help"
-                    android:textColor="?android:textColorPrimary"
-                    android:textSize="18sp" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!--Donation Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/donationContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="?attr/cardBackground"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="18dp"
-                    android:text="@string/donation"
-                    android:textColor="?android:textColorPrimary"
-                    android:textSize="18sp" />
-
-            </com.google.android.material.card.MaterialCardView>
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

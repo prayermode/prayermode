@@ -11,7 +11,7 @@ class UpdateCheckWorker(context: Context, params: WorkerParameters) : CoroutineW
     private val sharedHelper: SharedHelper by lazy { SharedHelper(applicationContext) }
 
     override suspend fun doWork(): Result {
-        if (BuildConfig.DEBUG) Log.d(tag, "Weekly update check started")
+        if (BuildConfig.DEBUG) Log.d(tag, "Daily update check started")
         val updateChecker = UpdateChecker(applicationContext)
         try {
             if (!sharedHelper.getSwitchState()) {
@@ -23,10 +23,10 @@ class UpdateCheckWorker(context: Context, params: WorkerParameters) : CoroutineW
                 return Result.success()
             }
             updateChecker.checkForUpdate()
-            if (BuildConfig.DEBUG) Log.d(tag, "Weekly update check completed")
+            if (BuildConfig.DEBUG) Log.d(tag, "Daily update check completed")
             return Result.success()
         } catch (e: Exception) {
-            Log.e(tag, "Error during weekly update check: ${e.message}")
+            Log.e(tag, "Error during daily update check: ${e.message}")
             return Result.retry()
         }
     }

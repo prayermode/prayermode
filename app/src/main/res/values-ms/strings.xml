@@ -4,10 +4,12 @@
     <string name="On">Hidup</string>
     <string name="select_option">Pilih Pilihan</string>
     <string name="AudioText">Dengar takbir sebelum mengaktifkan mod senyap</string>
+    <string name="AblutionText">Masa Berwuduk - 10 minit sebelum Azan</string>
+    <string name="menu">Menu</string>
+    <string name="settings_title">Maklumat Aplikasi</string>
 
-    <!-- Daily Schedule Card view -->
-    <string name="daily_schedule">Jadual Solat Harian</string>
-
+    <!-- Calculation methods & Takbir Card view -->
+    <string name="prayer_options">Pilihan Solat</string>
     <string name="calculation_method">Kaedah Pengiraan</string>
     <string name="select_calculation_method">Pilih Kaedah Pengiraan</string>
     <string-array name="calculation_methods">
@@ -36,9 +38,29 @@
         <item>Syiah Ithna Ashari, Institut Leva, Qom</item>
     </string-array>
 
-    <string name="daily_silent_duration_after_adhan">Tempoh Senyap Selepas Azan</string>
-    <string name="daily_silent_duration">Tempoh Senyap Harian</string>
-    <string name="select_silent_duration">Pilih Tempoh Senyap</string>
+    <!-- Daily Schedule Card view -->
+    <string name="daily_schedule">Tempoh Senyap Harian Selepas Azan</string>
+    <!-- Fajr Card view -->
+    <string name="fajr_silent_duration_after_adhan">Subuh</string>
+    <string name="fajr_silent_duration">Tempoh Subuh</string>
+    <string name="select_fajr_duration">Pilih tempoh senyap Subuh</string>
+    <!-- Dhuhr Card view -->
+    <string name="dhuhr_silent_duration_after_adhan">Zohor</string>
+    <string name="dhuhr_silent_duration">Tempoh Zohor</string>
+    <string name="select_dhuhr_duration">Pilih tempoh senyap Zohor</string>
+    <!-- Asr Card view -->
+    <string name="asr_silent_duration_after_adhan">Asar</string>
+    <string name="asr_silent_duration">Tempoh Asar</string>
+    <string name="select_asr_duration">Pilih tempoh senyap Asar</string>
+    <!-- Maghrib Card view -->
+    <string name="maghrib_silent_duration_after_adhan">Maghrib</string>
+    <string name="maghrib_silent_duration">Tempoh Maghrib</string>
+    <string name="select_maghrib_duration">Pilih tempoh senyap Maghrib</string>
+    <!-- Isha Card view -->
+    <string name="isha_silent_duration_after_adhan">Isyak</string>
+    <string name="isha_silent_duration">Tempoh Isyak</string>
+    <string name="select_isha_duration">Pilih tempoh senyap Isyak</string>
+
     <string-array name="silent_durations">
         <item>15 minit</item>
         <item>20 minit</item>
@@ -47,17 +69,20 @@
         <item>35 minit</item>
         <item>40 minit</item>
         <item>45 minit</item>
+        <item>50 minit</item>
+        <item>55 minit</item>
+        <item>60 minit</item>
     </string-array>
 
-    <!-- Joumoua Card view -->
-    <string name="joumoua">Solat Jumaat</string>
+    <!-- jumua Card view -->
+    <string name="jumua_card">Tempoh Senyap Solat Jumaat</string>
     <!-- Black fix text -->
-    <string name="before_dhuhr">Tempoh Senyap Sebelum Azan</string>
+    <string name="before_jumua">Sebelum Azan</string>
     <!-- TV variable text -->
-    <string name="duration_before_dhuhr">Tempoh Sebelum Azan</string>
+    <string name="duration_before_jumua">Tempoh Sebelum Azan</string>
     <!-- Select menu -->
-    <string name="select_before_dhuhr_duration">Pilih tempoh sebelum Azan</string>
-    <string-array name="before_dhuhr_duration">
+    <string name="select_before_jumua_duration">Pilih tempoh sebelum Azan</string>
+    <string-array name="before_jumua_duration">
         <item>Tutup</item>
         <item>10 minit</item>
         <item>15 minit</item>
@@ -72,10 +97,10 @@
         <item>60 minit</item>
     </string-array>
 
-    <string name="after_dhuhr">Tempoh senyap selepas Azan</string>
-    <string name="duration_after_dhuhr">Tempoh selepas Azan</string>
-    <string name="select_after_dhuhr_duration">Pilih tempoh selepas Azan</string>
-    <string-array name="after_dhuhr_duration">
+    <string name="after_jumua">Selepas Azan</string>
+    <string name="duration_after_jumua">Tempoh selepas Azan</string>
+    <string name="select_after_jumua_duration">Pilih tempoh selepas Azan</string>
+    <string-array name="after_jumua_duration">
         <item>15 minit</item>
         <item>20 minit</item>
         <item>25 minit</item>
@@ -91,10 +116,10 @@
     <!-- Ramadan Card view -->
     <string name="ramadan">Ramadan</string>
 
-    <string name="tarawih_silent_duration">Tempoh senyap Isyak dan Solat Terawih</string>
-    <string name="tarawih_duration">Tempoh Solat Terawih</string>
-    <string name="select_tarawih_duration">Pilih tempoh Isyak dan Solat Terawih</string>
-    <string-array name="tarawih_duration">
+    <string name="taraweeh_silent_duration">Isyak &amp; Terawih</string>
+    <string name="taraweeh_duration">Tempoh Solat Terawih</string>
+    <string name="select_taraweeh_duration">Pilih tempoh Isyak dan Solat Terawih</string>
+    <string-array name="taraweeh_duration">
         <item>20 minit</item>
         <item>30 minit</item>
         <item>40 minit</item>
@@ -106,7 +131,7 @@
         <item>3 jam</item>
     </string-array>
 
-    <string name="tahajjud_silent_duration">Tempoh senyap Tahajud</string>
+    <string name="tahajjud_silent_duration">Tahajud</string>
     <string name="tahajjud_duration">Tempoh solat Tahajud</string>
     <string name="select_tahajjud_duration">Pilih tempoh Tahajud</string>
     <string-array name="tahajjud_duration">
@@ -128,7 +153,7 @@
     <string name="eid_time">Waktu Solat Sunat Hari Raya</string>
     <string name="select_eid_time">Pilih Waktu Solat Sunat Hari Raya</string>
     <string-array name="eid_time">
-        <item>>20 minit selepas matahari terbit</item>
+        <item>20 minit selepas matahari terbit</item>
         <item>06:00</item>
         <item>06:30</item>
         <item>07:00</item>
@@ -143,6 +168,7 @@
     <string name="eid_duration">Tempoh Solat Hari Raya</string>
     <string name="select_eid_duration">Pilih tempoh Solat Hari Raya</string>
     <string-array name="eid_duration">
+        <item>Tutup</item>
         <item>20 minit</item>
         <item>30 minit</item>
         <item>40 minit</item>
@@ -174,7 +200,7 @@ Aplikasi ini akan meminta kebenaran untuk mengakses lokasi peranti anda. Anda bo
 
 <b>Mod Jangan Ganggu (DND)</b><br/><br/>
 Aplikasi ini juga mungkin meminta kebenaran untuk mengaktifkan mod Jangan Ganggu (DND) pada peranti anda. Kebenaran ini diperlukan untuk aplikasi berfungsi dengan baik dengan mengaktifkan mod DND sementara untuk meminimumkan gangguan semasa waktu solat. Walaupun kebenaran ini membolehkan aplikasi mengawal tetapan bunyi dan getaran peranti anda, kami ingin menjelaskan secara eksplisit bahawa aplikasi TIDAK mengakses, membaca, atau mengumpul mana-mana notifikasi, mesej, kandungan panggilan, atau mana-mana data peribadi lain yang dipaparkan oleh notifikasi anda. Kebenaran ini adalah semata-mata untuk tujuan mengaktifkan dan menyahaktifkan mod DND.<br/><br/>
-Anda mengakui bahawa semasa mod DND diaktifkan oleh aplikasi, <b>anda mungkin tidak menerima notifikasi standard, termasuk panggilan kecemasan</b>. Syarikat kami tidak akan bertanggungjawab terhadap sebarang akibat yang disebabkan oleh notifikasi dan panggilan kecemasan yang terlepas, semasa tempoh aplikasi telah mengaktifkan mod DND.<br/><br/>
+Anda mengakui bahawa semasa mod DND diaktifkan oleh aplikasi, <b>anda mungkin tidak menerima notifikasi standard, termasuk panggilan kecemasan</b>. Kami tidak akan bertanggungjawab terhadap sebarang akibat yang disebabkan oleh notifikasi dan panggilan kecemasan yang terlepas, semasa tempoh aplikasi telah mengaktifkan mod DND.<br/><br/>
 Adalah menjadi tanggungjawab anda untuk mengkonfigurasi tetapan DND dan pengecualian mengikut keperluan anda.<br/><br/>
 Kami komited untuk melindungi privasi anda. Jika anda mempunyai sebarang soalan atau kebimbangan mengenai amalan privasi kami, sila hubungi kami di <a href="mailto:prayer.mode@outlook.com">prayer.mode@outlook.com</a><br/><br/>
 Untuk butiran penuh Dasar Privasi kami, sila ikuti [PRIVACY_LINK].<br/><br/>
@@ -212,8 +238,11 @@ Terima kasih kerana mempercayai permohonan kami.<br/><br/>
     <string name="calculation">Kaedah Pengiraan</string>
     <string name="calculation_description">Pilih kaedah pengiraan sebelum mengaktifkan suis. Aplikasi menggunakan API aladhan.com untuk mendapatkan waktu solat yang tepat.</string>
 
+    <string name="ablution">Tetapan masa wuduk</string>
+    <string name="ablution_description">Mengaktifkan Jangan Ganggu 10 minit sebelum azan untuk memberi masa untuk wuduk. Anda hanya boleh menukar tetapan ini apabila suis utama ditutup.</string>
+
     <string name="durations">Tempoh</string>
-    <string name="durations_description">Pilih tempoh berdasarkan keutamaan anda. Setiap solat (5 waktu, Jumaat, Terawih, Tahajud dan Hari Raya) mempunyai tempoh tersendiri.</string>
+    <string name="durations_description">Pilih tempoh berdasarkan keutamaan anda. Setiap solat mempunyai tempoh senyap tersendiri.</string>
 
     <string name="time">Waktu</string>
     <string name="time_description">Pilih waktu Solat Hari Raya Aidilfitri dan Aidiladha.</string>
@@ -224,25 +253,23 @@ Terima kasih kerana mempercayai permohonan kami.<br/><br/>
     <string name="wearable">Peranti Boleh Pakai</string>
     <string name="wearable_description">Jam tangan anda juga boleh menerima notifikasi dan mengikut mod bunyi telefon. Aktifkan melalui tetapan aplikasi jam tangan pintar.</string>
 
-    <string name="donation">Derma</string>
+    <string name="donation">Sokongan Projek</string>
     <string name="donation_link_text">PayPal</string>
     <string name="donation_content">Sokong Kami</string>
     <string name="donation_description"><![CDATA[
-Mod Solat adalah perisian percuma dan sumber terbuka. Pembangunan dan penyelenggaraan memerlukan masa dan usaha.<br/><br/>
-Jika anda mendapati aplikasi ini berharga dan ingin menyokong pembangunannya yang berterusan, anda boleh membuat derma secara sukarela.<br/><br/>
-Derma adalah <b>sukarela dan tidak boleh dikembalikan</b>, dan tidak memberi anda hak kepada sebarang perkhidmatan atau ciri premium.<br/><br/>
-Ia hanyalah cara untuk menunjukkan penghargaan anda dan membantu memastikan aplikasi ini kekal percuma dan dikemaskini untuk semua.<br/><br/>
-Anda boleh menderma menggunakan [DONATION_LINK].<br/><br/>
+Mod solat adalah perisian percuma dan sumber terbuka. Penyelenggaraan dan penambahbaikan aplikasi memerlukan masa dan usaha yang besar.<br/><br/>
+Jika anda mendapati aplikasi ini bermanfaat dan ingin menyokong pembangunannya, anda boleh memberikan sumbangan sukarela.<br/><br/>
+Sumbangan ini adalah <b>sukarela dan tidak boleh dikembalikan</b>. Ia tidak membuka fungsi premium, kerana aplikasi ini bertujuan untuk kekal percuma untuk semua orang.<br/><br/>
+Sokongan anda hanyalah cara untuk menunjukkan penghargaan, yang mendorong kami untuk terus mengemaskini aplikasi ini untuk komuniti.<br/><br/>
+Anda boleh menyumbang melalui [DONATION_LINK].<br/><br/>
 ]]></string>
 
     <string name="back_button">Butang Kembali</string>
 
     <!-- MainActivity SnackBar -->
     <string name="cannot_change_settings">Tetapan tidak boleh diubah semasa suis dihidupkan.</string>
-    <string name="permissions_granted">Semua kebenaran telah diberikan, suis boleh dihidupkan.</string>
     <string name="alarm_permission_granted">Kebenaran Penggera Diberikan.</string>
     <string name="grant_location_permission">Sila berikan kebenaran lokasi.</string>
-    <string name="grant_alarm_permission">Sila berikan kebenaran penggera.</string>
     <string name="grant_dnd_permission">Kebenaran Jangan Ganggu diperlukan untuk mod senyap automatik.</string>
     <string name="background_location_denied_message">Akses lokasi latar belakang diperlukan untuk mengemas kini waktu solat secara automatik.</string>
     <string name="no_location_internet">Gagal mengaktifkan Mod Solat. Sila periksa Perkhidmatan Lokasi dan sambungan internet.</string>
@@ -292,6 +319,7 @@ Anda boleh menderma menggunakan [DONATION_LINK].<br/><br/>
     <string name="today_fajr_time_is">Waktu solat Subuh hari ini %1$s.</string>
     <string name="today_dhuhr_time_is">Waktu Solat Jumaat hari ini ialah %1$s.</string>
     <string name="silent_mode_activated_for">Mod Jangan Ganggu diaktifkan selama %1$s.</string>
+    <string name="ablution_silent_mode_activation">Mod Jangan Ganggu diaktifkan untuk %1$s 10 minit sebelum Azan.</string>
     <string name="today_imsak_time_is">Waktu Imsak hari ini ialah %1$s.</string>
     <string name="back_to_normal_mode">Mod Jangan Ganggu dimatikan.</string>
     <string name="location_title">Perkhidmatan Lokasi</string>
@@ -301,11 +329,13 @@ Anda boleh menderma menggunakan [DONATION_LINK].<br/><br/>
     <string name="dnd_already_on">Mod Jangan Ganggu telah sedia aktif (oleh pengguna/sistem) semasa cubaan mengaktifkannya untuk %1$s, justeru akan kekal aktif demi menghormati tetapan semasa anda.</string>
 
     <string name="location_service_disabled">Aktifkan perkhidmatan lokasi untuk memastikan aplikasi berfungsi seperti dijangkakan.</string>
-    <string name="travelled_distance">Anda telah bergerak sejauh %1$s km. Menyesuaikan jadual waktu solat dengan kedudukan baharu anda.</string>
-    <string name="location_name">Mendapatkan waktu solat untuk %1$s. Lokasi tidak betul? Anda mungkin perlu mengubah tetapan lokasi peranti anda.</string>
+    <string name="travelled_distance">Menyesuaikan jadual waktu solat dengan kedudukan baharu.</string>
+    <string name="location_name">Mendapatkan waktu solat untuk %1$s.</string>
+    <string name="location_fetch">Mendapatkan lokasi, sila bergerak ke kawasan terbuka atau berhampiran tingkap.</string>
 
     <string name="open_prayer">Buka Aplikasi</string>
 
+    <string name="jumua">Jumaat</string>
     <string name="eid">Hari Raya</string>
     <string name="imsak">Imsak</string>
     <string name="fajr">Subuh</string>
@@ -314,7 +344,7 @@ Anda boleh menderma menggunakan [DONATION_LINK].<br/><br/>
     <string name="asr">Asar</string>
     <string name="maghrib">Maghrib</string>
     <string name="isha">Isyak</string>
-    <string name="tarawih">Tarawih</string>
+    <string name="taraweeh">Taraweeh</string>
     <string name="tahajjud">Tahajud</string>
     <string name="prayer_name_unknown">Solat</string>
 
@@ -327,7 +357,7 @@ Anda boleh menderma menggunakan [DONATION_LINK].<br/><br/>
 
     <string name="update_notification_title">Kemas Kini Mod Solat</string>
     <string name="update_notification_message">Versi %1$s kini tersedia.</string>
-    <string name="update">Kemas Kini Sekarang</string>
+    <string name="update">Buka Nota Keluaran</string>
     <string name="silent_schedule_success">Penjadualan waktu solat berjaya.</string>
 
     <string name="welcome_title">Selamat Datang ke Mod Solat</string>
@@ -340,6 +370,40 @@ Anda boleh menderma menggunakan [DONATION_LINK].<br/><br/>
     Jangan biarkan panggilan dan notifikasi mengganggu hubungan anda dengan Allah.
     </string>
     <string name="next">Seterusnya</string>
+
+    <string name="education_title">Perlu Tahu</string>
+    <string name="education_message">
+🔁 Waktu Solat Dikemas kini\n
+\u2022 Bulanan dari Aladhan.com\n
+\u2022 Apabila perpindahan jarak jauh dikesan\n\n
+🚨 Suis Mungkin Tidak Boleh Diaktifkan Jika\n
+\u2022 Lokasi dimatikan\n
+\u2022 Isyarat GPS lemah\n
+\u2022 Tiada sambungan Internet\n
+\u2022 Keizinan penting ditarik balik\n\n
+✅ Diperlukan Untuk Operasi Penuh\n
+\u2022 Semua keizinan\n
+\u2022 Lokasi sentiasa dihidupkan - Pastikan isyarat GPS baik\n
+\u2022 Sambungan Internet berterusan\n\n
+💡 Apl boleh menggunakan lokasi terakhir anda yang diketahui jika isyarat GPS tidak tersedia buat sementara waktu.\n</string>
+    <string name="got_it">Faham</string>
+
+    <!-- Language Section -->
+    <string name="language_section">Bahasa</string>
+    <string name="language">Bahasa Aplikasi</string>
+    <string name="select_language">Pilih Bahasa</string>
+
+    <!-- App Performance Strings -->
+    <string name="app_performance_section">Prestasi Apl</string>
+    <string name="battery_optimization_title">Akses Lokasi Latar Belakang</string>
+    <string name="battery_optimization_checking">Menyemak status…</string>
+    <string name="battery_optimization_enabled">✓ Tidak Terhad (Disyorkan)</string>
+    <string name="battery_optimization_active">Terhad - Ketuk untuk ubah</string>
+    <string name="battery_optimization_dialog_title">Tambah Baik Penjejakan Lokasi</string>
+    <string name="battery_optimization_dialog_message">Untuk kemas kini waktu solat yang boleh dipercayai semasa bermusafir, sila benarkan penggunaan bateri latar belakang untuk apl ini.\n\nIni membantu apl menyesuaikan waktu solat secara automatik.\n\nPergi ke Bateri/Penggunaan Bateri Apl → Tidak Terhad atau Benarkan penggunaan latar belakang atau Jangan optimumkan.</string>
+    <string name="battery_optimization_dialog_negative">Bukan Sekarang</string>
+    <string name="battery_optimization_error">Tidak dapat membuka tetapan bateri</string>
+    <string name="battery_optimization_already_enabled">Pengoptimuman bateri telah didayakan untuk apl ini. Ini membantu mengekalkan penjejakan lokasi yang boleh dipercayai untuk kemas kini waktu solat semasa anda bermusafir.</string>
 
     <!-- Catch & else blocks -->
     <string name="failed_writing">Sila pastikan ruang storan mencukupi.</string>

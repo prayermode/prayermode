@@ -8,15 +8,22 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 
 class SelectionActivity : AppCompatActivity() {
-
     private lateinit var sharedHelper: SharedHelper
+
+    override fun attachBaseContext(newBase: Context) {
+        val savedLocale = SharedHelper(newBase).getSavedLocale()
+        val locale = savedLocale ?: LocaleHelper.getPersistedLocale()
+        if (BuildConfig.DEBUG) Log.d("SelectionActivity", "Attaching base context for locale: $locale")
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, locale))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_selection)
-
+        LocaleHelper.setupLayoutDirection(this, window)
         sharedHelper = SharedHelper(this)
 
         val title = intent.getStringExtra("TITLE") ?: getString(R.string.select_option)
@@ -27,7 +34,7 @@ class SelectionActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.selectionTitle).text = title
 
         val listView = findViewById<ListView>(R.id.selectionListView)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, options) //localizedOptions)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, options)
 
         listView.adapter = adapter
         listView.choiceMode = ListView.CHOICE_MODE_SINGLE

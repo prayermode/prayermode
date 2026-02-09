@@ -1,5 +1,6 @@
 package com.yahyaoui.prayermode
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.ImageView
@@ -11,12 +12,18 @@ import android.util.TypedValue
 import android.text.method.LinkMovementMethod
 import com.yahyaoui.prayermode.TermsAndConditions.Companion.PRIVACY_URL
 import com.yahyaoui.prayermode.TermsAndConditions.Companion.DONATION_URL
-
 class InformationActivity : AppCompatActivity() {
+
+    override fun attachBaseContext(newBase: Context) {
+        val savedLocale = SharedHelper(newBase).getSavedLocale()
+        val locale = savedLocale ?: LocaleHelper.getPersistedLocale()
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, locale))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_information)
+        LocaleHelper.setupLayoutDirection(this, window)
         findViewById<ImageView>(R.id.selectionBackButton).setOnClickListener { finish() }
 
         val title = intent.getStringExtra("TITLE") ?: "No Title"
@@ -26,6 +33,7 @@ class InformationActivity : AppCompatActivity() {
         val screenType = intent.getStringExtra("SCREEN_TYPE") ?: "PERMISSIONS"
         val dynamicContainer = findViewById<LinearLayout>(R.id.dynamicContainer)
 
+        LocaleHelper.setupLayoutDirection(this,window)
         when (screenType) {
             "PRIVACY" -> {
                 val privacyNoticeView = TextView(this).apply {
@@ -44,10 +52,10 @@ class InformationActivity : AppCompatActivity() {
             }
             "PERMISSIONS" -> {
                 val permissions = listOf(
-                    PermissionItem(R.drawable.ic_location, applicationContext.getString(R.string.location), applicationContext.getString(R.string.location_description)),
-                    PermissionItem(R.drawable.ic_notification, applicationContext.getString(R.string.notifications), applicationContext.getString(R.string.notifications_description)),
-                    PermissionItem(R.drawable.ic_dnd, applicationContext.getString(R.string.dnd), applicationContext.getString(R.string.dnd_description)),
-                    PermissionItem(R.drawable.ic_alarm, applicationContext.getString(R.string.alarm), applicationContext.getString(R.string.alarm_description))
+                    PermissionItem(R.drawable.ic_location, getString(R.string.location), getString(R.string.location_description)),
+                    PermissionItem(R.drawable.ic_notification, getString(R.string.notifications), getString(R.string.notifications_description)),
+                    PermissionItem(R.drawable.ic_dnd, getString(R.string.dnd), getString(R.string.dnd_description)),
+                    PermissionItem(R.drawable.ic_alarm, getString(R.string.alarm), getString(R.string.alarm_description))
                 )
                 permissions.forEach { permission ->
                     val view = LayoutInflater.from(this)
@@ -60,14 +68,15 @@ class InformationActivity : AppCompatActivity() {
             }
             "HELP" -> {
                 val helpItems = listOf(
-                    PermissionItem(R.drawable.ic_bulb, applicationContext.getString(R.string.bulb), applicationContext.getString(R.string.bulb_description)),
-                    PermissionItem(R.drawable.ic_baseline_info, applicationContext.getString(R.string.important_note), applicationContext.getString(R.string.important_note_description)),
-                    PermissionItem(R.drawable.ic_volume_off, applicationContext.getString(R.string.volume), applicationContext.getString(R.string.volume_description)),
-                    PermissionItem(R.drawable.ic_calculation, applicationContext.getString(R.string.calculation), applicationContext.getString(R.string.calculation_description)),
-                    PermissionItem(R.drawable.ic_duration, applicationContext.getString(R.string.durations), applicationContext.getString(R.string.durations_description)),
-                    PermissionItem(R.drawable.ic_time, applicationContext.getString(R.string.time), applicationContext.getString(R.string.time_description)),
-                    PermissionItem(R.drawable.ic_prayer_mat_inverted, applicationContext.getString(R.string.tile), applicationContext.getString(R.string.tile_description)),
-                    PermissionItem(R.drawable.ic_wearable, applicationContext.getString(R.string.wearable), applicationContext.getString(R.string.wearable_description))
+                    PermissionItem(R.drawable.ic_bulb, getString(R.string.bulb), getString(R.string.bulb_description)),
+                    PermissionItem(R.drawable.ic_baseline_info, getString(R.string.important_note), getString(R.string.important_note_description)),
+                    PermissionItem(R.drawable.ic_volume_off, getString(R.string.volume), getString(R.string.volume_description)),
+                    PermissionItem(R.drawable.ic_calculation, getString(R.string.calculation), getString(R.string.calculation_description)),
+                    PermissionItem(R.drawable.ic_ablution, getString(R.string.ablution), getString(R.string.ablution_description)),
+                    PermissionItem(R.drawable.ic_duration, getString(R.string.durations), getString(R.string.durations_description)),
+                    PermissionItem(R.drawable.ic_time, getString(R.string.time), getString(R.string.time_description)),
+                    PermissionItem(R.drawable.ic_prayer_mat_inverted, getString(R.string.tile), getString(R.string.tile_description)),
+                    PermissionItem(R.drawable.ic_wearable, getString(R.string.wearable), getString(R.string.wearable_description))
                 )
                 helpItems.forEach { helpItem ->
                     val view = LayoutInflater.from(this)

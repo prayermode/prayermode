@@ -82,6 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@string/decline"
+            android:textAlignment="center"
             android:textColor="?attr/colorPrimary" />
 
         <com.google.android.material.button.MaterialButton
@@ -91,6 +92,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="?attr/colorPrimary"
             android:text="@string/accept"
+            android:textAlignment="center"
             android:textColor="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

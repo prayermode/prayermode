@@ -7,9 +7,7 @@ import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import android.util.Log
-
 class PrayerTileService : TileService() {
-
     private val sharedHelper: SharedHelper by lazy { SharedHelper(applicationContext) }
 
     override fun onStartListening() {
@@ -21,14 +19,12 @@ class PrayerTileService : TileService() {
         super.onClick()
         handleTileClick()
     }
-
     private fun updateTileState() {
         val tile = qsTile ?: return
         tile.state = if (sharedHelper.getSwitchState()) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
         tile.updateTile()
         if (BuildConfig.DEBUG) Log.d("TileService", "Tile state updated: ${tile.state}")
     }
-
     @SuppressLint("StartActivityAndCollapseDeprecated")
     private fun handleTileClick() {
         val launchIntent = Intent(applicationContext, MainActivity::class.java).apply {
@@ -37,12 +33,7 @@ class PrayerTileService : TileService() {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            val pendingIntent = PendingIntent.getActivity(
-                applicationContext,
-                0,
-                launchIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
+            val pendingIntent = PendingIntent.getActivity(applicationContext, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
             startActivityAndCollapse(pendingIntent)
         } else {
             @Suppress("DEPRECATION")

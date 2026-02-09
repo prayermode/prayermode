@@ -8,12 +8,12 @@
     android:padding="24dp">
 
     <TextView
-        android:id="@+id/dialogTitle"
+        android:id="@+id/educationTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:gravity="center_horizontal"
-        android:text="@string/welcome_title"
+        android:text="@string/education_title"
         android:textAlignment="center"
         android:textAppearance="?attr/textAppearanceHeadlineSmall"
         android:textColor="?android:textColorPrimary"
@@ -27,30 +27,35 @@
         android:fillViewport="true"
         android:scrollbars="vertical"
         android:fadeScrollbars="false"
-        android:fadingEdgeLength="16dp"
-        android:requiresFadingEdge="vertical"
-        android:layout_marginBottom="24dp">
+        android:fadingEdgeLength="24dp"
+        android:requiresFadingEdge="vertical">
 
-        <TextView
-            android:id="@+id/tvWelcomeMessage"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lineSpacingMultiplier="1.2"
-            android:text="@string/welcome_message"
-            android:textAlignment="center"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="16sp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvEducationMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.2"
+                android:text="@string/education_message"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="16sp" />
+
+        </LinearLayout>
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnNext"
+        android:id="@+id/btnGotIt"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:backgroundTint="?attr/colorPrimary"
-        android:text="@string/next"
+        android:text="@string/got_it"
         android:textAlignment="center"
         android:textColor="@android:color/white" />
 </LinearLayout>

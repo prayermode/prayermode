@@ -12,18 +12,24 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.Locale
 import kotlin.coroutines.resume
-
 object GeocodingHelper {
-
     private fun Address.getLocationName(): String? {
         return locality ?: adminArea ?: countryName
     }
+    private const val TAG = "GeocodingHelper"
 
     suspend fun getLocationName(context: Context, location: Location?): String? {
         if (location == null) return null
         return withContext(Dispatchers.IO) {
             try {
-                val geocoder = Geocoder(context, Locale.getDefault())
+                val sharedHelper = SharedHelper(context)
+                val savedLocale = sharedHelper.getSavedLocale()
+                val appLocale = if (!savedLocale.isNullOrEmpty()) {
+                    Locale.forLanguageTag(savedLocale)
+                } else Locale.getDefault()
+
+                if (BuildConfig.DEBUG) Log.d(TAG, "Requested locale for Geocoder: $appLocale (language: ${appLocale.language}, country: ${appLocale.country})")
+                val geocoder = Geocoder(context, appLocale)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     suspendCancellableCoroutine { continuation ->
                         geocoder.getFromLocation(location.latitude, location.longitude, 1) { addresses ->
@@ -35,13 +41,13 @@ object GeocodingHelper {
                     geocoder.getFromLocation(location.latitude, location.longitude, 1)?.firstOrNull()?.getLocationName()
                 }
             } catch (e: IOException) {
-                Log.e("GeocodingHelper", "Network error: ${e.message}")
+                Log.e(TAG, "Network error: ${e.message}")
                 null
             } catch (e: IllegalArgumentException) {
-                Log.e("GeocodingHelper", "Invalid coordinates: ${e.message}")
+                Log.e(TAG, "Invalid coordinates: ${e.message}")
                 null
             } catch (e: Exception) {
-                Log.e("GeocodingHelper", "Unexpected error: ${e.message}")
+                Log.e(TAG, "Unexpected error: ${e.message}")
                 null
             }
         }

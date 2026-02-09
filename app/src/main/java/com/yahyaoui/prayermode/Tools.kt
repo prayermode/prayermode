@@ -38,21 +38,33 @@ import kotlinx.coroutines.launch
 import org.json.JSONException
 import kotlin.math.pow
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.graphics.Color
 import android.os.Build
-import com.yahyaoui.prayermode.LocationService.Companion.PREF_LAST_FETCH_TIME_MS
-import java.text.ParseException
-import android.text.format.DateFormat
 import android.location.LocationListener
-
+import android.os.Handler
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.updateLayoutParams
+import com.google.android.material.snackbar.Snackbar
+import com.yahyaoui.prayermode.LocationService.Companion.MIN_LOCATION_ACCURACY_METERS
+import com.yahyaoui.prayermode.LocationService.Companion.SIGNIFICANT_DISPLACEMENT_KM
+import com.yahyaoui.prayermode.LocationService.Companion.PREF_LAST_FETCH_TIME_MS
 class Tools(private val context: Context) {
-
     private val tag = "Tools"
     private val sharedHelper = SharedHelper(context)
     private var alarmManager: AlarmManager
     private val pendingIntentMap = HashMap<String, PendingIntent>()
-    private val prayerNames = listOf("Fajr", "Dhuhr", "Asr", "Maghrib", "Isha","Taraweeh", "Tahajjud", "Joumoua","Eid")
+    private val prayerNames = listOf("Fajr", "Dhuhr", "Asr", "Maghrib", "Isha","Taraweeh", "Tahajjud", "jumua","Eid")
     private var isExitSilent = false
-
     private val prayerNameMap = mapOf(
         "Eid" to R.string.eid,
         "Imsak" to R.string.imsak,
@@ -62,99 +74,167 @@ class Tools(private val context: Context) {
         "Asr" to R.string.asr,
         "Maghrib" to R.string.maghrib,
         "Isha" to R.string.isha,
-        "Joumoua" to R.string.joumoua,
-        "Taraweeh" to R.string.tarawih,
+        "jumua" to R.string.jumua,
+        "Taraweeh" to R.string.taraweeh,
         "Tahajjud" to R.string.tahajjud,
         "Ramadan" to R.string.ramadan
     )
 
     init { alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager }
-
+    companion object {
+        private const val MAX_LOCATION_AGE_MS = 5 * 60000L
+    }
     suspend fun findLocation(selectedMethod: Int): Boolean {
         return try {
             val location = getCurrentLocation() ?: getLastLocation()
             if (location == null) {
+                NotificationHelper.sendNotification(context, R.string.location_title, R.string.location_service_disabled, 291, "")
                 Log.w(tag, "Both current and last locations are unavailable")
                 return false
             }
             sharedHelper.saveDouble(LocationService.PREF_LAST_FETCH_LATITUDE, location.latitude)
             sharedHelper.saveDouble(LocationService.PREF_LAST_FETCH_LONGITUDE, location.longitude)
-            val locationName = GeocodingHelper.getLocationName(context, location) ?: "Unknown Location"
-            if (BuildConfig.DEBUG) Log.i(tag, "Actual location is $locationName")
-            NotificationHelper.sendNotification(context, R.string.location_title, R.string.location_name, 270, locationName)
+            val locationName = GeocodingHelper.getLocationName(context, location)
+            if (locationName == null) {
+                if (BuildConfig.DEBUG) Log.w(tag, "Geocoding returned null for location")
+            }
+            val displayName = locationName ?: "Unknown Location"
+            if (BuildConfig.DEBUG) Log.i(tag, "Actual location is $displayName")
+            NotificationHelper.sendNotification(context, R.string.location_title, R.string.location_name, 270, displayName)
             withContext(Dispatchers.IO) {
                 fetchPrayerTimes(location.latitude, location.longitude, selectedMethod)
             }
             true
         } catch (e: SecurityException) {
             Log.e(tag, "A Security Exception occurred while trying to fetch prayer times: ${e.message}", e)
+            if (BuildConfig.DEBUG) NotificationHelper.sendNotification(context, R.string.location_title, R.string.location_permission_denied_title, 294, "")
             false
         } catch (e: Exception) {
             Log.e(tag, "An unexpected error occurred in fetch location: ${e.message}", e)
             false
         }
     }
-
     private fun isLocationEnabled(): Boolean {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         return isEnabled
     }
+    suspend fun getCurrentLocation(timeoutMillis: Long = 30000): Location? =
+        suspendCancellableCoroutine { continuation ->
+            val locationManager = context.getSystemService(LocationManager::class.java)
 
-    suspend fun getCurrentLocation(): Location? = suspendCancellableCoroutine { continuation ->
-        val locationManager = context.getSystemService(LocationManager::class.java)
-
-        if (!isLocationEnabled()) {
-            Log.e(tag, "Location services are disabled, cannot request updates.")
-            continuation.resume(null)
-            return@suspendCancellableCoroutine
-        }
-
-        val hasFineLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-        val hasCoarseLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-
-        if (!hasFineLocation && !hasCoarseLocation) {
-            continuation.resume(null)
-            return@suspendCancellableCoroutine
-        }
-
-        val locationListener = object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                locationManager.removeUpdates(this)
-
-                if (BuildConfig.DEBUG) Log.d(tag, "Location fetched: ${location.latitude}, ${location.longitude}")
-                continuation.resume(location)
+            if (!isLocationEnabled()) {
+                Log.e(tag, "Location services are disabled")
+                continuation.resume(null)
+                return@suspendCancellableCoroutine
             }
-            override fun onProviderDisabled(provider: String) {}
-            override fun onProviderEnabled(provider: String) {}
-        }
 
-        val provider = if (hasFineLocation && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            LocationManager.GPS_PROVIDER
-        } else if (hasCoarseLocation && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            LocationManager.NETWORK_PROVIDER
-        } else {
-            continuation.resume(null)
-            return@suspendCancellableCoroutine
-        }
+            val hasFineLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            val hasCoarseLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
 
-        try {
-            locationManager.requestLocationUpdates(provider, 0L, 0f, locationListener, Looper.getMainLooper())
-        } catch (securityException: SecurityException) {
-            Log.e(tag, "Security exception during simple location request: ${securityException.message}")
-            continuation.resumeWithException(securityException)
-        }
+            if (!hasFineLocation && !hasCoarseLocation) {
+                Log.e(tag, "Location permissions are missing")
+                continuation.resume(null)
+                return@suspendCancellableCoroutine
+            }
 
-        continuation.invokeOnCancellation {
+            val provider = if (hasFineLocation && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                LocationManager.GPS_PROVIDER
+            } else if (hasCoarseLocation && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                LocationManager.NETWORK_PROVIDER
+            } else {
+                Log.e(tag, "No available location providers")
+                continuation.resume(null)
+                return@suspendCancellableCoroutine
+            }
+
+            val handler = Handler(Looper.getMainLooper())
+            var isCompleted = false
+
+            val timeoutRunnable = Runnable {
+                if (isCompleted) return@Runnable
+                isCompleted = true
+
+                Log.w(tag, "Location request timed out after ${timeoutMillis}ms")
+
+                val lastLocation = locationManager.getLastKnownLocation(provider)
+                if (lastLocation != null && isLocationAccurate(lastLocation)) {
+                    if (BuildConfig.DEBUG) Log.d(tag, "Using last known location after timeout")
+
+                    continuation.resume(lastLocation)
+                } else {
+                    if (BuildConfig.DEBUG) Log.w(tag, "Last known location unavailable or inaccurate")
+                    continuation.resume(null)
+                }
+            }
+
+            val locationListener = object : LocationListener {
+                override fun onLocationChanged(location: Location) {
+                    if (isCompleted) return
+
+                    locationManager.removeUpdates(this)
+                    handler.removeCallbacks(timeoutRunnable)
+                    isCompleted = true
+
+                    if (BuildConfig.DEBUG) Log.d(tag, "Location fetched: ${location.latitude}, ${location.longitude}")
+                    if (continuation.isActive) continuation.resume(location)
+                }
+
+                override fun onProviderDisabled(provider: String) {
+                    Log.w(tag, "Location provider disabled: $provider")
+                }
+
+                override fun onProviderEnabled(provider: String) {
+                    Log.d(tag, "Location provider enabled: $provider")
+                }
+            }
+
+            handler.postDelayed(timeoutRunnable, timeoutMillis)
+
             try {
-                locationManager.removeUpdates(locationListener)
-                if (BuildConfig.DEBUG) Log.d(tag, "Simple location request cancelled.")
-            } catch (e: Exception) {
-                Log.e(tag, "Cancellation error: ${e.message}", e)
+                val lastKnownLocation = locationManager.getLastKnownLocation(provider)
+                lastKnownLocation?.let { location ->
+                    val locationAge = System.currentTimeMillis() - location.time
+                    if (locationAge < MAX_LOCATION_AGE_MS && isLocationAccurate(location)) {
+                        locationManager.removeUpdates(locationListener)
+                        handler.removeCallbacks(timeoutRunnable)
+                        isCompleted = true
+
+                        if (continuation.isActive) {
+                            if (BuildConfig.DEBUG) Log.d(tag, "Using recent last known location  ${location.latitude}, ${location.longitude}")
+                            continuation.resume(location)
+                            return@let
+                        }
+                    }
+                }
+
+                if (!isCompleted) {
+                    locationManager.requestLocationUpdates(provider, 0L, 0f, locationListener, Looper.getMainLooper())
+                }
+
+            } catch (securityException: SecurityException) {
+                handler.removeCallbacks(timeoutRunnable)
+                continuation.resumeWithException(securityException)
+            } catch (_: IllegalArgumentException) {
+                handler.removeCallbacks(timeoutRunnable)
+                continuation.resume(null)
+            }
+
+            continuation.invokeOnCancellation {
+                try {
+                    if (!isCompleted) {
+                        locationManager.removeUpdates(locationListener)
+                        handler.removeCallbacks(timeoutRunnable)
+                        if (BuildConfig.DEBUG) Log.d(tag, "Location request cancelled.")
+                    }
+                } catch (e: Exception) {
+                    Log.e(tag, "Error during location request cancellation: ${e.message}")
+                }
             }
         }
+    private fun isLocationAccurate(location: Location): Boolean {
+        return location.accuracy <= MIN_LOCATION_ACCURACY_METERS
     }
-
     suspend fun getLastLocation(): Location? = suspendCancellableCoroutine { cont ->
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val hasFineLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -174,13 +254,15 @@ class Tools(private val context: Context) {
                 locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
             } else null
 
-            val bestLocation: Location? = if (gpsLocation != null && networkLocation != null) {
-                if (gpsLocation.time > networkLocation.time) gpsLocation else networkLocation
-            } else gpsLocation ?: networkLocation
+            val bestLocation = selectBestLocation(gpsLocation, networkLocation)
 
             if (BuildConfig.DEBUG) {
-                if (bestLocation != null) Log.d(tag, "Last location fetched: ${bestLocation.latitude}, ${bestLocation.longitude}")
-                else Log.w(tag, "No last known location found.")
+                if (bestLocation != null) {
+                    val age = (System.currentTimeMillis() - bestLocation.time) / 1000
+                    Log.d(tag, "Last location: ${bestLocation.latitude}, ${bestLocation.longitude}, Age: ${age}s, Acc: ${bestLocation.accuracy}m")
+                } else {
+                    Log.w(tag, "No valid last known location found.")
+                }
             }
 
             cont.resume(bestLocation)
@@ -190,7 +272,23 @@ class Tools(private val context: Context) {
             cont.resume(null)
         }
     }
+    private fun selectBestLocation(location1: Location?, location2: Location?): Location? {
+        if (location1 == null) return location2
+        if (location2 == null) return location1
 
+        if (location1.accuracy < location2.accuracy && isLocationAccurate(location1)) {
+            return location1
+        } else if (isLocationAccurate(location2)) {
+            return location2
+        }
+
+        val newerLocation = if (location1.time > location2.time) location1 else location2
+        return if (isLocationStale(newerLocation)) null else newerLocation
+    }
+    private fun isLocationStale(location: Location): Boolean {
+        val locationAge = System.currentTimeMillis() - location.time
+        return locationAge > MAX_LOCATION_AGE_MS * 2
+    }
     private fun fetchPrayerTimes(latitude: Double, longitude: Double, method: Int) {
         val methodId = getMethodId(method)
         val currentDate = Calendar.getInstance()
@@ -202,7 +300,6 @@ class Tools(private val context: Context) {
         val client = OkHttpClient()
         retryFetch(client, request, 0)
     }
-
     private fun retryFetch(client: OkHttpClient, request: Request, attempt: Int) {
         if (!sharedHelper.getSwitchState()) {
             if (BuildConfig.DEBUG) Log.i(tag, "Skipping times fetch : main switch is off.")
@@ -244,9 +341,7 @@ class Tools(private val context: Context) {
             }
         })
     }
-
     enum class FailureType { NO_INTERNET, NETWORK_OR_SERVER_ERROR }
-
     private fun handleRetryOrFinalFailure(currentAttempt: Int, client: OkHttpClient, request: Request, failureType: FailureType) {
         val maxRetries = 2
         val delay = 5000L * 2.0.pow(currentAttempt.toDouble()).toLong()
@@ -268,7 +363,6 @@ class Tools(private val context: Context) {
             }
         }
     }
-
     fun writeToFile(data: String) {
         val file = File(context.filesDir, "prayer_times.txt")
         try {
@@ -284,7 +378,6 @@ class Tools(private val context: Context) {
             Log.e(tag, "Permission denied while writing to file: ${e.message}",e)
         }
     }
-
     fun processPrayerTimes() {
         val file = File(context.filesDir, "prayer_times.txt")
         val methodId = getMethodId(sharedHelper.getIntValue(SharedHelper.SELECTED_METHOD_RES_ID, 0))
@@ -335,8 +428,8 @@ class Tools(private val context: Context) {
                         val dhuhrCalendar = getPrayerCalendar(dhuhrTime)
                         if (dhuhrCalendar != null){
                             val cleanedDhuhrTime = "${dhuhrCalendar.get(Calendar.HOUR_OF_DAY)}:${dhuhrCalendar.get(Calendar.MINUTE)}"
-                            val durationBeforeInt = getBeforeDhuhrDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_BEFORE_DHUHR, 0))
-                            val durationAfterInt = getDhuhrDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_AFTER_DHUHR, 3))
+                            val durationBeforeInt = getBeforeJumuaDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_BEFORE_JUMUA, 0))
+                            val durationAfterInt = getAfterJumuaDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_AFTER_JUMUA, 3))
                             if (BuildConfig.DEBUG) Log.i(tag, "Friday: $durationBeforeInt min before, $durationAfterInt min after")
 
                             val prayerTimeMillis = dhuhrCalendar.timeInMillis
@@ -345,20 +438,18 @@ class Tools(private val context: Context) {
                             val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationAfterInt.toLong())
                             val silentModeRange = startTimeMillis..endTimeMillis
 
-                            val timeFormatPattern: String = if (DateFormat.is24HourFormat(context)) "HH:mm" else "hh:mm a"
-                            val timeFormatter = SimpleDateFormat(timeFormatPattern, Locale.US)
-                            val formattedDhuhrTime = timeFormatter.format(dhuhrCalendar.time)
-                            if (BuildConfig.DEBUG) Log.i(tag, "Today Al-Joumoua is at $formattedDhuhrTime")
+                            val formattedDhuhrTime = LocaleHelper.formatTimeForNotification(context, dhuhrCalendar)
+                            if (BuildConfig.DEBUG) Log.i(tag, "Today Al-jumua is at $formattedDhuhrTime")
 
                             if (currentMillis in silentModeRange || dhuhrCalendar.after(currentTime)) {
                                 NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.today_dhuhr_time_is, 150, formattedDhuhrTime)
-                                scheduleSilentMode(cleanedDhuhrTime, durationBeforeInt, durationAfterInt, "Joumoua")
+                                scheduleSilentMode(cleanedDhuhrTime, durationBeforeInt, durationAfterInt, "jumua")
                             } else {
-                                if (BuildConfig.DEBUG) Log.i(tag, "Skipping Joumoua silent mode until after worker execution")
+                                if (BuildConfig.DEBUG) Log.i(tag, "Skipping jumua silent mode until after worker execution")
                             }
-                        } else Log.w(tag, "Prayer calendar is null for Joumoua")
+                        } else Log.w(tag, "Prayer calendar is null for jumua")
                     } else {
-                        if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for Joumoua at $dhuhrTime")
+                        if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for jumua at $dhuhrTime")
                     }
                 }
                 if ((hijriMonth == "8" && hijriDay == lastDay) || (hijriMonth == "9" && hijriDay <= lastDay)) {
@@ -366,22 +457,25 @@ class Tools(private val context: Context) {
                         val ishaCalendar = getPrayerCalendar(ishaTime)
                         if (ishaCalendar != null) {
                             val cleanedIshaTime = "${ishaCalendar.get(Calendar.HOUR_OF_DAY)}:${ishaCalendar.get(Calendar.MINUTE)}"
-                            val durationTarawihInt = getTaraweehDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_TARAWIH, 4))
-                            if (BuildConfig.DEBUG) Log.i(tag, "Taraweeh $durationTarawihInt min")
+                            val durationTaraweehInt = getTaraweehDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_TARAWEEH, 4))
+
+                            val ablutionEnabled = sharedHelper.getAblutionSwitchState()
+                            val durationBeforeInt = if (ablutionEnabled) 10 else 0
+                            if (BuildConfig.DEBUG) Log.i(tag, "Taraweeh: $durationBeforeInt min before (ablution), $durationTaraweehInt min after")
 
                             val prayerTimeMillis = ishaCalendar.timeInMillis
-                            val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationTarawihInt.toLong())
+                            val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationTaraweehInt.toLong())
                             val currentMillis = currentTime.timeInMillis
                             val silentModeRange = prayerTimeMillis..endTimeMillis
 
                             if (currentMillis in silentModeRange || ishaCalendar.after(currentTime)) {
-                                scheduleSilentMode(cleanedIshaTime, 0, durationTarawihInt, "Taraweeh")
+                                scheduleSilentMode(cleanedIshaTime, durationBeforeInt, durationTaraweehInt, "Taraweeh")
                             } else {
-                                if (BuildConfig.DEBUG) Log.i(tag, "Skipping Tarawih silent mode until after worker execution")
+                                if (BuildConfig.DEBUG) Log.i(tag, "Skipping Taraweeh silent mode until after worker execution")
                             }
-                        } else Log.w(tag, "Prayer calendar is null for Tarawih")
+                        } else Log.w(tag, "Prayer calendar is null for Taraweeh")
                     } else {
-                        if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for Tarawih 60 min after $ishaTime")
+                        if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for Taraweeh 60 min after $ishaTime")
                     }
                 }
                 if (hijriMonth == "9" && hijriDay >= "1" && hijriDay <= lastDay) {
@@ -390,19 +484,20 @@ class Tools(private val context: Context) {
                         if (fajrCalendar != null) {
                             val cleanedFajrTime = "${fajrCalendar.get(Calendar.HOUR_OF_DAY)}:${fajrCalendar.get(Calendar.MINUTE)}"
                             val durationTahajjudInt = getTahajjudDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_TAHAJJUD, 0))
-                            val durationValueInt = getDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_VALUE, 3))
+                            val durationFajrInt = getDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_FAJR, 3))
 
                             val prayerTimeMillis = fajrCalendar.timeInMillis
                             val currentMillis = currentTime.timeInMillis
                             val startTimeMillis = prayerTimeMillis - TimeUnit.MINUTES.toMillis(durationTahajjudInt.toLong())
-                            val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationValueInt.toLong())
+                            val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationFajrInt.toLong())
                             val silentModeRange = startTimeMillis..endTimeMillis
 
                             if (currentMillis in silentModeRange || fajrCalendar.after(currentTime)) {
-                                scheduleSilentMode(cleanedFajrTime, durationTahajjudInt, durationValueInt, "Tahajjud")
+                                scheduleSilentMode(cleanedFajrTime, durationTahajjudInt, durationFajrInt, "Tahajjud")
                                 val imsakCalendar = getPrayerCalendar(imsakTime)
+
                                 if (imsakCalendar != null) {
-                                    val displayedImsakTime = String.format(Locale.US, "%02d:%02d", imsakCalendar.get(Calendar.HOUR_OF_DAY), imsakCalendar.get(Calendar.MINUTE))
+                                    val displayedImsakTime  = LocaleHelper.formatTimeForNotification(context, imsakCalendar)
                                     NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.today_imsak_time_is, 155, displayedImsakTime)
                                 }
                             } else {
@@ -414,73 +509,81 @@ class Tools(private val context: Context) {
                     }
                 }
                 if ((hijriMonth == "10" && hijriDay == "1") || (hijriMonth == "12" && hijriDay == "10")) {
-                    val eidTimeIndex = sharedHelper.getIntValue(SharedHelper.SELECTED_TIME_EID, 0)
-                    val eidDurationIndex = sharedHelper.getIntValue(SharedHelper.DURATION_EID, 1)
-
                     if (hijriDay == "1") NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.happy_eid_alfitr, 650, "")
                     else NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.happy_eid_aladha, 650, "")
 
-                    val eidTime = when (eidTimeIndex) {
-                        0 -> {
-                            val sunriseCalendar = getPrayerCalendar(sunriseTime)
-                            if (sunriseCalendar != null) {
-                                val cleanedSunriseTime = "${sunriseCalendar.get(Calendar.HOUR_OF_DAY)}:${sunriseCalendar.get(Calendar.MINUTE)}"
-                                val sunriseCalendarPlus20 = Calendar.getInstance()
-                                sunriseCalendarPlus20.time = SimpleDateFormat("HH:mm", Locale.US).parse(cleanedSunriseTime)!!
-                                sunriseCalendarPlus20.add(Calendar.MINUTE, 20)
-                                val finalStartTime = "${sunriseCalendarPlus20.get(Calendar.HOUR_OF_DAY)}:${sunriseCalendarPlus20.get(Calendar.MINUTE)}"
-                                if (BuildConfig.DEBUG) Log.i(tag, "Eid start time (20 minutes after sunrise): $finalStartTime")
-                                finalStartTime
-                            } else {
-                                Log.e(tag, "Failed to get sunrise time; defaulting to 06:00")
-                                "06:00"
-                            }
-                        }
-                        1 -> "06:00"
-                        2 -> "06:30"
-                        3 -> "07:00"
-                        4 -> "07:30"
-                        5 -> "08:00"
-                        6 -> "08:30"
-                        7 -> "09:00"
-                        8 -> "10:00"
-                        else -> "06:00"
-                    }
-                    val eidDuration = when (eidDurationIndex) {
-                        0 -> 20
-                        1 -> 30
-                        2 -> 40
-                        3 -> 50
-                        4 -> 60
-                        else -> 30
-                    }
-                    if (BuildConfig.DEBUG) Log.i(tag, "Selected Eid time: $eidTime and Eid duration $eidDuration minutes")
+                    val eidTimeIndex = sharedHelper.getIntValue(SharedHelper.SELECTED_TIME_EID, 0)
+                    val eidDurationIndex = sharedHelper.getIntValue(SharedHelper.DURATION_EID, 2)
 
-                    val eidCalendar = getPrayerCalendar(eidTime)
-                    if (eidCalendar == null) {
-                        Log.e(tag, "Failed to create Calendar instance for eidTime: $eidTime")
-                        return
-                    }
-                    val eidTimeMillis = eidCalendar.timeInMillis
-                    val currentMillis = Calendar.getInstance().timeInMillis
-
-                    val startTimeMillis = eidTimeMillis - TimeUnit.MINUTES.toMillis(0)
-                    val endTimeMillis = eidTimeMillis + TimeUnit.MINUTES.toMillis(eidDuration.toLong())
-                    val silentModeRange = startTimeMillis..endTimeMillis
-
-                    if (BuildConfig.DEBUG) Log.i(tag, "Silent mode range: Start=$startTimeMillis, End=$endTimeMillis, Current=$currentMillis")
-
-                    if (currentMillis in silentModeRange || !pendingIntentMap.containsKey(eidTime)) {
-                        scheduleSilentMode(eidTime, 0, eidDuration, "Eid")
-                        if (BuildConfig.DEBUG) Log.i(tag, "Silent mode scheduled for Eid at start time: $eidTime, duration: $eidDuration minutes")
+                    if (eidDurationIndex == 0) {
+                        if (BuildConfig.DEBUG) Log.i(tag, "Eid duration is set to 0 (Off). Skipping silent mode scheduling for Eid.")
                     } else {
-                        if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for Eid at $eidTime")
+                        val eidTime = when (eidTimeIndex) {
+                            0 -> {
+                                val sunriseCalendar = getPrayerCalendar(sunriseTime)
+                                if (sunriseCalendar != null) {
+                                    val cleanedSunriseTime = "${sunriseCalendar.get(Calendar.HOUR_OF_DAY)}:${sunriseCalendar.get(Calendar.MINUTE)}"
+                                    val sunriseCalendarPlus20 = Calendar.getInstance()
+                                    val parsedTime = SimpleDateFormat("HH:mm", Locale.US).parse(cleanedSunriseTime)
+                                    if (parsedTime != null) {
+                                        sunriseCalendarPlus20.time = parsedTime
+                                        sunriseCalendarPlus20.add(Calendar.MINUTE, 20)
+                                        val finalStartTime = String.format(Locale.US, "%02d:%02d", sunriseCalendarPlus20.get(Calendar.HOUR_OF_DAY), sunriseCalendarPlus20.get(Calendar.MINUTE))
+                                        if (BuildConfig.DEBUG) Log.i(tag, "Eid start time (20 minutes after sunrise): $finalStartTime")
+                                        finalStartTime
+                                    } else {
+                                        Log.e(tag, "Failed to parse sunrise time: $cleanedSunriseTime; defaulting to 06:00")
+                                        "06:00"
+                                    }
+                                } else {
+                                    Log.e(tag, "Failed to get sunrise time; defaulting to 06:00")
+                                    "06:00"
+                                }
+                            }
+                            1 -> "06:00"
+                            2 -> "06:30"
+                            3 -> "07:00"
+                            4 -> "07:30"
+                            5 -> "08:00"
+                            6 -> "08:30"
+                            7 -> "09:00"
+                            8 -> "10:00"
+                            else -> "06:00"
+                        }
+                        val eidDuration = when (eidDurationIndex) {
+                            1 -> 20
+                            2 -> 30
+                            3 -> 40
+                            4 -> 50
+                            5 -> 60
+                            else -> 30
+                        }
+                        if (BuildConfig.DEBUG) Log.i(tag, "Selected Eid time: $eidTime and Eid duration $eidDuration minutes")
+
+                        val eidCalendar = getPrayerCalendar(eidTime)
+                        if (eidCalendar == null) {
+                            Log.e(tag, "Failed to create Calendar instance for eidTime: $eidTime")
+                            return
+                        }
+                        val eidTimeMillis = eidCalendar.timeInMillis
+                        val currentMillis = Calendar.getInstance().timeInMillis
+                        val startTimeMillis = eidTimeMillis - TimeUnit.MINUTES.toMillis(0)
+                        val endTimeMillis = eidTimeMillis + TimeUnit.MINUTES.toMillis(eidDuration.toLong())
+                        val silentModeRange = startTimeMillis..endTimeMillis
+
+                        if (BuildConfig.DEBUG) Log.i(tag, "Silent mode range: Start=$startTimeMillis, End=$endTimeMillis, Current=$currentMillis")
+
+                        if (currentMillis in silentModeRange || !pendingIntentMap.containsKey(eidTime)) {
+                            scheduleSilentMode(eidTime, 0, eidDuration, "Eid")
+                            if (BuildConfig.DEBUG) Log.i(tag, "Silent mode scheduled for Eid at start time: $eidTime, duration: $eidDuration minutes")
+                        } else {
+                            if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for Eid at $eidTime")
+                        }
                     }
                 }
                 timesList.forEach { key ->
                     if (!(currentWeekday == "Friday" && key == "Dhuhr") &&
-                        !(((hijriMonth == "8" && hijriDay == lastDay) || (hijriMonth == "9" && hijriDay >= "1"  && hijriDay <= lastDay)) &&
-                        (key == "Fajr" || key == "Isha"))) {
+                        !(((hijriMonth == "8" && hijriDay == lastDay) || (hijriMonth == "9" && hijriDay >= "1"  && hijriDay <= lastDay)) && (key == "Fajr" || key == "Isha"))) {
                         val time = prayerTimes.optString(key)
                         val prayerCalendar = getPrayerCalendar(time)
                         if (prayerCalendar != null) {
@@ -488,20 +591,25 @@ class Tools(private val context: Context) {
                             if (BuildConfig.DEBUG) Log.d(tag, "Processing $key at $cleanedTime")
 
                             val prayerTimeMillis = prayerCalendar.timeInMillis
-                            val durationValueInt = getDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_VALUE, 3))
-                            if (BuildConfig.DEBUG) Log.i(tag, "Saved duration is $durationValueInt minutes")
+                            val durationValueInt = getPrayerDuration(key, sharedHelper)
+                            val ablutionEnabled = sharedHelper.getAblutionSwitchState()
+                            val durationBeforeInt = if (ablutionEnabled) 10 else 0
 
+                            if (BuildConfig.DEBUG) Log.i(tag, "Duration for $key: $durationBeforeInt min before, $durationValueInt min after")
+
+                            val startTimeMillis = prayerTimeMillis - TimeUnit.MINUTES.toMillis(durationBeforeInt.toLong())
                             val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationValueInt.toLong())
                             val currentMillis = currentTime.timeInMillis
-                            val silentModeRange = prayerTimeMillis..endTimeMillis
+                            val silentModeRange = startTimeMillis..endTimeMillis
 
                             if (currentMillis in silentModeRange || prayerCalendar.after(currentTime)) {
                                 if (!pendingIntentMap.containsKey(cleanedTime)) {
-                                    scheduleSilentMode(cleanedTime, 0, durationValueInt, key)
+                                    scheduleSilentMode(cleanedTime, durationBeforeInt, durationValueInt, key)
                                     if (key == "Fajr") {
                                         val fajrCalendar = getPrayerCalendar(fajrTime)
+
                                         if (fajrCalendar != null) {
-                                            val displayedFajrTime = String.format(Locale.US, "%02d:%02d", fajrCalendar.get(Calendar.HOUR_OF_DAY), fajrCalendar.get(Calendar.MINUTE))
+                                            val displayedFajrTime = LocaleHelper.formatTimeForNotification(context, fajrCalendar)
                                             NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.today_fajr_time_is, 151, displayedFajrTime)
                                         }
                                     }
@@ -526,7 +634,17 @@ class Tools(private val context: Context) {
             Log.e(tag, "An unexpected error occurred while processing prayer times: ${e.message}",e)
         }
     }
-
+    private fun getPrayerDuration(prayerName: String, sharedHelper: SharedHelper): Int {
+        val durationIndex = when (prayerName) {
+            "Fajr" -> sharedHelper.getIntValue(SharedHelper.DURATION_FAJR, 3)
+            "Dhuhr" -> sharedHelper.getIntValue(SharedHelper.DURATION_DHUHR, 3)
+            "Asr" -> sharedHelper.getIntValue(SharedHelper.DURATION_ASR, 3)
+            "Maghrib" -> sharedHelper.getIntValue(SharedHelper.DURATION_MAGHRIB, 3)
+            "Isha" -> sharedHelper.getIntValue(SharedHelper.DURATION_ISHA, 3)
+            else -> 3
+        }
+        return getDurationId(durationIndex)
+    }
     private fun scheduleSilentMode(time: String, durationBefore: Int, durationAfter: Int, prayerName: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!alarmManager.canScheduleExactAlarms()) {
@@ -564,6 +682,8 @@ class Tools(private val context: Context) {
                     action = "START_SILENT_MODE"
                     putExtra("mode", true)
                     putExtra("prayerName", prayerName)
+                    putExtra("isImmediate", true)
+                    putExtra("isBeforeAdhan", currentTimeInMillis < prayerTimeInMillis)
                 }
                 context.sendBroadcast(immediateIntent)
             }
@@ -573,6 +693,7 @@ class Tools(private val context: Context) {
                     action = "START_SILENT_MODE"
                     putExtra("mode", true)
                     putExtra("prayerName", prayerName)
+                    putExtra("isBeforeAdhan", startTimeInMillis < prayerTimeInMillis)
                 }
                 val startPendingIntent = PendingIntent.getBroadcast(
                     context, (prayerName.hashCode() * 10) + 1, startIntent,
@@ -627,10 +748,8 @@ class Tools(private val context: Context) {
             if (BuildConfig.DEBUG) NotificationHelper.sendNotification(context, R.string.error, R.string.failed_schedule_silent_mode, 444, "${e.message}")
         }
     }
-
-    fun setSilentMode(enable: Boolean, prayerName: String): Boolean {
-        val prayerNameResId = getPrayerNameResId(prayerName)
-        val translatedPrayerName = context.getString(prayerNameResId)
+    fun setSilentMode(enable: Boolean, prayerName: String, isBeforeAdhan: Boolean = false): Boolean {
+        val localizedPrayerName = getLocalizedPrayerName(prayerName)
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
@@ -643,21 +762,16 @@ class Tools(private val context: Context) {
 
         return try {
             if (enable) {
-                val isAlreadyInOurDesiredDNDState =
-                    (notificationManager.currentInterruptionFilter == NotificationManager.INTERRUPTION_FILTER_ALARMS &&
-                            audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT)
-
-                val isAnyOtherDNDActive =
-                    (notificationManager.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL &&
-                            notificationManager.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALARMS)
+                val isAlreadyInOurDesiredDNDState = (notificationManager.currentInterruptionFilter == NotificationManager.INTERRUPTION_FILTER_ALARMS && audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT)
+                val isAnyOtherDNDActive = (notificationManager.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL && notificationManager.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALARMS)
 
                 if (isAlreadyInOurDesiredDNDState) {
                     if (BuildConfig.DEBUG) Log.i(tag, "Device already in desired DND state (Alarms only). Not taking control.")
-                    NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.dnd_already_on, 210, translatedPrayerName)
+                    NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.dnd_already_on, 210, localizedPrayerName)
                     true
                 } else if (isAnyOtherDNDActive) {
                     if (BuildConfig.DEBUG) Log.i(tag, "Another DND mode is active. Not overriding existing settings.")
-                    NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.dnd_already_on, 210, translatedPrayerName)
+                    NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.dnd_already_on, 210, localizedPrayerName)
                     true
                 } else {
                     sharedHelper.saveIntValue("music_volume", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
@@ -679,7 +793,13 @@ class Tools(private val context: Context) {
                     sharedHelper.saveBoolean(SharedHelper.IS_APP_CONTROLLED_DND_ACTIVE, true)
                     if (BuildConfig.DEBUG) Log.i(tag, "Saved IS_APP_CONTROLLED_DND_ACTIVE as TRUE, App controls DND.")
 
-                    NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.silent_mode_activated_for, 220, prayerName)
+                    if (sharedHelper.getAblutionSwitchState() && isBeforeAdhan) {
+                        if (BuildConfig.DEBUG) Log.i(tag, "Do Not Disturb activated for $localizedPrayerName 10 minutes before Adhan.")
+                        NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.ablution_silent_mode_activation, 220, localizedPrayerName)
+                    } else {
+                        if (BuildConfig.DEBUG) Log.i(tag, "Do Not Disturb activated for $localizedPrayerName.")
+                        NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.silent_mode_activated_for, 220, localizedPrayerName)
+                    }
                     true
                 }
             } else {
@@ -719,7 +839,6 @@ class Tools(private val context: Context) {
             return false
         }
     }
-
     private fun getPrayerCalendar(prayerTime: String): Calendar? {
         try {
             val cleanedTime = prayerTime.split(" ")[0]
@@ -750,7 +869,6 @@ class Tools(private val context: Context) {
             return null
         }
     }
-
     private fun getCurrentHijriDate(): JSONObject {
         try {
             val gregorianCalendar = Calendar.getInstance(TimeZone.getDefault())
@@ -775,14 +893,12 @@ class Tools(private val context: Context) {
             }
         }
     }
-
     fun exitSilentMode() {
         isExitSilent = true
-        setSilentMode(false, "")
+        setSilentMode(false, "", false)
         isExitSilent = false
         if (BuildConfig.DEBUG) Log.d(tag, "Silent mode called. Exiting DND not controlled by App.")
     }
-
     fun processMethodChange(selectedMethodIndex: Int): Boolean {
         return try {
             val lastCheckedMethodIndex = sharedHelper.getLastCheckedMethodIndex()
@@ -811,7 +927,6 @@ class Tools(private val context: Context) {
             false
         }
     }
-
     suspend fun checkIfDataAvailable(): Boolean {
         return try {
             val file = File(context.filesDir, "prayer_times.txt")
@@ -829,79 +944,48 @@ class Tools(private val context: Context) {
                 return false
             }
 
-            val currentCalendar = Calendar.getInstance()
-            val currentYear = currentCalendar.get(Calendar.YEAR)
-            val currentMonth = currentCalendar.get(Calendar.MONTH) + 1
-            val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.US)
-
             val firstEntry = dataArray.getJSONObject(0)
-            val firstGregorian = firstEntry.getJSONObject("date").getJSONObject("gregorian")
-            val firstDateStr = firstGregorian.getString("date")
-            val parsedFirstDate = dateFormat.parse(firstDateStr) ?: return false
-            val firstDateCalendar = Calendar.getInstance().apply { time = parsedFirstDate }
+            val dateStr = firstEntry.getJSONObject("date").getJSONObject("gregorian").getString("date")
+            val monthYear = dateStr.substring(3)
+            val currentMonthYear = SimpleDateFormat("MM-yyyy", Locale.US).format(Date())
 
-            val lastEntry = dataArray.getJSONObject(dataArray.length() - 1)
-            val lastGregorian = lastEntry.getJSONObject("date").getJSONObject("gregorian")
-            val lastDateStr = lastGregorian.getString("date")
-            val parsedLastDate = dateFormat.parse(lastDateStr) ?: return false
-            val lastDateCalendar = Calendar.getInstance().apply { time = parsedLastDate }
-            if (BuildConfig.DEBUG) Log.i(tag, "Data check: File data range (${dateFormat.format(parsedFirstDate)} - ${dateFormat.format(parsedLastDate)})")
-
-            val isFirstValid = firstDateCalendar.get(Calendar.YEAR) == currentYear &&
-                    firstDateCalendar.get(Calendar.MONTH) + 1 == currentMonth
-
-            val isLastValid = lastDateCalendar.get(Calendar.YEAR) == currentYear &&
-                    lastDateCalendar.get(Calendar.MONTH) + 1 == currentMonth
-
-            if (!isFirstValid || !isLastValid) {
-                if (BuildConfig.DEBUG) Log.i(tag, "Data outdated or spans multiple months")
+            if (monthYear != currentMonthYear) {
+                if (BuildConfig.DEBUG) Log.i(tag, "Data outdated: $monthYear != $currentMonthYear")
                 return false
             }
 
-            if (!firstEntry.has("meta")) {
-                if (BuildConfig.DEBUG) Log.i(tag, "Missing top-level 'meta' object")
+            val lastLat = sharedHelper.getDouble(LocationService.PREF_LAST_FETCH_LATITUDE, Double.NaN)
+            val lastLon = sharedHelper.getDouble(LocationService.PREF_LAST_FETCH_LONGITUDE, Double.NaN)
+
+            if (lastLat.isNaN() || lastLon.isNaN()) {
+                if (BuildConfig.DEBUG) Log.i(tag, "No last fetch location saved")
                 return false
             }
 
-            val meta = firstEntry.getJSONObject("meta")
-            if (!meta.has("latitude") || !meta.has("longitude")) {
-                if (BuildConfig.DEBUG) Log.i(tag, "Missing location in metadata")
-                return false
-            }
-
-            val savedLatitude = meta.getDouble("latitude")
-            val savedLongitude = meta.getDouble("longitude")
             val currentLocation = getLastLocation() ?: run {
-                if (BuildConfig.DEBUG) Log.w(tag, "Could not get current device location to compare. Assuming data is outdated due to unknown location or location service issues.")
-                return false
+                if (BuildConfig.DEBUG) Log.w(tag, "Could not get current location, but date is valid")
+                return true
             }
 
-            val distance = calculateDistance(savedLatitude, savedLongitude, currentLocation.latitude, currentLocation.longitude)
-            if (distance > 5000f) {
-                if (BuildConfig.DEBUG) Log.i(tag, "Location changed significantly (${String.format("%.2f", distance / 1000)} km). Data considered outdated.")
+            val lastFetchLocation = Location("").apply {
+                latitude = lastLat
+                longitude = lastLon
+            }
+
+            val displacementKm = lastFetchLocation.distanceTo(currentLocation) / 1000
+
+            if (displacementKm >= SIGNIFICANT_DISPLACEMENT_KM) {
+                if (BuildConfig.DEBUG) Log.i(tag, "Location changed significantly (${"%.1f".format(displacementKm)} km). Data considered outdated.")
                 return false
             }
 
             if (BuildConfig.DEBUG) Log.i(tag, "File data is valid for the current Gregorian month")
             true
-        } catch (e: JSONException) {
-            Log.e(tag, "JSON error: ${e.message}",e)
-            false
-        } catch (e: ParseException) {
-            Log.e(tag, "Date parsing failed: ${e.message}",e)
-            false
         } catch (e: Exception) {
             Log.e(tag, "Unexpected error: ${e.stackTraceToString()}",e)
             false
         }
     }
-
-    private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Float {
-        val results = FloatArray(1)
-        Location.distanceBetween(lat1, lon1, lat2, lon2, results)
-        return results[0]
-    }
-
     fun cancelScheduledSilentMode() {
         if (pendingIntentMap.isNotEmpty()) {
             if (BuildConfig.DEBUG) Log.d(tag, "Canceling ${pendingIntentMap.size} scheduled silent mode intents.")
@@ -914,7 +998,6 @@ class Tools(private val context: Context) {
             if (BuildConfig.DEBUG) Log.d(tag, "No pending intents to cancel.")
         }
     }
-
     fun cancelAllSilentModes() {
         val workManager = WorkManager.getInstance(context)
         try {
@@ -943,7 +1026,6 @@ class Tools(private val context: Context) {
             Log.e(tag, "Error while canceling silent mode workers: ${e.message}", e)
         }
     }
-
     private fun getMethodId(index: Int): Int {
         return when (index) {
             0 -> 4
@@ -972,7 +1054,6 @@ class Tools(private val context: Context) {
             else -> 4
         }
     }
-
     private fun getDurationId(index: Int): Int {
         return when (index) {
             0 -> 15
@@ -982,11 +1063,13 @@ class Tools(private val context: Context) {
             4 -> 35
             5 -> 40
             6 -> 45
+            7 -> 50
+            8 -> 55
+            9 -> 60
             else -> 3
         }
     }
-
-    fun getBeforeDhuhrDurationId(index: Int): Int {
+    private fun getBeforeJumuaDurationId(index: Int): Int {
         return when (index) {
             0 -> 0
             1 -> 10
@@ -1003,8 +1086,7 @@ class Tools(private val context: Context) {
             else -> 0
         }
     }
-
-    private fun getDhuhrDurationId(index: Int): Int {
+    private fun getAfterJumuaDurationId(index: Int): Int {
         return when (index) {
             0 -> 15
             1 -> 20
@@ -1019,7 +1101,6 @@ class Tools(private val context: Context) {
             else -> 3
         }
     }
-
     private fun getTaraweehDurationId(index: Int): Int {
         return when (index) {
             0 -> 20
@@ -1034,8 +1115,7 @@ class Tools(private val context: Context) {
             else -> 4
         }
     }
-
-    fun getTahajjudDurationId(index: Int): Int {
+    private fun getTahajjudDurationId(index: Int): Int {
         return when (index) {
             0 -> 0
             1 -> 15
@@ -1049,11 +1129,13 @@ class Tools(private val context: Context) {
             else -> 0
         }
     }
-
     private fun getPrayerNameResId(prayerName: String): Int {
         return prayerNameMap[prayerName] ?: R.string.prayer_name_unknown
     }
-
+    fun getLocalizedPrayerName(prayerName: String): String {
+        val prayerNameResId = getPrayerNameResId(prayerName)
+        return LocaleHelper.getLocalizedString(context, prayerNameResId)
+    }
     fun isInternetAvailable(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork ?: return false
@@ -1066,15 +1148,45 @@ class Tools(private val context: Context) {
                         capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
                         capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
     }
-
     private fun getCurrentWeekday(): String {
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("EEEE", Locale.US)
         return dateFormat.format(calendar.time)
     }
-
     fun isInCall(): Boolean {
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         return audioManager.mode == AudioManager.MODE_IN_CALL || audioManager.mode == AudioManager.MODE_IN_COMMUNICATION
+    }
+    @SuppressLint("RestrictedApi")
+    fun showLoadingSnackbar(activity: Activity): Snackbar {
+        val snackbar = Snackbar.make(activity.findViewById(android.R.id.content), "", Snackbar.LENGTH_INDEFINITE)
+        val snackbarLayout = snackbar.view as Snackbar.SnackbarLayout
+        val customView = LayoutInflater.from(activity).inflate(R.layout.custom_loading_snackbar, snackbarLayout, false)
+        snackbarLayout.setBackgroundColor(Color.TRANSPARENT)
+        snackbarLayout.setPadding(0, 0, 0, 0)
+        val textView = snackbarLayout.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        textView.visibility = View.INVISIBLE
+        snackbarLayout.addView(customView, 0)
+
+        ViewCompat.setOnApplyWindowInsetsListener(snackbarLayout) { v, insets ->
+            val navBarHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                width = ViewGroup.LayoutParams.MATCH_PARENT
+                bottomMargin = navBarHeight + 20
+                leftMargin = 40
+                rightMargin = 40
+            }
+            insets
+        }
+
+        snackbar.show()
+        return snackbar
+    }
+    fun hideNavigationBarIfNeeded(activity: AppCompatActivity) {
+        if (Build.VERSION.SDK_INT in Build.VERSION_CODES.Q..Build.VERSION_CODES.S_V2) {
+            val windowInsetsController = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
+            windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars())
+        }
     }
 }

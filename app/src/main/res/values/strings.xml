@@ -2,13 +2,15 @@
     <string name="app_name">Prayer mode</string>
     <string name="Off">Off</string>
     <string name="On">On</string>
-    <string name="select_option">Select an option</string> <!-- No translation -->
+    <string name="select_option">Select an option</string>
     <string name="AudioText">Listen to takbir before activating silent mode</string>
+    <string name="AblutionText">Ablution Time - 10 mins before Adhan</string>
+    <string name="menu">Menu</string>
+    <string name="settings_title">App Information</string>
 
-    <!-- Daily Schedule Card view -->
-    <string name="daily_schedule">Daily Prayer Schedule</string>
-
-    <string name="calculation_method">Calculation method</string>  <!-- No translation -->
+    <!-- Calculation methods & Takbir Card view -->
+    <string name="prayer_options">Prayer Options</string>
+    <string name="calculation_method">Calculation method</string>
     <string name="select_calculation_method">Select the calculation method</string>
     <string-array name="calculation_methods">
         <item>Umm Al-Qura University, Makkah</item>
@@ -36,119 +38,63 @@
         <item>Shia Ithna-Ashari, Leva Institute, Qum</item>
     </string-array>
 
-    <string name="daily_silent_duration_after_adhan">Daily silent duration after adhan</string>
-    <string name="daily_silent_duration">Daily silent duration</string>  <!-- No translation -->
-    <string name="select_silent_duration">Select the daily duration</string>
-    <string-array name="silent_durations">
-        <item>15 minutes</item>
-        <item>20 minutes</item>
-        <item>25 minutes</item>
-        <item>30 minutes</item>
-        <item>35 minutes</item>
-        <item>40 minutes</item>
-        <item>45 minutes</item>
-    </string-array>
+    <!-- Daily Schedule Card view -->
+    <string name="daily_schedule">Daily Silent Durations After Adhan</string>
+    <!-- Fajr Card view -->
+    <string name="fajr_silent_duration_after_adhan">Fajr</string>
+    <string name="fajr_silent_duration">Fajr duration</string>
+    <string name="select_fajr_duration">Select Fajr silent duration</string>
+    <!-- Dhuhr Card view -->
+    <string name="dhuhr_silent_duration_after_adhan">Dhuhr</string>
+    <string name="dhuhr_silent_duration">Dhuhr duration</string>
+    <string name="select_dhuhr_duration">Select Dhuhr silent duration</string>
+    <!-- Asr Card view -->
+    <string name="asr_silent_duration_after_adhan">Asr</string>
+    <string name="asr_silent_duration">Asr duration</string>
+    <string name="select_asr_duration">Select Asr silent duration</string>
+    <!-- Maghrib Card view -->
+    <string name="maghrib_silent_duration_after_adhan">Maghrib</string>
+    <string name="maghrib_silent_duration">Maghrib duration</string>
+    <string name="select_maghrib_duration">Select Maghrib silent duration</string>
+    <!-- Isha Card view -->
+    <string name="isha_silent_duration_after_adhan">Isha</string>
+    <string name="isha_silent_duration">Isha duration</string>
+    <string name="select_isha_duration">Select Isha silent duration</string>
 
-    <!-- Joumoua Card view -->
-    <string name="joumoua">Al-Jumua</string>
+    <!-- jumua Card view -->
+    <string name="jumua_card">Al-Jumua Silent Durations</string>
     <!-- Black fix text -->
-    <string name="before_dhuhr">Silent duration before adhan</string>
+    <string name="before_jumua">Before adhan</string>
     <!-- TV variable text -->
-    <string name="duration_before_dhuhr">Duration before adhan</string>  <!-- No translation -->
+    <string name="duration_before_jumua">Before adhan</string>
     <!-- Select menu -->
-    <string name="select_before_dhuhr_duration">Select before adhan duration</string>
-    <string-array name="before_dhuhr_duration">
-        <item>Off</item>
-        <item>10 minutes</item>
-        <item>15 minutes</item>
-        <item>20 minutes</item>
-        <item>25 minutes</item>
-        <item>30 minutes</item>
-        <item>35 minutes</item>
-        <item>40 minutes</item>
-        <item>45 minutes</item>
-        <item>50 minutes</item>
-        <item>55 minutes</item>
-        <item>60 minutes</item>
-    </string-array>
+    <string name="select_before_jumua_duration">Select before adhan duration</string>
 
-    <string name="after_dhuhr">Silent duration after adhan</string>
-    <string name="duration_after_dhuhr">Duration after adhan</string>  <!-- No translation -->
-    <string name="select_after_dhuhr_duration">Select after adhan duration</string>
-    <string-array name="after_dhuhr_duration">
-        <item>15 minutes</item>
-        <item>20 minutes</item>
-        <item>25 minutes</item>
-        <item>30 minutes</item>
-        <item>35 minutes</item>
-        <item>40 minutes</item>
-        <item>45 minutes</item>
-        <item>50 minutes</item>
-        <item>55 minutes</item>
-        <item>60 minutes</item>
-    </string-array>
+    <string name="after_jumua">After adhan</string>
+    <string name="duration_after_jumua">After adhan</string>
+    <string name="select_after_jumua_duration">Select after adhan duration</string>
 
     <!-- Ramadan Card view -->
     <string name="ramadan">Ramadan</string>
 
-    <string name="tarawih_silent_duration">Isha and Taraweeh silent duration</string>
-    <string name="tarawih_duration">Taraweeh duration</string>  <!-- No translation -->
-    <string name="select_tarawih_duration">Select Isha and Taraweeh duration</string>
-    <string-array name="tarawih_duration">
-        <item>20 minutes</item>
-        <item>30 minutes</item>
-        <item>40 minutes</item>
-        <item>50 minutes</item>
-        <item>1 hour</item>
-        <item>1 hour 30 minutes</item>
-        <item>2 hours</item>
-        <item>2 hours 30 minutes</item>
-        <item>3 hours</item>
-    </string-array>
+    <string name="taraweeh_silent_duration">Isha and Taraweeh</string>
+    <string name="taraweeh_duration">Taraweeh duration</string>
+    <string name="select_taraweeh_duration">Select Isha and Taraweeh duration</string>
 
-    <string name="tahajjud_silent_duration">Tahajjud silent duration</string>
-    <string name="tahajjud_duration">Tahajjud duration</string>  <!-- No translation -->
+    <string name="tahajjud_silent_duration">Tahajjud</string>
+    <string name="tahajjud_duration">Tahajjud duration</string>
     <string name="select_tahajjud_duration">Select Tahajjud duration</string>
-    <string-array name="tahajjud_duration">
-        <item>Off</item>
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>45 minutes</item>
-        <item>1 hour</item>
-        <item>1 hour 30 minutes</item>
-        <item>2 hours</item>
-        <item>2 hours 30 minutes</item>
-        <item>3 hours</item>
-    </string-array>
 
     <!-- Eid Card view -->
-    <string name="eid_alfitr_and_eid_aladha">Eid Al Fitr - Eid Al Adha</string>
+    <string name="eid_alfitr_and_eid_aladha">Eid Al-Fitr - Eid Al-Adha</string>
 
     <string name="eid_time_prayer">Eid prayer time</string>
-    <string name="eid_time">Eid time</string>  <!-- No translation -->
+    <string name="eid_time">Eid time</string>
     <string name="select_eid_time">Select Eid prayer time</string>
-    <string-array name="eid_time">
-        <item>20 minutes after sunrise</item>
-        <item>06:00</item>
-        <item>06:30</item>
-        <item>07:00</item>
-        <item>07:30</item>
-        <item>08:00</item>
-        <item>08:30</item>
-        <item>09:00</item>
-        <item>10:00</item>
-    </string-array>
 
     <string name="eid_silent_duration">Eid silent duration</string>
-    <string name="eid_duration">Eid duration</string>  <!-- No translation -->
+    <string name="eid_duration">Eid duration</string>
     <string name="select_eid_duration">Select Eid prayer duration</string>
-    <string-array name="eid_duration">
-        <item>20 minutes</item>
-        <item>30 minutes</item>
-        <item>40 minutes</item>
-        <item>50 minutes</item>
-        <item>60 minutes</item>
-    </string-array>
 
     <!-- Privacy Card view -->
     <string name="privacy">Privacy</string>
@@ -175,7 +121,7 @@ The app will request permission to access your device\'s location. You can choos
 <b>Do Not Disturb mode</b><br/><br/>
 This app may also request permission to activate Do Not Disturb (DND) mode on your device. This permission is necessary for the app to function properly by temporarily enabling DND mode to minimize interruptions during prayer times.<br/><br/>
 While this permission allows the app to control your device\'s sound and vibration settings, we want to explicitly clarify that the app does NOT access, read, or collect any of your notifications, messages, call content, or any other personal data displayed by your notifications. This permission is solely for the purpose of toggling the DND mode on and off.<br/><br/>
-You acknowledge that while DND mode is active, <b>you may not receive standard notifications, including emergency calls</b>. Our company shall not be held responsible for any consequences resulting from missed notifications and emergency calls, during periods when the app has activated DND mode.<br/><br/>
+You acknowledge that while DND mode is active, <b>you may not receive standard notifications, including emergency calls</b>. We shall not be held responsible for any consequences resulting from missed notifications and emergency calls, during periods when the app has activated DND mode.<br/><br/>
 It is your responsibility to configure DND settings and exceptions according to your needs.<br/><br/>
 We are committed to protecting your privacy. If you have any questions or concerns regarding our privacy practices, please contact us at <a href="mailto:prayer.mode@outlook.com">prayer.mode@outlook.com</a><br/><br/>
 
@@ -216,8 +162,11 @@ Thank you for trusting our application.<br/><br/>
     <string name="calculation">Calculation methods</string>
     <string name="calculation_description">Select the preferred calculation method before activating the switch. Please note that the app is using the API of aladhan.com to get accurate prayer times.</string>
 
+    <string name="ablution">Ablution time setting</string>
+    <string name="ablution_description">Activates Do Not Disturb 10 minutes before adhan to allow time for ablution (Wudu). You can only change this setting when the main switch is off.</string>
+
     <string name="durations">Durations</string>
-    <string name="durations_description">Select the durations based on your preferences. Note that the five daily prayers, Jumua, Taraweeh, Tahajjud and Eid prayers have each their own duration.</string>
+    <string name="durations_description">Select the durations based on your preferences. Note that each prayer has its own silent duration.</string>
 
     <string name="time">Time</string>
     <string name="time_description">Choose the time of Al-Fitr and Al-Adha Eid prayer.</string>
@@ -228,25 +177,23 @@ Thank you for trusting our application.<br/><br/>
     <string name="wearable">Wearable</string>
     <string name="wearable_description">Your connected watch can also receive notifications and follow your phone\'s sound mode, to accomplish that, check your smart watch app settings.</string>
 
-    <string name="donation">Donations</string>
+    <string name="donation">Support the Project</string>
     <string name="donation_link_text">PayPal</string>
-    <string name="donation_content">Support us</string>
+    <string name="donation_content">Support Us</string>
     <string name="donation_description"><![CDATA[
     Prayer mode is free and open-source software. Development and maintenance require time and effort.<br/><br/>
-    If you find this app valuable and wish to support its continued development, you can make a voluntary donation.<br/><br/>
-    Donations are <b>voluntary, non-refundable</b>, and do not entitle you to any premium services or features.<br/><br/>
-    They are simply a way to show your appreciation and help ensure the app remains free and updated for everyone.<br/><br/>
-    You can donate using [DONATION_LINK].<br/><br/>
+    If you find this app valuable and wish to support its continued development, you can make a voluntary contribution.<br/><br/>
+    These contributions are <b>voluntary and non-refundable</b>. They do not unlock premium features, as the app is intended to remain free for everyone.<br/><br/>
+    Your support is simply a way to show your appreciation, that encourages us to keep the app updated for the community.<br/><br/>
+    You can contribute via [DONATION_LINK].<br/><br/>
     ]]></string>
 
-    <string name="back_button">Back Button</string>  <!-- No translation -->
+    <string name="back_button">Back Button</string>
 
     <!-- MainActivity SnackBar -->
     <string name="cannot_change_settings">Cannot change settings while the switch is on.</string>
-    <string name="permissions_granted">All permissions are granted, switch can be turned on.</string>
     <string name="alarm_permission_granted">Alarm permission Granted.</string>
     <string name="grant_location_permission">Please grant Location permission.</string>
-    <string name="grant_alarm_permission">Please grant Alarm permission.</string>
     <string name="grant_dnd_permission">Do Not Disturb permission needed for automatic silencing.</string>
     <string name="background_location_denied_message">Background location access needed to update automatically prayer times.</string>
     <string name="no_location_internet">Can\'t Activate Prayer mode, please check Location Service and Internet connection.</string>
@@ -296,21 +243,24 @@ Thank you for trusting our application.<br/><br/>
     <string name="today_fajr_time_is">Today Fajr prayer is at %1$s.</string>
     <string name="today_dhuhr_time_is">Today Al-Jumua prayer is at %1$s.</string>
     <string name="silent_mode_activated_for">Do Not Disturb activated for %1$s.</string>
+    <string name="ablution_silent_mode_activation">Do Not Disturb activated for %1$s 10 minutes before Adhan.</string>
     <string name="today_imsak_time_is">Today Imsak time is at %1$s.</string>
     <string name="back_to_normal_mode">Do Not Disturb mode turned off.</string>
     <string name="location_title">Location service</string>
     <string name="getting_location_update">Getting location updates.</string>
-    <string name="happy_eid_alfitr">Happy Eid Al Fitr, may Allah accept our good deeds as well as yours.</string>
-    <string name="happy_eid_aladha">Happy Eid Al Adha, may Allah accept our good deeds as well as yours.</string>
+    <string name="happy_eid_alfitr">Happy Eid Al-Fitr, may Allah accept our good deeds as well as yours.</string>
+    <string name="happy_eid_aladha">Happy Eid Al-Adha, may Allah accept our good deeds as well as yours.</string>
     <string name="dnd_already_on">DND mode was already active by user/system while trying to activate it for %1$s and thus will stay on to respect your actual settings.</string>
 
     <string name="location_service_disabled">To ensure the app works as expected, please activate location service.</string>
-    <string name="travelled_distance">You have travelled %1$s km. Adapting your prayer times schedule to your new position.</string>
-    <string name="location_name">Getting prayer times for %1$s. Location incorrect? You might need to adjust your device\'s location settings.</string>
+    <string name="travelled_distance">Adapting prayer times schedule to the new position.</string>
+    <string name="location_name">Getting prayer times for %1$s.</string>
+    <string name="location_fetch">Getting location, please move to an open area or near a window.</string>
 
     <string name="open_prayer">Open app</string>
 
-    <string name="eid">Al Eid</string>
+    <string name="jumua">Al-Jumua</string>
+    <string name="eid">Al-Eid</string>
     <string name="imsak">Imsak</string>
     <string name="fajr">Fajr</string>
     <string name="sunrise">Sunrise</string>
@@ -318,7 +268,7 @@ Thank you for trusting our application.<br/><br/>
     <string name="asr">Asr</string>
     <string name="maghrib">Maghrib</string>
     <string name="isha">Isha</string>
-    <string name="tarawih">Taraweeh</string>
+    <string name="taraweeh">Taraweeh</string>
     <string name="tahajjud">Tahajjud</string>
     <string name="prayer_name_unknown">Prayer</string>
 
@@ -345,13 +295,46 @@ Thank you for trusting our application.<br/><br/>
     </string>
     <string name="next">Next</string>
 
+    <string name="education_title">Good To Know</string>
+    <string name="education_message">\n 🔁 Prayer Times are Updated\n
+    \u2022 Monthly from Aladhan.com\n
+    \u2022 When significant displacement is detected\n\n
+        🚨 Switch May Not Turn On If\n
+    \u2022 Location is off\n
+    \u2022 Weak GPS signal\n
+    \u2022 No Internet connection\n
+    \u2022 Essential permissions are revoked\n\n
+        ✅ Required For Full Operation\n
+    \u2022 All permissions\n
+    \u2022 Always-on location - Ensure good GPS signal\n
+    \u2022 Persistent Internet connection\n\n
+        💡 The app can use your last known location if GPS signal is temporarily unavailable.\n</string>
+    <string name="got_it">Got it</string>
+
+    <!-- Language Section -->
+    <string name="language_section">Language</string>
+    <string name="language">App Language</string>
+    <string name="select_language">Select Language</string>
+
+    <!-- App Performance Strings -->
+    <string name="app_performance_section">App Performance</string>
+    <string name="battery_optimization_title">Background Location Access</string>
+    <string name="battery_optimization_checking">Checking status…</string>
+    <string name="battery_optimization_enabled">✓ Unrestricted (Recommended)</string>
+    <string name="battery_optimization_active">Restricted - Tap to change</string>
+    <string name="battery_optimization_dialog_title">Improve Location Tracking</string>
+    <string name="battery_optimization_dialog_message">For reliable prayer time updates while traveling, please allow background battery usage for this app.\n\nThis helps the app adapt prayer times automatically.\n\nGo to Battery/App Battery Usage → Unrestricted or Allow background usage or Don\'t optimize.</string>
+    <string name="battery_optimization_dialog_negative">Not Now</string>
+    <string name="battery_optimization_error">Unable to open battery settings</string>
+    <string name="battery_optimization_already_enabled">Battery optimization is already enabled for this app. This helps maintain reliable location tracking for prayer time updates when you travel.</string>
+
     <!-- Catch & else blocks -->
     <string name="failed_writing">Please ensure you have sufficient storage space.</string>
     <string name="permission_denied_writing">An unexpected error occurred saving prayer times file, please restart the app and check for updates.</string>
 
     <!-- For debugging only -->
     <string name="monthly_update">Updating prayer times for %1$s.</string>
-    <string name="monthly_update_default_method">Updating prayer times for %1$s using default method.</string>
+    <string name="monthly_update_default_method">Updating prayer times for %1$s (Default method).</string>
 
     <string name="worker_failed">Worker failed.</string>
     <string name="process_prayer">Process prayer times</string>

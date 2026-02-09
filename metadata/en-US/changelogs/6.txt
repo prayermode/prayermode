@@ -1,0 +1,9 @@
+Per-Prayer Silent Durations – Now customize silent mode duration individually for each daily prayer
+In-App Language Selection – Choose from 9 languages directly within the app
+Quick Access Menu – New 3-dot menu for easy access to Settings and App Information
+Battery Optimization Checker – Verify your device's battery settings for optimal performance
+Additional Duration Options – More choices for silent mode timing in settings
+Context-Aware Alerts – Takbir won't play during DND mode, location updates, or when ablution mode is active
+Enhanced Location Detection – More reliable travel detection for automatic prayer time updates
+Redesigned Settings Interface – Cleaner, more intuitive settings organization
+Better Notification Management – Less intrusive background service notifications
