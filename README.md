@@ -17,7 +17,6 @@
 ## 📋 Table of Contents
 - [Features](#-features)
 - [Permissions Explained](#-permissions-explained)
-- [Privacy Policy](#-privacy-policy)
 - [Building from Source](#-building-from-source)
 - [Contributing](#-contributing)
 - [Donations](#-donations)
@@ -119,5 +118,3 @@ For questions, support, or to report a bug, please:
 2.  If your issue is new, you can open a new issue on GitHub.
 
 3.  You can also email us at: [prayer.mode@outlook.com](mailto:prayer.mode@outlook.com)
-
-
