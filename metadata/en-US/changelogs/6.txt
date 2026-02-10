@@ -1,9 +1,4 @@
-Customization: Set silent mode duration individually for each daily prayer
-Localization: Choose from 9 languages directly within the app
-Interface: New 3-dot menu for easy access to Settings and App Information
-Performance: Built-in Battery Optimization Checker
-Customization: Configure ablution time setting
-Smart Behavior: Context-aware alerts that respect DND, location updates, and ablution mode
-Location: Enhanced travel detection for automatic prayer time updates
-Notifications: Less intrusive background service alerts
-Improvements: Various bug fixes and stability enhancements
+Performance: Audio focus pauses other apps during takbir playback
+Enhanced Settings: Enhanced DND state management and error recovery
+Global Reach: Added Bengali language support
+Improvements: Minor bug fixes
