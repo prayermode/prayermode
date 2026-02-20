@@ -38,23 +38,17 @@ import kotlinx.coroutines.launch
 import org.json.JSONException
 import kotlin.math.pow
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.graphics.Color
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Build
 import android.location.LocationListener
 import android.os.Handler
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.core.view.updateLayoutParams
-import com.google.android.material.snackbar.Snackbar
 import com.yahyaoui.prayermode.LocationService.Companion.MIN_LOCATION_ACCURACY_METERS
 import com.yahyaoui.prayermode.LocationService.Companion.SIGNIFICANT_DISPLACEMENT_KM
 import com.yahyaoui.prayermode.LocationService.Companion.PREF_LAST_FETCH_TIME_MS
@@ -1157,30 +1151,15 @@ class Tools(private val context: Context) {
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         return audioManager.mode == AudioManager.MODE_IN_CALL || audioManager.mode == AudioManager.MODE_IN_COMMUNICATION
     }
-    @SuppressLint("RestrictedApi")
-    fun showLoadingSnackbar(activity: Activity): Snackbar {
-        val snackbar = Snackbar.make(activity.findViewById(android.R.id.content), "", Snackbar.LENGTH_INDEFINITE)
-        val snackbarLayout = snackbar.view as Snackbar.SnackbarLayout
-        val customView = LayoutInflater.from(activity).inflate(R.layout.custom_loading_snackbar, snackbarLayout, false)
-        snackbarLayout.setBackgroundColor(Color.TRANSPARENT)
-        snackbarLayout.setPadding(0, 0, 0, 0)
-        val textView = snackbarLayout.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-        textView.visibility = View.INVISIBLE
-        snackbarLayout.addView(customView, 0)
-
-        ViewCompat.setOnApplyWindowInsetsListener(snackbarLayout) { v, insets ->
-            val navBarHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
-            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                width = ViewGroup.LayoutParams.MATCH_PARENT
-                bottomMargin = navBarHeight + 20
-                leftMargin = 40
-                rightMargin = 40
-            }
-            insets
-        }
-
-        snackbar.show()
-        return snackbar
+    fun createLoadingDialog(activity: Activity): Dialog {
+        val builder = AlertDialog.Builder(activity)
+        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_loading_progress, null)
+        builder.setView(view)
+        val dialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        return dialog
     }
     fun hideNavigationBarIfNeeded(activity: AppCompatActivity) {
         if (Build.VERSION.SDK_INT in Build.VERSION_CODES.Q..Build.VERSION_CODES.S_V2) {

@@ -49,10 +49,55 @@
             app:tint="?android:textColorPrimary" />
 
     </LinearLayout>
+    <!-- Switch Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/switchButtonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="?attr/cardBackground"
+        app:cardCornerRadius="18dp"
+        android:layout_marginHorizontal="8dp"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layoutDirection="locale"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/tvSwitchState"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Off"
+                android:textAlignment="viewStart"
+                android:textColor="?android:textColorPrimary"
+                android:textDirection="locale"
+                android:textSize="16sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/activateSwitch"
+                android:saveEnabled="false"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="0dp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,47 +107,7 @@
             android:paddingTop="8dp"
             android:paddingEnd="8dp"
             android:paddingBottom="24dp">
-            <!-- Switch Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/switchButtonContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="?attr/cardBackground"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="0dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layoutDirection="locale"
-                    android:orientation="horizontal"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:id="@+id/tvSwitchState"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/Off"
-                        android:textAlignment="viewStart"
-                        android:textColor="?android:textColorPrimary"
-                        android:textDirection="locale"
-                        android:textSize="16sp" />
-
-                    <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/activateSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="0dp" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
             <!-- Prayer Options Section -->
             <TextView
                 android:layout_width="match_parent"

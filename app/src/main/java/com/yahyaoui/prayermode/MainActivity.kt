@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.yahyaoui.prayermode.TermsAndConditions.TermsAndConditionsListener
 import android.Manifest
+import android.content.pm.ActivityInfo
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
@@ -33,6 +34,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import kotlinx.coroutines.withContext
+import android.app.Dialog
 private const val IS_APP_RESTARTED_KEY = "isAppRestarted"
 data class ContainerConfig(
     val container: View,
@@ -87,7 +89,7 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         }
     }
     private val containerConfigs by lazy { createContainerConfigs() }
-    private var loadingSnackbar: Snackbar? = null
+    private var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,12 +105,15 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         audioSwitch.isChecked = sharedHelper.getAudioSwitchState()
         ablutionSwitch.isChecked = sharedHelper.getAblutionSwitchState()
         setupListeners()
+        isRestoringSwitchState = true
+        activateSwitch.isChecked = sharedHelper.getSwitchState()
+        isRestoringSwitchState = false
         NotificationHelper.cancelNotification(this,1001)
 
         if (savedInstanceState != null) {
             isAppRestarted = savedInstanceState.getBoolean(IS_APP_RESTARTED_KEY, true)
         }
-        handleToggleSwitchIntent()
+        if (savedInstanceState == null) handleToggleSwitchIntent()
         checkForUpdateRefresh()
     }
     private fun initializeViews() {
@@ -236,10 +241,20 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
     private fun switchOn() {
         tvSwitchState.text = getString(R.string.On)
         if (BuildConfig.DEBUG) Log.d(tag, "Main Switch is turned on")
-        if (!checkAndRequestPermissions()) return
+        if (!checkAndRequestPermissions()) {
+            switchOffSilently()
+            return
+        }
         LocationService.start(this)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
         lifecycleScope.launch(Dispatchers.IO) {
-            handlePrayerTimesSetup()
+            try {
+                handlePrayerTimesSetup()
+            } finally {
+                withContext(Dispatchers.Main) {
+                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+                }
+            }
         }
     }
     private fun switchOff() {
@@ -261,11 +276,15 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
             AlarmScheduler(this@MainActivity).scheduleDailyAlarm()
             withContext(Dispatchers.Main) { showSnackbar(R.string.app_enabled) }
         } else {
-            withContext(Dispatchers.Main) { loadingSnackbar = tools.showLoadingSnackbar(this@MainActivity) }
             if (BuildConfig.DEBUG) Log.i(tag, "Prayer times data not available/obsolete or method changed, retrieving...")
+            withContext(Dispatchers.Main) {
+                loadingDialog = tools.createLoadingDialog(this@MainActivity)
+                loadingDialog?.show()
+            }
             val success = tools.findLocation(selectedMethodIndex) && tools.isInternetAvailable()
             withContext(Dispatchers.Main) {
-                loadingSnackbar?.dismiss()
+                if (loadingDialog?.isShowing == true && !isFinishing) loadingDialog?.dismiss()
+                loadingDialog = null
                 if (success) {
                     sharedHelper.saveIntValue(SharedHelper.SELECTED_METHOD_RES_ID, selectedMethodIndex)
                     sharedHelper.saveLastCheckedMethodIndex(selectedMethodIndex)
@@ -273,7 +292,7 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
                     showSnackbar(R.string.app_enabled)
                 } else {
                     Log.e(tag, "Location disabled or No Internet connexion")
-                    runOnUiThread { switchStateOff(R.string.no_location_internet) }
+                    switchStateOff(R.string.no_location_internet)
                 }
             }
         }
@@ -300,9 +319,6 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         super.onResume()
         checkForUpdateRefresh()
         tools.hideNavigationBarIfNeeded(this)
-        isRestoringSwitchState = true
-        activateSwitch.isChecked = sharedHelper.getSwitchState()
-        isRestoringSwitchState = false
         if (BuildConfig.DEBUG) Log.d(tag, "Switch state restored in onResume: ${activateSwitch.isChecked}")
         tvSwitchState.text = if (activateSwitch.isChecked) getString(R.string.On) else getString(R.string.Off)
 
@@ -324,6 +340,8 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
 
     override fun onPause() {
         super.onPause()
+        loadingDialog?.dismiss()
+        loadingDialog = null
         sharedHelper.saveSwitchState(activateSwitch.isChecked)
         sharedHelper.saveAudioSwitchState(audioSwitch.isChecked)
         sharedHelper.saveAblutionSwitchState(ablutionSwitch.isChecked)
@@ -348,11 +366,9 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         }
     }
     private fun triggerSoftReset() {
-        activateSwitch.isChecked = false
-        sharedHelper.saveSwitchState(false)
+        setSwitchState(false)
         Handler(Looper.getMainLooper()).postDelayed({
-            activateSwitch.isChecked = true
-            sharedHelper.saveSwitchState(true)
+            setSwitchState(true)
             if (BuildConfig.DEBUG) Log.d(tag, "App updated: Service and Worker refreshed.")
         }, 800)
     }
@@ -364,6 +380,16 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         activateSwitch.isChecked = false
         tvSwitchState.text = getString(R.string.Off)
         showSnackbar(message)
+    }
+    private fun switchOffSilently() {
+        setSwitchState(false)
+        tvSwitchState.text = getString(R.string.Off)
+    }
+    private fun setSwitchState(state: Boolean) {
+        isRestoringSwitchState = true
+        activateSwitch.isChecked = state
+        isRestoringSwitchState = false
+        sharedHelper.saveSwitchState(state)
     }
     private fun showWelcomeDialog() {
         val dialog = WelcomeDialog()
@@ -399,7 +425,7 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
     private fun requestLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             locationLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-         else handleLocationGranted()
+        else handleLocationGranted()
     }
     private fun handleLocationGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
