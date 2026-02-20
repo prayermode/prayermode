@@ -1,0 +1,2 @@
+Global Reach: Added Portuguese language support
+Improvements: Minor bug fixes and stability enhancements
