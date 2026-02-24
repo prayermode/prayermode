@@ -19,12 +19,12 @@ class SilentModeReceiver : BroadcastReceiver() {
             "START_SILENT_MODE" -> {
                 val prayerName = intent.getStringExtra("prayerName") ?: "unknown"
                 val isImmediate = intent.getBooleanExtra("isImmediate", false)
-                val isBeforeAdhan = intent.getBooleanExtra("isBeforeAdhan", false)
-                handleSilentMode(context, mode = true, prayerName, isImmediate, isBeforeAdhan)
+                val isAblutionBefore = intent.getBooleanExtra("isAblutionBefore", false)
+                handleSilentMode(context, mode = true, prayerName, isImmediate, isAblutionBefore)
             }
             "END_SILENT_MODE" -> {
                 val prayerName = intent.getStringExtra("prayerName") ?: "unknown"
-                handleSilentMode(context, mode = false, prayerName, isImmediate = false, isBeforeAdhan = false)
+                handleSilentMode(context, mode = false, prayerName, isImmediate = false, isAblutionBefore = false)
             }
             "DAILY_WORKER_ALARM" -> {
                 if (BuildConfig.DEBUG) Log.d(tag, "Handling DAILY_WORKER_ALARM...")
@@ -35,14 +35,14 @@ class SilentModeReceiver : BroadcastReceiver() {
             }
         }
     }
-    private fun handleSilentMode(context: Context, mode: Boolean, prayerName: String, isImmediate: Boolean, isBeforeAdhan: Boolean) {
+    private fun handleSilentMode(context: Context, mode: Boolean, prayerName: String, isImmediate: Boolean, isAblutionBefore: Boolean) {
         val uniqueTag = "SilentModeWorker_${prayerName}_${if (mode) "Start" else "End"}"
         try {
             val inputData = Data.Builder()
                 .putBoolean("mode", mode)
                 .putString("prayerName", prayerName)
                 .putBoolean("isImmediate", isImmediate)
-                .putBoolean("isBeforeAdhan", isBeforeAdhan)
+                .putBoolean("isAblutionBefore", isAblutionBefore)
                 .build()
 
             val workRequest = OneTimeWorkRequestBuilder<SilentModeWorker>()

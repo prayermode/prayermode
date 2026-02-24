@@ -330,7 +330,7 @@ Obrigado por confiar na nossa aplicação.<br/><br/>
     <string name="getting_location_update">A obter atualizações de localização.</string>
     <string name="happy_eid_alfitr">Eid Al Fitr Mubarak! Que Allah aceite as nossas boas ações e as vossas.</string>
     <string name="happy_eid_aladha">Eid Al Adha Mubarak! Que Allah aceite as nossas boas ações e as vossas.</string>
-    <string name="dnd_already_on">O modo \"Não Incomodar\" já estava ativo pelo utilizador/sistema; por isso, permanecerá ligado para respeitar as suas definições atuais.</string>
+    <string name="dnd_already_on">O modo Não Incomodar já estava ativo pelo utilizador/sistema ao tentar ativá-lo para %1$s; por isso, permanecerá ligado para respeitar as suas definições atuais.</string>
 
     <string name="location_service_disabled">Para garantir que a aplicação funciona como esperado, ative o serviço de localização.</string>
     <string name="travelled_distance">A adaptar o horário das orações à nova posição.</string>

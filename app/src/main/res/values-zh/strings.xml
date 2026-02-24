@@ -1,0 +1,429 @@
+<resources>
+    <string name="app_name">礼拜模式</string>
+    <string name="Off">关闭</string>
+    <string name="On">开启</string>
+    <string name="select_option">选择一个选项</string>
+    <string name="AudioText">在激活静音模式前播放至大词</string>
+    <string name="AblutionText">小净时间 - 宣礼前10分钟</string>
+    <string name="menu">菜单</string>
+    <string name="settings_title">应用信息</string>
+
+    <!-- Calculation methods & Takbir Card view -->
+    <string name="prayer_options">礼拜选项</string>
+    <string name="calculation_method">计算方法</string>
+    <string name="select_calculation_method">选择计算方法</string>
+    <string-array name="calculation_methods">
+        <item>麦加乌姆·古拉大学</item>
+        <item>穆斯林世界联盟</item>
+        <item>北美伊斯兰协会</item>
+        <item>埃及测量总局</item>
+        <item>卡拉奇伊斯兰科学大学</item>
+        <item>海湾地区</item>
+        <item>科威特</item>
+        <item>卡塔尔</item>
+        <item>新加坡伊斯兰宗教理事会</item>
+        <item>法国伊斯兰组织联盟</item>
+        <item>土耳其宗教事务局</item>
+        <item>俄罗斯穆斯林精神管理局</item>
+        <item>观月委员会</item>
+        <item>迪拜，阿联酋</item>
+        <item>马来西亚伊斯兰发展局</item>
+        <item>突尼斯</item>
+        <item>阿尔及利亚</item>
+        <item>印度尼西亚宗教事务部</item>
+        <item>摩洛哥</item>
+        <item>里斯本伊斯兰社区，葡萄牙</item>
+        <item>约旦宗教基金、伊斯兰事务与圣地部</item>
+        <item>德黑兰大学地球物理研究所</item>
+        <item>什叶派伊斯纳阿什里，库姆勒瓦研究所</item>
+    </string-array>
+
+    <!-- Daily Schedule Card view -->
+    <string name="daily_schedule">宣礼后每日静音时长</string>
+    <!-- Fajr Card view -->
+    <string name="fajr_silent_duration_after_adhan">晨礼</string>
+    <string name="fajr_silent_duration">晨礼时长</string>
+    <string name="select_fajr_duration">选择晨礼静音时长</string>
+    <!-- Dhuhr Card view -->
+    <string name="dhuhr_silent_duration_after_adhan">晌礼</string>
+    <string name="dhuhr_silent_duration">晌礼时长</string>
+    <string name="select_dhuhr_duration">选择晌礼静音时长</string>
+    <!-- Asr Card view -->
+    <string name="asr_silent_duration_after_adhan">晡礼</string>
+    <string name="asr_silent_duration">晡礼时长</string>
+    <string name="select_asr_duration">选择晡礼静音时长</string>
+    <!-- Maghrib Card view -->
+    <string name="maghrib_silent_duration_after_adhan">昏礼</string>
+    <string name="maghrib_silent_duration">昏礼时长</string>
+    <string name="select_maghrib_duration">选择昏礼静音时长</string>
+    <!-- Isha Card view -->
+    <string name="isha_silent_duration_after_adhan">宵礼</string>
+    <string name="isha_silent_duration">宵礼时长</string>
+    <string name="select_isha_duration">选择宵礼静音时长</string>
+
+    <string-array name="silent_durations">
+        <item>15 分钟</item>
+        <item>20 分钟</item>
+        <item>25 分钟</item>
+        <item>30 分钟</item>
+        <item>35 分钟</item>
+        <item>40 分钟</item>
+        <item>45 分钟</item>
+        <item>50 分钟</item>
+        <item>55 分钟</item>
+        <item>60 分钟</item>
+    </string-array>
+
+    <!-- jumua Card view -->
+    <string name="jumua_card">聚礼静音时长</string>
+    <!-- Black fix text -->
+    <string name="before_jumua">宣礼前</string>
+    <!-- TV variable text -->
+    <string name="duration_before_jumua">宣礼前</string>
+    <!-- Select menu -->
+    <string name="select_before_jumua_duration">选择宣礼前静音时长</string>
+    <string-array name="before_jumua_duration">
+        <item>关闭</item>
+        <item>10 分钟</item>
+        <item>15 分钟</item>
+        <item>20 分钟</item>
+        <item>25 分钟</item>
+        <item>30 分钟</item>
+        <item>35 分钟</item>
+        <item>40 分钟</item>
+        <item>45 分钟</item>
+        <item>50 分钟</item>
+        <item>55 分钟</item>
+        <item>60 分钟</item>
+    </string-array>
+
+    <string name="after_jumua">宣礼后</string>
+    <string name="duration_after_jumua">宣礼后</string>
+    <string name="select_after_jumua_duration">选择宣礼后静音时长</string>
+    <string-array name="after_jumua_duration">
+        <item>15 分钟</item>
+        <item>20 分钟</item>
+        <item>25 分钟</item>
+        <item>30 分钟</item>
+        <item>35 分钟</item>
+        <item>40 分钟</item>
+        <item>45 分钟</item>
+        <item>50 分钟</item>
+        <item>55 分钟</item>
+        <item>60 分钟</item>
+    </string-array>
+
+    <!-- Ramadan Card view -->
+    <string name="ramadan">斋月</string>
+
+    <string name="taraweeh_silent_duration">宵礼和间歇拜</string>
+    <string name="taraweeh_duration">间歇拜时长</string>
+    <string name="select_taraweeh_duration">选择宵礼和间歇拜静音时长</string>
+    <string-array name="taraweeh_duration">
+        <item>20 分钟</item>
+        <item>30 分钟</item>
+        <item>40 分钟</item>
+        <item>50 分钟</item>
+        <item>1 小时</item>
+        <item>1 小时 30 分钟</item>
+        <item>2 小时</item>
+        <item>2 小时 30 分钟</item>
+        <item>3 小时</item>
+    </string-array>
+
+    <string name="tahajjud_silent_duration">夜间拜</string>
+    <string name="tahajjud_duration">夜间拜时长</string>
+    <string name="select_tahajjud_duration">选择夜间拜静音时长</string>
+    <string-array name="tahajjud_duration">
+        <item>关闭</item>
+        <item>15 分钟</item>
+        <item>30 分钟</item>
+        <item>45 分钟</item>
+        <item>1 小时</item>
+        <item>1 小时 30 分钟</item>
+        <item>2 小时</item>
+        <item>2 小时 30 分钟</item>
+        <item>3 小时</item>
+    </string-array>
+
+    <!-- Eid Card view -->
+    <string name="eid_alfitr_and_eid_aladha">开斋节 - 宰牲节</string>
+
+    <string name="eid_time_prayer">会礼时间</string>
+    <string name="eid_time">会礼时间</string>
+    <string name="select_eid_time">选择会礼时间</string>
+    <string-array name="eid_time">
+        <item>日出后 20 分钟</item>
+        <item>06:00</item>
+        <item>06:30</item>
+        <item>07:00</item>
+        <item>07:30</item>
+        <item>08:00</item>
+        <item>08:30</item>
+        <item>09:00</item>
+        <item>10:00</item>
+    </string-array>
+
+    <string name="eid_silent_duration">会礼静音时长</string>
+    <string name="eid_duration">会礼时长</string>
+    <string name="select_eid_duration">选择会礼静音时长</string>
+    <string-array name="eid_duration">
+        <item>关闭</item>
+        <item>20 分钟</item>
+        <item>30 分钟</item>
+        <item>40 分钟</item>
+        <item>50 分钟</item>
+        <item>60 分钟</item>
+    </string-array>
+
+    <!-- Privacy Card view -->
+    <string name="privacy">隐私</string>
+    <string name="privacy_notice">隐私声明</string>
+    <string name="privacy_content">"礼拜模式隐私声明"</string>
+    <string name="privacy_policy_link_text">此链接</string>
+
+    <string name="privacy_description"><![CDATA[
+本应用使用您设备的定位来计算您所在地区的精确礼拜时间。<br/><br/>
+为了确保持续的礼拜时间更新并在正确时间自动激活勿扰模式，本应用需要后台定位权限（即使应用关闭或未在使用时）。<br/><br/>
+
+我们向您保证，我们不会：<br/>
+<ul>
+  <li>持续收集您的精确或大致位置数据。</li>
+  <li>将您的位置数据存储在我们的服务器上。</li>
+  <li>与任何第三方共享您的位置数据。</li>
+  <li>收集任何其他个人信息。</li>
+</ul>
+
+<b>我们在本地（您的设备上）存储的内容：</b><br/><br/>
+为了确保持续准确的礼拜时间更新，本应用仅在您的设备上本地存储您的<b>最后已知位置（纬度和经度）</b>。这对于应用的核心功能是必要的，这些数据<b>仅用于检测位置变化</b>。每当您设备的位置发生变化时，这些位置数据就会被覆盖；您的设备上不会保留任何位置数据历史记录，也不会将任何数据发送到我们的服务器或与外部共享。<br/><br/>
+本应用将请求访问您设备位置的权限。您可以选择授予或拒绝此权限。如果您拒绝后台定位权限，本应用将无法提供持续更新的礼拜时间或自动管理勿扰模式。<br/><br/>
+
+<b>勿扰模式</b><br/><br/>
+本应用还可能请求在您的设备上激活勿扰模式的权限。此权限对于应用正常运行是必需的，以便临时启用勿扰模式，最大限度地减少礼拜期间的干扰。<br/><br/>
+虽然此权限允许应用控制您设备的声音和振动设置，但我们明确说明，本应用不会访问、读取或收集您的任何通知、消息、通话内容或您的通知中显示的任何其他个人数据。此权限仅用于打开和关闭勿扰模式。<br/><br/>
+您承认，当勿扰模式激活时，<b>您可能无法收到标准通知，包括紧急呼叫</b>。对于在应用激活勿扰模式期间因错过通知和紧急呼叫而产生的任何后果，我们概不负责。<br/><br/>
+您有责任根据您的需要配置勿扰模式设置和例外。<br/><br/>
+我们致力于保护您的隐私。如果您对我们的隐私实践有任何疑问或担忧，请通过 <a href="mailto:prayer.mode@outlook.com">prayer.mode@outlook.com</a> 联系我们。<br/><br/>
+
+有关我们隐私政策的完整详情，请访问 [PRIVACY_LINK]。<br/><br/>
+
+感谢您信任我们的应用。<br/><br/>
+]]></string>
+
+    <string name="terms">服务条款</string>
+
+    <string name="permission">权限</string>
+    <string name="permissions_content">所需权限</string>
+    <string name="location_permission">位置权限图标</string>
+
+    <string name="location">位置</string>
+    <string name="location_description">用于访问您设备的位置以获取精确的礼拜时间，并确保即使应用未打开也能自动更新。</string>
+
+    <string name="notifications">通知</string>
+    <string name="notifications_description">用于提供提醒、警报和其他重要信息，确保您及时收到。</string>
+
+    <string name="dnd">勿扰模式</string>
+    <string name="dnd_description">用于在礼拜时间自动激活勿扰模式。</string>
+
+    <string name="alarm">闹钟和提醒</string>
+    <string name="alarm_description">用于安排礼拜时间的勿扰模式。</string>
+
+    <string name="help">帮助</string>
+    <string name="bulb">开始使用应用前</string>
+    <string name="bulb_content">快速入门指南</string>
+    <string name="bulb_description">首次使用本应用时，请遵循以下提示来配置设置。</string>
+
+    <string name="important_note">每月获取和位置变化检测</string>
+    <string name="important_note_description">"本应用在每月第一天从 aladhan.com API 获取礼拜时间，并依赖您设备的位置和有效的互联网连接。这是为了确保准确的礼拜时间和勿扰模式的正常运行。为了在长途旅行时持续检测位置变化（这是应用的重要功能），需要始终开启位置服务和持续的互联网连接。"</string>
+
+    <string name="volume">勿扰模式</string>
+    <string name="volume_description">在勿扰模式下，本应用会将所有声音静音，并关闭通话和通知的振动。但是，主扬声器的闹钟和您使用听筒扬声器的通话音频仍将可听到。一旦勿扰模式关闭，音量将恢复到上次保存的值。</string>
+
+    <string name="calculation">计算方法</string>
+    <string name="calculation_description">在激活开关前选择首选的计算方法。请注意，本应用使用 aladhan.com 的 API 来获取准确的礼拜时间。</string>
+
+    <string name="ablution">小净时间设置</string>
+    <string name="ablution_description">在宣礼前 10 分钟激活勿扰模式，以便有时间进行小净。您只能在主开关关闭时更改此设置。</string>
+
+    <string name="durations">时长</string>
+    <string name="durations_description">根据您的偏好选择时长。请注意，每次礼拜都有其自己的静音时长。</string>
+
+    <string name="time">时间</string>
+    <string name="time_description">选择开斋节和宰牲节会礼的时间。</string>
+
+    <string name="tile">礼拜模式磁贴</string>
+    <string name="tile_description">通过将礼拜模式磁贴添加到快速设置，您可以更快地访问应用。</string>
+
+    <string name="wearable">可穿戴设备</string>
+    <string name="wearable_description">您连接的智能手表也可以接收通知并跟随您手机的声音模式，为此，请检查您的智能手表应用设置。</string>
+
+    <string name="donation">支持项目</string>
+    <string name="donation_link_text">PayPal</string>
+    <string name="donation_content">支持我们</string>
+    <string name="donation_description"><![CDATA[
+    礼拜模式是免费且开源的软件。开发和维护需要时间和精力。<br/><br/>
+    如果您觉得此应用有价值，并希望支持其持续开发，您可以进行自愿捐款。<br/><br/>
+    这些捐款是<b>自愿且不可退还的</b>。它们不会解锁任何高级功能，因为该应用旨在为所有人免费提供。<br/><br/>
+    您的支持仅仅是表达感谢的一种方式，鼓励我们为社区保持应用更新。<br/><br/>
+    您可以通过 [DONATION_LINK] 捐款。<br/><br/>
+    ]]></string>
+
+    <string name="back_button">返回按钮</string>
+
+    <!-- MainActivity SnackBar -->
+    <string name="cannot_change_settings">开关打开时无法更改设置。</string>
+    <string name="alarm_permission_granted">闹钟权限已授予。</string>
+    <string name="grant_location_permission">请授予位置权限。</string>
+    <string name="grant_dnd_permission">需要勿扰权限才能自动静音。</string>
+    <string name="background_location_denied_message">需要后台位置访问权限以自动更新礼拜时间。</string>
+    <string name="no_location_internet">无法激活礼拜模式，请检查位置服务和互联网连接。</string>
+    <string name="app_disabled">礼拜模式已关闭。</string>
+    <string name="app_enabled">礼拜模式已开启。</string>
+    <string name="alarm_permission_denied_message">此应用需要闹钟权限以确保准确的提醒。请在设置中授予权限。</string>
+    <string name="notification_disabled">通知已禁用，但可以在设置中授予。</string>
+
+    <!-- PermissionHelper Dialogs -->
+    <string name="background_location_permission_title">需要后台位置权限</string>
+    <string name="background_location_permission_message">此应用需要持续访问您设备的位置（即使应用未在使用时）以调整礼拜时间。请在权限/位置中选择&lt;b&gt;始终允许&lt;/b&gt;。</string>
+
+    <string name="alarm_permission_title">需要闹钟权限</string>
+    <string name="alarm_permission_message">此应用需要闹钟权限以在精确时间激活/停用勿扰模式，并安排次日的礼拜。请在设置中授予权限。</string>
+
+    <string name="dnd_permission_title">需要勿扰模式访问权限</string>
+    <string name="dnd_permission_message">请授予勿扰模式访问权限，以便在礼拜时间自动静音，因为此访问权限对于应用的预期功能是必要的。</string>
+
+    <!-- mainActivity -->
+    <string name="location_permission_denied_title">位置权限被拒绝</string>
+    <string name="location_permission_denied_message">此应用需要在使用时持续访问您设备的位置，以准确获取礼拜时间。请在应用设置中授予此权限。</string>
+
+    <string name="location_permanently_denied_title">位置权限被永久拒绝</string>
+    <string name="location_permanently_denied_message">仍然可以在应用设置中授予位置权限。</string>
+
+    <string name="notification_recommended_title">建议开启通知</string>
+    <string name="notification_recommended_message">如果没有通知权限，可能会错过礼拜模式的警报和提醒。</string>
+
+    <string name="open_settings">打开设置</string>
+    <string name="try_again">重试</string>
+    <string name="exit">退出</string>
+    <string name="enable">启用</string>
+    <string name="skip">跳过</string>
+
+    <string name="cancel">取消</string>
+    <string name="ok">确定</string>
+
+    <string name="app_disabled_after_reboot">设备重启后位置服务已停止。请打开应用以启动位置服务。</string>
+
+    <string name="terms_dialog_title">重要通知</string>
+    <string name="terms_dialog_message">请仔细阅读我们的服务条款和隐私政策。您必须接受它们才能使用此应用。</string>
+    <string name="terms_dialog_link">服务条款</string>
+    <string name="privacy_link">隐私声明</string>
+    <string name="decline">拒绝</string>
+    <string name="accept">接受</string>
+
+    <string name="today_fajr_time_is">今天的晨礼时间是 %1$s。</string>
+    <string name="today_dhuhr_time_is">今天的聚礼时间是 %1$s。</string>
+    <string name="silent_mode_activated_for">已为 %1$s 激活勿扰模式。</string>
+    <string name="ablution_silent_mode_activation">已为 %1$s 在宣礼前 10 分钟激活勿扰模式。</string>
+    <string name="today_imsak_time_is">今天的禁食开始时间是 %1$s。</string>
+    <string name="back_to_normal_mode">勿扰模式已关闭。</string>
+    <string name="location_title">位置服务</string>
+    <string name="getting_location_update">正在获取位置更新。</string>
+    <string name="happy_eid_alfitr">开斋节快乐，愿真主接受我们和你们的善行。</string>
+    <string name="happy_eid_aladha">宰牲节快乐，愿真主接受我们和你们的善行。</string>
+    <string name="dnd_already_on">在尝试为 %1$s 激活勿扰模式时，用户/系统已启用该模式，因此将保持开启以尊重您当前的设置。</string>
+
+    <string name="location_service_disabled">为确保应用按预期工作，请激活位置服务。</string>
+    <string name="travelled_distance">正在将礼拜时间表调整到新位置。</string>
+    <string name="location_name">正在获取 %1$s 的礼拜时间。</string>
+    <string name="location_fetch">正在获取位置，请移动到开阔区域或靠近窗户。</string>
+
+    <string name="open_prayer">打开应用</string>
+
+    <string name="jumua">聚礼</string>
+    <string name="eid">会礼</string>
+    <string name="imsak">禁食开始</string>
+    <string name="fajr">晨礼</string>
+    <string name="sunrise">日出</string>
+    <string name="dhuhr">晌礼</string>
+    <string name="asr">晡礼</string>
+    <string name="maghrib">昏礼</string>
+    <string name="isha">宵礼</string>
+    <string name="taraweeh">间歇拜</string>
+    <string name="tahajjud">夜间拜</string>
+    <string name="prayer_name_unknown">礼拜</string>
+
+    <string name="fetch_title">礼拜时间更新</string>
+    <string name="fetch_failed_no_internet">没有可用的互联网连接。请连接到互联网，然后关闭再打开开关。</string>
+    <string name="fetch_failed">获取礼拜时间时发生意外错误。请尝试关闭再打开开关。</string>
+    <string name="schedule_title">礼拜时间安排</string>
+
+    <string name="background_location_rationale">为了在您旅行到新位置时自动更新静音模式安排和礼拜时间，确保您的手机始终在正确时间静音，而无需打开应用。</string>
+
+    <string name="update_notification_title">礼拜模式更新</string>
+    <string name="update_notification_message">版本 %1$s 现已可用。</string>
+    <string name="update">立即更新</string>
+    <string name="silent_schedule_success">礼拜时间安排成功。</string>
+
+    <string name="welcome_title">欢迎使用礼拜模式</string>
+    <string name="welcome_message">
+    本应用旨在帮助您专注于最重要的事——您的礼拜——\n\n
+    它的帮助方式如下：\n\n
+    \u2022 在每次礼拜时间自动静音手机干扰。\n
+    \u2022 鼓励您坚持按时礼拜。\n
+    \u2022 避免打扰您周围正在礼拜的人。\n\n
+    不要让电话和通知阻止您与真主建立联系。\n
+    </string>
+    <string name="next">下一步</string>
+
+    <string name="education_title">须知</string>
+    <string name="education_message">\n 🔁 礼拜时间会更新\n
+    \u2022 每月从 Aladhan.com 更新\n
+    \u2022 当检测到显著位移时更新\n\n
+        🚨 开关可能无法打开如果\n
+    \u2022 位置服务关闭\n
+    \u2022 GPS 信号弱\n
+    \u2022 无互联网连接\n
+    \u2022 必要权限被撤销\n\n
+        ✅ 完整运行所需\n
+    \u2022 所有权限\n
+    \u2022 始终开启的位置 - 确保良好的 GPS 信号\n
+    \u2022 持续的互联网连接\n\n
+        💡 如果 GPS 信号暂时不可用，应用可以使用您上次已知的位置。\n</string>
+    <string name="got_it">知道了</string>
+
+    <!-- Language Section -->
+    <string name="language_section">语言</string>
+    <string name="language">应用语言</string>
+    <string name="select_language">选择语言</string>
+
+    <!-- App Performance Strings -->
+    <string name="app_performance_section">应用性能</string>
+    <string name="battery_optimization_title">后台位置访问</string>
+    <string name="battery_optimization_checking">正在检查状态…</string>
+    <string name="battery_optimization_enabled">✓ 无限制（推荐）</string>
+    <string name="battery_optimization_active">受限 - 点击更改</string>
+    <string name="battery_optimization_dialog_title">改善位置跟踪</string>
+    <string name="battery_optimization_dialog_message">为了在旅行时获得可靠的礼拜时间更新，请允许此应用在后台使用电池。\n\n这有助于应用自动调整礼拜时间。\n\n前往 电池/应用电池使用量 → 无限制 或 允许后台使用 或 不优化。</string>
+    <string name="battery_optimization_dialog_negative">稍后</string>
+    <string name="battery_optimization_error">无法打开电池设置</string>
+    <string name="battery_optimization_already_enabled">此应用的电池优化已启用。这有助于在您旅行时保持可靠的位置跟踪以更新礼拜时间。</string>
+
+    <!-- Catch & else blocks -->
+    <string name="failed_writing">请确保您有足够的存储空间。</string>
+    <string name="permission_denied_writing">保存礼拜时间文件时发生意外错误，请重启应用并检查更新。</string>
+
+    <!-- For debugging only -->
+    <string name="monthly_update">Updating prayer times for %1$s.</string>
+    <string name="monthly_update_default_method">Updating prayer times for %1$s (Default method).</string>
+
+    <string name="worker_failed">Worker failed.</string>
+    <string name="process_prayer">Process prayer times</string>
+    <string name="fail_read_file">Failed to read from file %1$s</string>
+    <string name="error_parsing_time">Error parsing time %1$s</string>
+    <string name="invalid_time_format">Invalid time format %1$s</string>
+    <string name="unexpected_error">Unexpected error while getting prayer calendar %1$s</string>
+
+    <string name="error">Error</string>
+    <string name="error_getting_hijri_date">Error getting hijri date %1$s</string>
+    <string name="failed_schedule_silent_mode">Failed to schedule silent mode for %1$s</string>
+</resources>

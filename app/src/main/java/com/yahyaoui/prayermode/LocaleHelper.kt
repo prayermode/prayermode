@@ -15,7 +15,7 @@ object LocaleHelper {
     private const val TAG = "LocaleHelper"
     private const val EASTERN_ARABIC_OFFSET = 1584
     fun setLocale(context: Context, localeTag: String): Context {
-        if (BuildConfig.DEBUG) Log.d(TAG, "Attempting to set app locale to: $localeTag")
+//        if (BuildConfig.DEBUG) Log.d(TAG, "Attempting to set app locale to: $localeTag")
 
         SharedHelper(context).saveLocale(localeTag)
         val locale = Locale.forLanguageTag(localeTag)
@@ -25,7 +25,7 @@ object LocaleHelper {
         config.setLocale(locale)
         config.setLayoutDirection(locale)
         val newContext = context.createConfigurationContext(config)
-        if (BuildConfig.DEBUG) Log.d(TAG, "Actual locale applied to new context: ${newContext.resources.configuration.locales[0]}")
+//        if (BuildConfig.DEBUG) Log.d(TAG, "Actual locale applied to new context: ${newContext.resources.configuration.locales[0]}")
         return newContext
     }
     fun getPersistedLocale(): String {
@@ -38,7 +38,7 @@ object LocaleHelper {
             localeTag.startsWith("ur-PK") -> "ur-PK"
             else -> localeTag.substringBefore("-")
         }
-        if (BuildConfig.DEBUG) Log.d(TAG, "Mapped locale tag for resources: $finalLocaleTag")
+//        if (BuildConfig.DEBUG) Log.d(TAG, "Mapped locale tag for resources: $finalLocaleTag")
         return finalLocaleTag
     }
     fun getLanguageDisplayName(context: Context, localeTag: String): String {
@@ -54,10 +54,10 @@ object LocaleHelper {
 
         if (currentLocale == "ar" || currentLocale == "ur") {
             window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
-            if (BuildConfig.DEBUG) Log.d(TAG, "Setting RTL layout direction for locale: $currentLocale")
+//            if (BuildConfig.DEBUG) Log.d(TAG, "Setting RTL layout direction for locale: $currentLocale")
         } else {
             window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
-            if (BuildConfig.DEBUG) Log.d(TAG, "Setting LTR layout direction for locale: $currentLocale")
+//            if (BuildConfig.DEBUG) Log.d(TAG, "Setting LTR layout direction for locale: $currentLocale")
         }
     }
     fun getLocalizedString(context: Context, stringResId: Int, vararg formatArgs: Any): String {
@@ -71,10 +71,6 @@ object LocaleHelper {
         val timeFormatter = SimpleDateFormat(timeFormatPattern, Locale.ENGLISH)
         val formattedTime = timeFormatter.format(calendar.time)
         return formatWithLocaleNumerals(context, formattedTime)
-    }
-    fun formatNumberForNotification(context: Context, number: Number, pattern: String = "%.1f"): String {
-        val formattedNumber = String.format(Locale.ENGLISH, pattern, number)
-        return formatWithLocaleNumerals(context, formattedNumber)
     }
     private fun shouldUseEasternArabicNumerals(savedLocale: String): Boolean {
         return when {

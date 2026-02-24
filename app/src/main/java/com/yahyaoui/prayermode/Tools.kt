@@ -381,10 +381,10 @@ class Tools(private val context: Context) {
             val calendar = Calendar.getInstance()
             val gregorianDate = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(calendar.time)
             val hijriDate = getCurrentHijriDate()
-            val hijriDay = hijriDate.optString("day")
-            val hijriMonth = hijriDate.optString("month")
-            val hijriYear = hijriDate.optString("year")
-            val lastDay = hijriDate.optString("daysInMonth")
+            val hijriDay = hijriDate.optInt("day", 0)
+            val hijriMonth = hijriDate.optInt("month", 0)
+            val hijriYear = hijriDate.optInt("year", 0)
+            val lastDay = hijriDate.optInt("daysInMonth", 0)
 
             val fileContent = file.bufferedReader().use { it.readText() }
             val fileJson = JSONObject(fileContent)
@@ -417,6 +417,16 @@ class Tools(private val context: Context) {
                 val sunriseTime = prayerTimes.optString("Sunrise")
                 val imsakTime = prayerTimes.optString("Imsak")
                 val currentTime = Calendar.getInstance()
+
+                val isLastDayOfShaban = (hijriMonth == 8 && hijriDay == lastDay)
+                val isRamadan = (hijriMonth == 9)
+                val isLastDayOfRamadan = (isRamadan && hijriDay == lastDay)
+                val isTaraweehPeriod = isLastDayOfShaban || (isRamadan && !isLastDayOfRamadan)
+                val isTahajjudPeriod = isRamadan
+                val isEidAlFitr = (hijriMonth == 10 && hijriDay == 1)
+                val isEidAlAdha = (hijriMonth == 12 && hijriDay == 10)
+                val ablutionEnabled = sharedHelper.getAblutionSwitchState()
+
                 if (currentWeekday == "Friday") {
                     if (!pendingIntentMap.containsKey(dhuhrTime)) {
                         val dhuhrCalendar = getPrayerCalendar(dhuhrTime)
@@ -424,20 +434,22 @@ class Tools(private val context: Context) {
                             val cleanedDhuhrTime = "${dhuhrCalendar.get(Calendar.HOUR_OF_DAY)}:${dhuhrCalendar.get(Calendar.MINUTE)}"
                             val durationBeforeInt = getBeforeJumuaDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_BEFORE_JUMUA, 0))
                             val durationAfterInt = getAfterJumuaDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_AFTER_JUMUA, 3))
-                            if (BuildConfig.DEBUG) Log.i(tag, "Friday: $durationBeforeInt min before, $durationAfterInt min after")
+                            val effectiveBefore = if (durationBeforeInt > 0) durationBeforeInt else (if (ablutionEnabled) 10 else 0)
+                            if (BuildConfig.DEBUG) Log.i(tag, "Jumua duration $durationBeforeInt min before - ablution is $ablutionEnabled, activated $effectiveBefore min before, $durationAfterInt min after")
 
                             val prayerTimeMillis = dhuhrCalendar.timeInMillis
                             val currentMillis = currentTime.timeInMillis
-                            val startTimeMillis = prayerTimeMillis - TimeUnit.MINUTES.toMillis(durationBeforeInt.toLong())
+                            val startTimeMillis = prayerTimeMillis - TimeUnit.MINUTES.toMillis(effectiveBefore.toLong())
                             val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationAfterInt.toLong())
                             val silentModeRange = startTimeMillis..endTimeMillis
 
                             val formattedDhuhrTime = LocaleHelper.formatTimeForNotification(context, dhuhrCalendar)
                             if (BuildConfig.DEBUG) Log.i(tag, "Today Al-jumua is at $formattedDhuhrTime")
+                            val isAblutionBefore = (durationBeforeInt == 0 && ablutionEnabled)
 
                             if (currentMillis in silentModeRange || dhuhrCalendar.after(currentTime)) {
                                 NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.today_dhuhr_time_is, 150, formattedDhuhrTime)
-                                scheduleSilentMode(cleanedDhuhrTime, durationBeforeInt, durationAfterInt, "jumua")
+                                scheduleSilentMode(cleanedDhuhrTime, effectiveBefore, durationAfterInt, "jumua", isAblutionBefore)
                             } else {
                                 if (BuildConfig.DEBUG) Log.i(tag, "Skipping jumua silent mode until after worker execution")
                             }
@@ -446,14 +458,12 @@ class Tools(private val context: Context) {
                         if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for jumua at $dhuhrTime")
                     }
                 }
-                if ((hijriMonth == "8" && hijriDay == lastDay) || (hijriMonth == "9" && hijriDay <= lastDay)) {
+                if (isTaraweehPeriod) {
                     if (!pendingIntentMap.containsKey(ishaTime)) {
                         val ishaCalendar = getPrayerCalendar(ishaTime)
                         if (ishaCalendar != null) {
                             val cleanedIshaTime = "${ishaCalendar.get(Calendar.HOUR_OF_DAY)}:${ishaCalendar.get(Calendar.MINUTE)}"
                             val durationTaraweehInt = getTaraweehDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_TARAWEEH, 4))
-
-                            val ablutionEnabled = sharedHelper.getAblutionSwitchState()
                             val durationBeforeInt = if (ablutionEnabled) 10 else 0
                             if (BuildConfig.DEBUG) Log.i(tag, "Taraweeh: $durationBeforeInt min before (ablution), $durationTaraweehInt min after")
 
@@ -461,9 +471,10 @@ class Tools(private val context: Context) {
                             val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationTaraweehInt.toLong())
                             val currentMillis = currentTime.timeInMillis
                             val silentModeRange = prayerTimeMillis..endTimeMillis
+                            val isAblutionBefore = ablutionEnabled
 
                             if (currentMillis in silentModeRange || ishaCalendar.after(currentTime)) {
-                                scheduleSilentMode(cleanedIshaTime, durationBeforeInt, durationTaraweehInt, "Taraweeh")
+                                scheduleSilentMode(cleanedIshaTime, durationBeforeInt, durationTaraweehInt, "Taraweeh", isAblutionBefore)
                             } else {
                                 if (BuildConfig.DEBUG) Log.i(tag, "Skipping Taraweeh silent mode until after worker execution")
                             }
@@ -472,22 +483,25 @@ class Tools(private val context: Context) {
                         if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for Taraweeh 60 min after $ishaTime")
                     }
                 }
-                if (hijriMonth == "9" && hijriDay >= "1" && hijriDay <= lastDay) {
-                    if (!pendingIntentMap.containsKey(fajrTime)) {
+                if (isTahajjudPeriod) {
+                     if (!pendingIntentMap.containsKey(fajrTime)) {
                         val fajrCalendar = getPrayerCalendar(fajrTime)
                         if (fajrCalendar != null) {
                             val cleanedFajrTime = "${fajrCalendar.get(Calendar.HOUR_OF_DAY)}:${fajrCalendar.get(Calendar.MINUTE)}"
                             val durationTahajjudInt = getTahajjudDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_TAHAJJUD, 0))
                             val durationFajrInt = getDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_FAJR, 3))
+                            val effectiveBefore = if (durationTahajjudInt > 0) durationTahajjudInt else (if (ablutionEnabled) 10 else 0)
+                            if (BuildConfig.DEBUG) Log.i(tag, "Tahajjud duration $durationTahajjudInt min - ablution is $ablutionEnabled, activated $effectiveBefore min before, $durationFajrInt min after")
 
                             val prayerTimeMillis = fajrCalendar.timeInMillis
                             val currentMillis = currentTime.timeInMillis
-                            val startTimeMillis = prayerTimeMillis - TimeUnit.MINUTES.toMillis(durationTahajjudInt.toLong())
+                            val startTimeMillis = prayerTimeMillis - TimeUnit.MINUTES.toMillis(effectiveBefore.toLong())
                             val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationFajrInt.toLong())
                             val silentModeRange = startTimeMillis..endTimeMillis
+                            val isAblutionBefore = (durationTahajjudInt == 0 && ablutionEnabled)
 
                             if (currentMillis in silentModeRange || fajrCalendar.after(currentTime)) {
-                                scheduleSilentMode(cleanedFajrTime, durationTahajjudInt, durationFajrInt, "Tahajjud")
+                                scheduleSilentMode(cleanedFajrTime, effectiveBefore, durationFajrInt, "Tahajjud", isAblutionBefore)
                                 val imsakCalendar = getPrayerCalendar(imsakTime)
 
                                 if (imsakCalendar != null) {
@@ -502,8 +516,8 @@ class Tools(private val context: Context) {
                         if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for Tahajjud 60 min before $fajrTime")
                     }
                 }
-                if ((hijriMonth == "10" && hijriDay == "1") || (hijriMonth == "12" && hijriDay == "10")) {
-                    if (hijriDay == "1") NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.happy_eid_alfitr, 650, "")
+                if (isEidAlFitr || isEidAlAdha) {
+                    if (hijriDay == 1) NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.happy_eid_alfitr, 650, "")
                     else NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.happy_eid_aladha, 650, "")
 
                     val eidTimeIndex = sharedHelper.getIntValue(SharedHelper.SELECTED_TIME_EID, 0)
@@ -576,8 +590,11 @@ class Tools(private val context: Context) {
                     }
                 }
                 timesList.forEach { key ->
-                    if (!(currentWeekday == "Friday" && key == "Dhuhr") &&
-                        !(((hijriMonth == "8" && hijriDay == lastDay) || (hijriMonth == "9" && hijriDay >= "1"  && hijriDay <= lastDay)) && (key == "Fajr" || key == "Isha"))) {
+                    val isFridayDhuhr = (currentWeekday == "Friday" && key == "Dhuhr")
+                    val shouldSkipIsha = (key == "Isha" && isTaraweehPeriod)
+                    val shouldSkipFajr = (key == "Fajr" && isTahajjudPeriod)
+
+                    if (!isFridayDhuhr && !shouldSkipIsha && !shouldSkipFajr) {
                         val time = prayerTimes.optString(key)
                         val prayerCalendar = getPrayerCalendar(time)
                         if (prayerCalendar != null) {
@@ -586,19 +603,18 @@ class Tools(private val context: Context) {
 
                             val prayerTimeMillis = prayerCalendar.timeInMillis
                             val durationValueInt = getPrayerDuration(key, sharedHelper)
-                            val ablutionEnabled = sharedHelper.getAblutionSwitchState()
                             val durationBeforeInt = if (ablutionEnabled) 10 else 0
-
                             if (BuildConfig.DEBUG) Log.i(tag, "Duration for $key: $durationBeforeInt min before, $durationValueInt min after")
 
                             val startTimeMillis = prayerTimeMillis - TimeUnit.MINUTES.toMillis(durationBeforeInt.toLong())
                             val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationValueInt.toLong())
                             val currentMillis = currentTime.timeInMillis
                             val silentModeRange = startTimeMillis..endTimeMillis
+                            val isAblutionBefore = ablutionEnabled
 
                             if (currentMillis in silentModeRange || prayerCalendar.after(currentTime)) {
                                 if (!pendingIntentMap.containsKey(cleanedTime)) {
-                                    scheduleSilentMode(cleanedTime, durationBeforeInt, durationValueInt, key)
+                                    scheduleSilentMode(cleanedTime, durationBeforeInt, durationValueInt, key, isAblutionBefore)
                                     if (key == "Fajr") {
                                         val fajrCalendar = getPrayerCalendar(fajrTime)
 
@@ -639,7 +655,7 @@ class Tools(private val context: Context) {
         }
         return getDurationId(durationIndex)
     }
-    private fun scheduleSilentMode(time: String, durationBefore: Int, durationAfter: Int, prayerName: String) {
+    private fun scheduleSilentMode(time: String, durationBefore: Int, durationAfter: Int, prayerName: String, isAblutionBefore: Boolean = false) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!alarmManager.canScheduleExactAlarms()) {
                 if (BuildConfig.DEBUG) Log.w(tag, "Exact alarm permission not granted. Cannot schedule silent mode precisely for $prayerName.")
@@ -677,7 +693,7 @@ class Tools(private val context: Context) {
                     putExtra("mode", true)
                     putExtra("prayerName", prayerName)
                     putExtra("isImmediate", true)
-                    putExtra("isBeforeAdhan", currentTimeInMillis < prayerTimeInMillis)
+                    putExtra("isAblutionBefore", isAblutionBefore)
                 }
                 context.sendBroadcast(immediateIntent)
             }
@@ -687,7 +703,7 @@ class Tools(private val context: Context) {
                     action = "START_SILENT_MODE"
                     putExtra("mode", true)
                     putExtra("prayerName", prayerName)
-                    putExtra("isBeforeAdhan", startTimeInMillis < prayerTimeInMillis)
+                    putExtra("isAblutionBefore", isAblutionBefore)
                 }
                 val startPendingIntent = PendingIntent.getBroadcast(
                     context, (prayerName.hashCode() * 10) + 1, startIntent,
@@ -742,7 +758,7 @@ class Tools(private val context: Context) {
             if (BuildConfig.DEBUG) NotificationHelper.sendNotification(context, R.string.error, R.string.failed_schedule_silent_mode, 444, "${e.message}")
         }
     }
-    fun setSilentMode(enable: Boolean, prayerName: String, isBeforeAdhan: Boolean = false): Boolean {
+    fun setSilentMode(enable: Boolean, prayerName: String, isAblutionBefore: Boolean = false): Boolean {
         val localizedPrayerName = getLocalizedPrayerName(prayerName)
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -787,7 +803,7 @@ class Tools(private val context: Context) {
                     sharedHelper.saveBoolean(SharedHelper.IS_APP_CONTROLLED_DND_ACTIVE, true)
                     if (BuildConfig.DEBUG) Log.i(tag, "Saved IS_APP_CONTROLLED_DND_ACTIVE as TRUE, App controls DND.")
 
-                    if (sharedHelper.getAblutionSwitchState() && isBeforeAdhan) {
+                    if (sharedHelper.getAblutionSwitchState() && isAblutionBefore) {
                         if (BuildConfig.DEBUG) Log.i(tag, "Do Not Disturb activated for $localizedPrayerName 10 minutes before Adhan.")
                         NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.ablution_silent_mode_activation, 220, localizedPrayerName)
                     } else {
@@ -870,7 +886,7 @@ class Tools(private val context: Context) {
             val hijriYear = calendar.get(IslamicCalendar.YEAR).toString()
             val hijriMonth = (calendar.get(IslamicCalendar.MONTH) + 1).toString()
             val hijriDay = calendar.get(IslamicCalendar.DAY_OF_MONTH).toString()
-            val daysInMonth = calendar.getMaximum(IslamicCalendar.DAY_OF_MONTH).toString()
+            val daysInMonth = calendar.getActualMaximum(IslamicCalendar.DAY_OF_MONTH).toString()
 
             return JSONObject().apply {
                 put("year", hijriYear)

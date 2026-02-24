@@ -9,9 +9,7 @@ import androidx.work.WorkerParameters
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-
 class SilentModeWorker(appContext: Context, workerParams: WorkerParameters) : CoroutineWorker(appContext, workerParams) {
-
     private val sharedHelper: SharedHelper by lazy { SharedHelper(appContext) }
     private val tools: Tools by lazy { Tools(appContext) }
     private val tag = "SilentModeWorker"
@@ -23,7 +21,7 @@ class SilentModeWorker(appContext: Context, workerParams: WorkerParameters) : Co
         val isBackup = inputData.getBoolean("isBackup", false)
         val isImmediate = inputData.getBoolean("isImmediate", false)
         val ablutionEnabled = sharedHelper.getAblutionSwitchState()
-        val isBeforeAdhan = inputData.getBoolean("isBeforeAdhan", false)
+        val isAblutionBefore = inputData.getBoolean("isAblutionBefore", false)
 
         if (BuildConfig.DEBUG) {
             if (isBackup) Log.w(tag, "BACKUP worker executing for $prayerName: mode=$mode")
@@ -109,7 +107,7 @@ class SilentModeWorker(appContext: Context, workerParams: WorkerParameters) : Co
                             }
                         }
                         if (BuildConfig.DEBUG) Log.i(tag, "Activating silent mode for $prayerName.")
-                        tools.setSilentMode(true, prayerName, isBeforeAdhan)
+                        tools.setSilentMode(true, prayerName, isAblutionBefore)
                     } else {
                         if (isBackup) {
                             val isDndActive = sharedHelper.getBoolean(SharedHelper.IS_APP_CONTROLLED_DND_ACTIVE, false)

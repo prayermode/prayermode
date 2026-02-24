@@ -244,7 +244,6 @@ class LocationService : Service(), CoroutineScope {
 
             if (success) {
                 if (distance>0) {
-//                    val formattedDistance = LocaleHelper.formatNumberForNotification(this@LocationService, distance, "%.1f")
                     NotificationHelper.sendNotification(this@LocationService, R.string.location_title, R.string.travelled_distance, 333, "")
                     sharedHelper.saveLong("last_travel_time", System.currentTimeMillis())
                 }
