@@ -1,0 +1,2 @@
+Global Reach: Added Chinese language support
+Improvements: Various bug fixes and stability enhancements
