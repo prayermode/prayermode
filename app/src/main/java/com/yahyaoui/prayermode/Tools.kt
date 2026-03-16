@@ -499,14 +499,16 @@ class Tools(private val context: Context) {
                             val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationFajrInt.toLong())
                             val silentModeRange = startTimeMillis..endTimeMillis
                             val isAblutionBefore = (durationTahajjudInt == 0 && ablutionEnabled)
+                            val prayerNameForScheduling = if (durationTahajjudInt > 0) "Tahajjud" else "Fajr"
 
                             if (currentMillis in silentModeRange || fajrCalendar.after(currentTime)) {
-                                scheduleSilentMode(cleanedFajrTime, effectiveBefore, durationFajrInt, "Tahajjud", isAblutionBefore)
+                                scheduleSilentMode(cleanedFajrTime, effectiveBefore, durationFajrInt, prayerNameForScheduling, isAblutionBefore)
                                 val imsakCalendar = getPrayerCalendar(imsakTime)
 
                                 if (imsakCalendar != null) {
                                     val displayedImsakTime  = LocaleHelper.formatTimeForNotification(context, imsakCalendar)
                                     NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.today_imsak_time_is, 155, displayedImsakTime)
+                                    if (BuildConfig.DEBUG) Log.i(tag, "Today Imsak time is at $displayedImsakTime")
                                 }
                             } else {
                                 if (BuildConfig.DEBUG) Log.i(tag, "Skipping tahajjud silent mode until after worker execution")

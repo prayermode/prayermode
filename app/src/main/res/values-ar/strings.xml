@@ -244,11 +244,11 @@
     <string name="decline">رفض</string>
     <string name="accept">قبول</string>
 
-    <string name="today_fajr_time_is">موعد صلاة الفجر اليوم على الساعة %1$s</string>
-    <string name="today_dhuhr_time_is">موعد صلاة الجمعة اليوم على الساعة %1$s</string>
-    <string name="silent_mode_activated_for">تم تفعيل وضع عدم الإزعاج لـصلاة %1$s</string>
+    <string name="today_fajr_time_is">موعد صلاة الفجر اليوم على الساعة %1$s.</string>
+    <string name="today_dhuhr_time_is">موعد صلاة الجمعة اليوم على الساعة %1$s.</string>
+    <string name="silent_mode_activated_for">تم تفعيل وضع عدم الإزعاج لـصلاة %1$s.</string>
     <string name="ablution_silent_mode_activation">تم تفعيل وضع عدم الإزعاج لصلاة %1$s عشر دقائق قبل الأذان.</string>
-    <string name="today_imsak_time_is">وقت الإمساك اليوم على الساعة %1$s</string>
+    <string name="today_imsak_time_is">وقت الإمساك اليوم على الساعة %1$s.</string>
     <string name="back_to_normal_mode">تم إيقاف وضع عدم الإزعاج.</string>
     <string name="location_title">خدمة الموقع</string>
     <string name="getting_location_update">جارٍ الحصول على تحديثات الموقع.</string>

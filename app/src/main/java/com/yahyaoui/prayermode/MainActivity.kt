@@ -370,7 +370,7 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         Handler(Looper.getMainLooper()).postDelayed({
             setSwitchState(true)
             if (BuildConfig.DEBUG) Log.d(tag, "App updated: Service and Worker refreshed.")
-        }, 800)
+        }, 1500)
     }
     private fun showSnackbar(@androidx.annotation.StringRes messageRes: Int) {
         Snackbar.make(findViewById(android.R.id.content), getString(messageRes), Snackbar.LENGTH_SHORT).show()

@@ -102,7 +102,7 @@ class UpdateChecker(private val context: Context) {
             messageResId = R.string.update_notification_message,
             notificationId = NotificationIds.UPDATE_AVAILABLE,
             channelId = "update_channel",
-            pendingIntent = null,
+            pendingIntent = updatePendingIntent,
             actionTitleResId = R.string.update,
             actionPendingIntent = updatePendingIntent,
             autoCancel = true,
