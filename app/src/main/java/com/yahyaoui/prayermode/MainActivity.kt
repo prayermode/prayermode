@@ -366,11 +366,11 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         }
     }
     private fun triggerSoftReset() {
-        setSwitchState(false)
+        switchOff()
         Handler(Looper.getMainLooper()).postDelayed({
-            setSwitchState(true)
+            switchOn()
             if (BuildConfig.DEBUG) Log.d(tag, "App updated: Service and Worker refreshed.")
-        }, 1500)
+        }, 1200)
     }
     private fun showSnackbar(@androidx.annotation.StringRes messageRes: Int) {
         Snackbar.make(findViewById(android.R.id.content), getString(messageRes), Snackbar.LENGTH_SHORT).show()
@@ -382,14 +382,11 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         showSnackbar(message)
     }
     private fun switchOffSilently() {
-        setSwitchState(false)
-        tvSwitchState.text = getString(R.string.Off)
-    }
-    private fun setSwitchState(state: Boolean) {
         isRestoringSwitchState = true
-        activateSwitch.isChecked = state
+        activateSwitch.isChecked = false
         isRestoringSwitchState = false
-        sharedHelper.saveSwitchState(state)
+        sharedHelper.saveSwitchState(false)
+        tvSwitchState.text = getString(R.string.Off)
     }
     private fun showWelcomeDialog() {
         val dialog = WelcomeDialog()
