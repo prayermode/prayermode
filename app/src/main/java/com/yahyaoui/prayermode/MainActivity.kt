@@ -361,16 +361,9 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         val lastVersion = sharedHelper.getLastLaunchVersion()
         val currentVersion = BuildConfig.VERSION_CODE
         if (currentVersion > lastVersion) {
-            if (sharedHelper.getSwitchState()) triggerSoftReset()
+            if (sharedHelper.getSwitchState()) LocationService.start(this)
             sharedHelper.saveLastLaunchVersion(currentVersion)
         }
-    }
-    private fun triggerSoftReset() {
-        switchOff()
-        Handler(Looper.getMainLooper()).postDelayed({
-            switchOn()
-            if (BuildConfig.DEBUG) Log.d(tag, "App updated: Service and Worker refreshed.")
-        }, 1200)
     }
     private fun showSnackbar(@androidx.annotation.StringRes messageRes: Int) {
         Snackbar.make(findViewById(android.R.id.content), getString(messageRes), Snackbar.LENGTH_SHORT).show()
