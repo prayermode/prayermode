@@ -29,9 +29,9 @@ Set it once, the app does the rest! It works automatically in the background, ke
 
 **Customize Your Prayer Settings:**
 *   **Calculation Methods:** Access 23 Prayer Calculation Methods powered by aladhan.com API.
-*   **The Five Daily Prayers:** Adjust silent duration for all prayers.
+*   **The Five Daily Prayers:** Set silent duration, Ablution (10 min before Adhan), and Iqama (delay after Adhan) independently for each prayer.
 *   **Friday Prayer:** Set silent periods before and after Adhan.
-*   **Ramadan Nights:** Customizable durations for Taraweeh and Tahajjud.
+*   **Ramadan Nights:** Per-prayer settings for Taraweeh and Tahajjud – with Ablution & Iqama support for Taraweeh.
 *   **Eid Prayers:** Customizable time and silent duration for Eid al-Fitr and Eid al-Adha.
 *   **Smart Location Detection:** Automatically adjusts prayer times based on your precise location and reschedule DND mode for the next prayers.
 
@@ -42,11 +42,16 @@ Set it once, the app does the rest! It works automatically in the background, ke
 
 **Design & Usability:**
 *   Comfortable and user-friendly interface with Light and Dark modes.
+*   Guided Setup: Helpful dialogs guide you through first-time setup and new features – no guesswork required.
 *   Prayer mode Quick Settings Tile for faster access.
 *   Accurate Prayer Times calculated using the reliable Aladhan.com API.
 *   Open Source & Transparent: Every line of code is public for full transparency and trust.
 *   Privacy First: No tracking, no ads, no data collection. Your location and data never leave your device.
 *   Lightweight: Minimal battery and data usage.
+
+## 🌍 Supported Languages
+
+Arabic, English, French, Urdu, Turkish, Indonesian, Malaysian, Bengali, Spanish, Portuguese, Chinese – with more coming!
 
 ## 🔐 Permissions Explained
 
@@ -62,7 +67,7 @@ This app requests the following permissions **only for its core functionality**.
     To deliver important and timely alerts, such as prayer time reminders, DND status changes, and travel alerts.
 
 *   **Alarms & Reminders**
-    To set and trigger precise alerts for prayer times on your device.
+    To set and trigger precise alerts for prayer times on your device – the app uses exact alarms for reliable DND scheduling.
 
 *   **Internet Access**
     Used only to fetch calculation data from the trusted [Aladhan.com API](https://aladhan.com/). *No personal data is sent.*
