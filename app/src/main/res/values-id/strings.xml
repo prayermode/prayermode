@@ -4,7 +4,8 @@
     <string name="On">Aktif</string>
     <string name="select_option">Pilih Opsi</string>
     <string name="AudioText">Dengarkan takbir sebelum mengaktifkan mode diam</string>
-    <string name="AblutionText">Waktu Berwudu - 10 menit sebelum Adzan</string>
+    <string name="duration_ablution_suffix">Wudhu · senyap %1$s</string>
+    <string name="duration_iqama_suffix">Iqamah setelah %2$s · senyap %1$s</string>
     <string name="menu">Menu</string>
     <string name="settings_title">Informasi Aplikasi</string>
 
@@ -44,22 +45,32 @@
     <string name="fajr_silent_duration_after_adhan">Shubuh</string>
     <string name="fajr_silent_duration">Durasi Shubuh</string>
     <string name="select_fajr_duration">Pilih durasi hening Shubuh</string>
+    <string name="select_fajr_ablution">Pilih durasi wudhu untuk Fajr</string>
+    <string name="select_fajr_iqama">Pilih waktu Iqamah untuk Fajr</string>
     <!-- Dhuhr Card view -->
     <string name="dhuhr_silent_duration_after_adhan">Dzuhur</string>
     <string name="dhuhr_silent_duration">Durasi Dzuhur</string>
     <string name="select_dhuhr_duration">Pilih durasi hening Dzuhur</string>
+    <string name="select_dhuhr_ablution">Pilih durasi wudhu untuk Dhuhr</string>
+    <string name="select_dhuhr_iqama">Pilih waktu Iqamah untuk Dhuhr</string>
     <!-- Asr Card view -->
     <string name="asr_silent_duration_after_adhan">Ashar</string>
     <string name="asr_silent_duration">Durasi Ashar</string>
     <string name="select_asr_duration">Pilih durasi hening Ashar</string>
+    <string name="select_asr_ablution">Pilih durasi wudhu untuk Asr</string>
+    <string name="select_asr_iqama">Pilih waktu Iqamah untuk Asr</string>
     <!-- Maghrib Card view -->
     <string name="maghrib_silent_duration_after_adhan">Maghrib</string>
     <string name="maghrib_silent_duration">Durasi Maghrib</string>
     <string name="select_maghrib_duration">Pilih durasi hening Maghrib</string>
+    <string name="select_maghrib_ablution">Pilih durasi wudhu untuk Maghrib</string>
+    <string name="select_maghrib_iqama">Pilih waktu Iqamah untuk Maghrib</string>
     <!-- Isha Card view -->
     <string name="isha_silent_duration_after_adhan">Isya</string>
     <string name="isha_silent_duration">Durasi Isya</string>
     <string name="select_isha_duration">Pilih durasi hening Isya</string>
+    <string name="select_isha_ablution">Pilih durasi wudhu untuk Isha</string>
+    <string name="select_isha_iqama">Pilih waktu Iqamah untuk Isha</string>
 
     <string-array name="silent_durations">
         <item>15 menit</item>
@@ -119,6 +130,8 @@
     <string name="taraweeh_silent_duration">Isya &amp; Taraweeh</string>
     <string name="taraweeh_duration">Durasi Taraweeh</string>
     <string name="select_taraweeh_duration">Pilih Durasi Isya dan Taraweeh</string>
+    <string name="select_taraweeh_ablution">Pilih durasi wudhu untuk Isya dan Taraweeh</string>
+    <string name="select_taraweeh_iqama">Pilih waktu Iqamah untuk Isya dan Taraweeh</string>
     <string-array name="taraweeh_duration">
         <item>20 menit</item>
         <item>30 menit</item>
@@ -239,11 +252,14 @@ Terima kasih atas kepercayaan Anda pada aplikasi kami.<br/><br/>
     <string name="calculation">Metode Perhitungan</string>
     <string name="calculation_description">Pilih metode perhitungan sebelum mengaktifkan aplikasi. Catatan: Aplikasi menggunakan API aladhan.com untuk waktu sholat.</string>
 
+    <string name="durations">Durasi</string>
+    <string name="durations_description">Atur durasi sesuai preferensi Anda. Setiap sholat memiliki durasi senyap tersendiri.</string>
+
     <string name="ablution">Pengaturan waktu wudhu</string>
     <string name="ablution_description">Mengaktifkan Jangan Ganggu 10 menit sebelum adzan untuk memberikan waktu untuk wudhu. Anda hanya dapat mengubah pengaturan ini ketika sakelar utama dimatikan.</string>
 
-    <string name="durations">Durasi</string>
-    <string name="durations_description">Atur durasi sesuai preferensi Anda. Setiap sholat memiliki durasi senyap tersendiri.</string>
+    <string name="iqama">Iqamah</string>
+    <string name="iqama_description">Tunda mode senyap hingga beberapa menit setelah Adzan. Anda masih dapat mendengar Takbir sebelumnya jika diaktifkan.</string>
 
     <string name="time">Waktu</string>
     <string name="time_description">Pilih waktu Sholat Idul Fitri dan Idul Adha.</string>
@@ -317,8 +333,8 @@ Anda dapat berkontribusi melalui [DONATION_LINK].<br/><br/>
     <string name="decline">Tolak</string>
     <string name="accept">Terima</string>
 
-    <string name="today_fajr_time_is">Waktu salat Subuh hari ini %1$s.</string>
-    <string name="today_dhuhr_time_is">Waktu Sholat Jumat hari ini pukul %1$s.</string>
+    <string name="today_prayers_time">Waktu sholat hari ini: Fajr %1$s · Dhuhr %2$s · Asr %3$s · Maghrib %4$s · Isha %5$s</string>
+    <string name="today_jumua_time_is">Waktu Sholat Jumat hari ini pukul %1$s.</string>
     <string name="silent_mode_activated_for">Mode Jangan Ganggu diaktifkan selama %1$s.</string>
     <string name="ablution_silent_mode_activation">Mode Jangan Ganggu diaktifkan untuk %1$s 10 menit sebelum Adzan.</string>
     <string name="today_imsak_time_is">Waktu Imsak hari ini pukul %1$s.</string>
@@ -387,6 +403,14 @@ Anda dapat berkontribusi melalui [DONATION_LINK].<br/><br/>
 \u2022 Koneksi Internet persisten\n\n
 💡 Aplikasi dapat menggunakan lokasi terakhir yang diketahui jika sinyal GPS tidak tersedia untuk sementara.\n</string>
     <string name="got_it">Mengerti</string>
+
+    <string name="migration_title">Yang Baru di Versi 1.8.5</string>
+    <string name="migration_message">Kami telah memperbarui pengaturan Wudhu dan Iqamah!\n\n
+\u2022 Sekarang Anda dapat mengatur Wudhu (10 menit sebelum Azan) dan Iqamah (jeda setelah Azan) secara terpisah untuk setiap waktu shalat harian dan Taraweh.\n
+\u2022 Pilih shalat apa saja dari daftar (Subuh, Dzuhur, dll.) untuk mengaturnya.\n\n
+⚠️ Jika sebelumnya Anda menggunakan tombol Wudhu, pengaturannya telah disetel ulang — silakan atur kembali per shalat jika Anda ingin terus menggunakannya.\n\n
+Jika Anda tidak pernah menggunakan pengaturan Wudhu sebelumnya, tidak ada yang berubah — mode hening tetap mulai tepat saat Azan secara default.\n\n
+Selamat menikmati pembaruan ini!</string>
 
     <!-- Language Section -->
     <string name="language_section">Bahasa</string>

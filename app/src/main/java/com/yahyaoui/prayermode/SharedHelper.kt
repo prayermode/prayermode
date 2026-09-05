@@ -28,8 +28,20 @@ class SharedHelper(private val context: Context) {
         const val IS_APP_CONTROLLED_DND_ACTIVE = "is_app_controlled_dnd_active"
         const val AUDIO_SWITCH_STATE_KEY = "audio_switch_state"
         const val KEY_SELECTED_LOCALE = "selected_locale"
-        const val ABLUTION_SWITCH_STATE_KEY = "ablution_switch_state"
+        const val ABLUTION_FAJR = "ablution_fajr"
+        const val ABLUTION_DHUHR = "ablution_dhuhr"
+        const val ABLUTION_ASR = "ablution_asr"
+        const val ABLUTION_MAGHRIB = "ablution_maghrib"
+        const val ABLUTION_ISHA = "ablution_isha"
+        const val ABLUTION_TARAWEEH = "ablution_taraweeh"
+        const val IQAMA_FAJR = "iqama_fajr"
+        const val IQAMA_DHUHR = "iqama_dhuhr"
+        const val IQAMA_ASR = "iqama_asr"
+        const val IQAMA_MAGHRIB = "iqama_maghrib"
+        const val IQAMA_ISHA = "iqama_isha"
+        const val IQAMA_TARAWEEH = "iqama_taraweeh"
         const val LAST_LAUNCH_VERSION = "last_launch_version"
+        const val MIGRATION_185_DIALOG_SHOWN = "migration_dialog_shown"
     }
     fun saveSwitchState(state: Boolean) {
         sharedPreferences.edit { putBoolean(SWITCH_STATE_KEY, state) }
@@ -43,12 +55,32 @@ class SharedHelper(private val context: Context) {
     fun getAudioSwitchState(): Boolean {
         return sharedPreferences.getBoolean(AUDIO_SWITCH_STATE_KEY, false)
     }
-    fun saveAblutionSwitchState(state: Boolean) {
-        sharedPreferences.edit { putBoolean(ABLUTION_SWITCH_STATE_KEY, state) }
+    fun getAblutionIndex(prayerKey: String): Int {
+        return sharedPreferences.getInt(prayerKey, 0)
     }
-
-    fun getAblutionSwitchState(): Boolean {
-        return sharedPreferences.getBoolean(ABLUTION_SWITCH_STATE_KEY, false)
+    fun isAblutionEnabled(prayerKey: String): Boolean {
+        return getAblutionIndex(prayerKey) > 0
+    }
+    fun getIqamaIndex(prayerKey: String): Int {
+        return sharedPreferences.getInt(prayerKey, 0)
+    }
+    fun getAblutionKeyForPrayer(prayerName: String): String? = when (prayerName) {
+        "Fajr" -> ABLUTION_FAJR
+        "Dhuhr" -> ABLUTION_DHUHR
+        "Asr" -> ABLUTION_ASR
+        "Maghrib" -> ABLUTION_MAGHRIB
+        "Isha" -> ABLUTION_ISHA
+        "Taraweeh" -> ABLUTION_TARAWEEH
+        else -> null
+    }
+    fun getIqamaKeyForPrayer(prayerName: String): String? = when (prayerName) {
+        "Fajr" -> IQAMA_FAJR
+        "Dhuhr" -> IQAMA_DHUHR
+        "Asr" -> IQAMA_ASR
+        "Maghrib" -> IQAMA_MAGHRIB
+        "Isha" -> IQAMA_ISHA
+        "Taraweeh" -> IQAMA_TARAWEEH
+        else -> null
     }
     fun saveIntValue(key: String, value: Int) {
         sharedPreferences.edit {putInt(key, value)}
@@ -113,8 +145,13 @@ class SharedHelper(private val context: Context) {
     fun saveLastLaunchVersion(version: Int) {
         sharedPreferences.edit { putInt(LAST_LAUNCH_VERSION, version) }
     }
-
     fun getLastLaunchVersion(): Int {
         return sharedPreferences.getInt(LAST_LAUNCH_VERSION, 0)
+    }
+    fun setMigration185DialogShown(shown: Boolean) {
+        sharedPreferences.edit { putBoolean(MIGRATION_185_DIALOG_SHOWN, shown) }
+    }
+    fun isMigration185DialogShown(): Boolean {
+        return sharedPreferences.getBoolean(MIGRATION_185_DIALOG_SHOWN, false)
     }
 }

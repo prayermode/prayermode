@@ -10,7 +10,6 @@ import org.json.JSONObject
 import java.net.URL
 import androidx.core.net.toUri
 import android.app.*
-import android.content.pm.InstallSourceInfo
 import android.os.Build
 data class AppVersion(
     val versionCode: Int,
@@ -73,8 +72,8 @@ class UpdateChecker(private val context: Context) {
             val packageName = context.packageName
             val packageManager = context.packageManager
             val installerPackageName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                val installSourceInfo: InstallSourceInfo? = packageManager.getInstallSourceInfo(packageName)
-                installSourceInfo?.installingPackageName
+                val installSourceInfo = packageManager.getInstallSourceInfo(packageName)
+                installSourceInfo.installingPackageName
             } else {
                 @Suppress("DEPRECATION")
                 packageManager.getInstallerPackageName(packageName)

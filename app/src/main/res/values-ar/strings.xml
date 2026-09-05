@@ -4,7 +4,8 @@
     <string name="On">تشغيل</string>
     <string name="select_option">حدد خيارًا</string>
     <string name="AudioText">استمع إلى التكبير قبل تفعيل الوضع الصامت</string>
-    <string name="AblutionText">وقت الوضوء - عشر دقائق قبل الأذان</string>
+    <string name="duration_ablution_suffix">وضوء · مدة الصمت %1$s</string>
+    <string name="duration_iqama_suffix">الإقامة بعد %2$s · مدة الصمت %1$s</string>
     <string name="menu">القائمة</string>
     <string name="settings_title">معلومات عن التطبيق</string>
 
@@ -44,22 +45,32 @@
     <string name="fajr_silent_duration_after_adhan">الفجر</string>
     <string name="fajr_silent_duration">مدة الصمت لصلاة الفجر</string>
     <string name="select_fajr_duration">اختر مدة الصمت لصلاة الفجر</string>
+    <string name="select_fajr_ablution">اختر مدة الوضوء لصلاة الفجر</string>
+    <string name="select_fajr_iqama">اختر وقت إقامة صلاة الفجر</string>
     <!-- Dhuhr Card view -->
     <string name="dhuhr_silent_duration_after_adhan">الظُّهر</string>
     <string name="dhuhr_silent_duration">مدة الصمت لصلاة الظهر</string>
     <string name="select_dhuhr_duration">اختر مدة الصمت لصلاة الظُّهر</string>
+    <string name="select_dhuhr_ablution">اختر مدة الوضوء لصلاة الظهر</string>
+    <string name="select_dhuhr_iqama">اختر وقت إقامة صلاة الظهر</string>
     <!-- Asr Card view -->
     <string name="asr_silent_duration_after_adhan">العصر</string>
     <string name="asr_silent_duration">مدة الصمت لصلاة العصر</string>
     <string name="select_asr_duration">اختر مدة الصمت لصلاة العصر</string>
+    <string name="select_asr_ablution">اختر مدة الوضوء لصلاة العصر</string>
+    <string name="select_asr_iqama">اختر وقت إقامة صلاة العصر</string>
     <!-- Maghrib Card view -->
     <string name="maghrib_silent_duration_after_adhan">المغرب</string>
     <string name="maghrib_silent_duration">مدة الصمت لصلاة المغرب</string>
     <string name="select_maghrib_duration">اختر مدة الصمت لصلاة المغرب</string>
+    <string name="select_maghrib_ablution">اختر مدة الوضوء لصلاة المغرب</string>
+    <string name="select_maghrib_iqama">اختر وقت إقامة صلاة المغرب</string>
     <!-- Isha Card view -->
     <string name="isha_silent_duration_after_adhan">العِشاء</string>
     <string name="isha_silent_duration">مدة الصمت لصلاة العشاء</string>
     <string name="select_isha_duration">اختر مدة الصمت لصلاة العِشاء</string>
+    <string name="select_isha_ablution">اختر مدة الوضوء لصلاة العشاء</string>
+    <string name="select_isha_iqama">اختر وقت إقامة صلاة العشاء</string>
 
     <!-- jumuaa Cardview -->
     <string name="jumua_card">فترات الصمت لصلاة الجمعة</string>
@@ -80,6 +91,8 @@
     <string name="taraweeh_silent_duration">العِشاء والتراويح</string>
     <string name="taraweeh_duration">مدة التراويح</string>
     <string name="select_taraweeh_duration">اختيار المدة لصلاة العِشاء والتراويح</string>
+    <string name="select_taraweeh_ablution">اختر مدة الوضوء لصلاة العشاء والتراويح</string>
+    <string name="select_taraweeh_iqama">اختر وقت إقامة صلاة العشاء والتراويح</string>
 
     <string name="tahajjud_silent_duration">التهجد</string>
     <string name="tahajjud_duration">مدة التهجد</string>
@@ -166,11 +179,14 @@
     <string name="calculation">طرق الحساب</string>
     <string name="calculation_description">يُرجى اختيار طريقة الحساب المفضلة قبل تفعيل زر التبديل. يرجى ملاحظة أن التطبيق يستخدم واجهة برمجة التطبيقات الخاصة بـ aladhan.com للحصول على أوقات الصلاة الدقيقة.</string>
 
+    <string name="durations">المدة</string>
+    <string name="durations_description">يُرجى تحديد المدد الزمنية بناءً على تفضيلاتك. مع ملاحظة أن لكل صلاة مدة الصمت الخاصة بها.</string>
+
     <string name="ablution">إعداد وقت الوضوء</string>
     <string name="ablution_description">يفعّل وضع عدم الإزعاج قبل الأذان بعشر دقائق لإتاحة وقت للوضوء. يمكن تغيير هذا الإعداد فقط عندما يكون المفتاح الرئيسي مغلقًا.</string>
 
-    <string name="durations">المدة</string>
-    <string name="durations_description">يُرجى تحديد المدد الزمنية بناءً على تفضيلاتك. مع ملاحظة أن لكل صلاة مدة الصمت الخاصة بها.</string>
+    <string name="iqama">الإقامة</string>
+    <string name="iqama_description">تأخير الوضع الصامت حتى عدد محدد من الدقائق بعد الأذان. يمكنك سماع التكبير قبله إذا تم تفعيله.</string>
 
     <string name="time">الوقت</string>
     <string name="time_description">يُرجى اختيار وقت صلاة عيد الفطر وعيد الأضحى.</string>
@@ -244,8 +260,8 @@
     <string name="decline">رفض</string>
     <string name="accept">قبول</string>
 
-    <string name="today_fajr_time_is">موعد صلاة الفجر اليوم على الساعة %1$s.</string>
-    <string name="today_dhuhr_time_is">موعد صلاة الجمعة اليوم على الساعة %1$s.</string>
+    <string name="today_prayers_time">مواقيت الصلاة اليوم: الفجر %1$s · الظهر %2$s · العصر %3$s · المغرب %4$s · العشاء %5$s</string>
+    <string name="today_jumua_time_is">موعد صلاة الجمعة اليوم على الساعة %1$s.</string>
     <string name="silent_mode_activated_for">تم تفعيل وضع عدم الإزعاج لـصلاة %1$s.</string>
     <string name="ablution_silent_mode_activation">تم تفعيل وضع عدم الإزعاج لصلاة %1$s عشر دقائق قبل الأذان.</string>
     <string name="today_imsak_time_is">وقت الإمساك اليوم على الساعة %1$s.</string>
@@ -315,6 +331,14 @@
 \u2022 اتصال دائم بالإنترنت\n\n
 💡 يمكن للتطبيق استخدام موقعك الأخير المعروف إذا كانت إشارة GPS غير متوفرة مؤقتاً.\n</string>
     <string name="got_it">فهمت</string>
+
+    <string name="migration_title">ما الجديد في الإصدار 1.8.5</string>
+    <string name="migration_message">لقد قمنا بتحسين إعدادات الوضوء والإقامة!\n\n
+    \u2022 يمكن الآن ضبط مدة الوضوء (قبل الأذان بـ 10 دقائق) والإقامة (بعد الأذان بفترة) بشكل منفصل لكل صلاة من الصلوات الخمس والتراويح.\n
+    \u2022 اختر أي صلاة من القائمة (الفجر، الظهر، إلخ) لتعديل إعداداتها.\n\n
+    ⚠️ إذا كنت تستخدم مفتاح الوضوء سابقاً، فقد تمت إعادة ضبطه — يُمكن الآن تفعيله لكل صلاة على حدة إذا أردت الاستمرار في استخدامه.\n\n
+    أما إذا لم تكن تستخدم إعدادات الوضوء من قبل، فلن يتغير شيء — يبدأ وضع الصمت تلقائياً عند الأذان كما في السابق.\n\n
+    استمتع بالتحديث!</string>
 
     <!-- Language Section -->
     <string name="language_section">اللغة</string>

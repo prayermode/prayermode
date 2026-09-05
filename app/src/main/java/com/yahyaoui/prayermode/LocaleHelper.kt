@@ -15,7 +15,6 @@ object LocaleHelper {
     private const val TAG = "LocaleHelper"
     private const val EASTERN_ARABIC_OFFSET = 1584
     fun setLocale(context: Context, localeTag: String): Context {
-//        if (BuildConfig.DEBUG) Log.d(TAG, "Attempting to set app locale to: $localeTag")
 
         SharedHelper(context).saveLocale(localeTag)
         val locale = Locale.forLanguageTag(localeTag)
@@ -25,7 +24,6 @@ object LocaleHelper {
         config.setLocale(locale)
         config.setLayoutDirection(locale)
         val newContext = context.createConfigurationContext(config)
-//        if (BuildConfig.DEBUG) Log.d(TAG, "Actual locale applied to new context: ${newContext.resources.configuration.locales[0]}")
         return newContext
     }
     fun getPersistedLocale(): String {
@@ -38,7 +36,6 @@ object LocaleHelper {
             localeTag.startsWith("ur-PK") -> "ur-PK"
             else -> localeTag.substringBefore("-")
         }
-//        if (BuildConfig.DEBUG) Log.d(TAG, "Mapped locale tag for resources: $finalLocaleTag")
         return finalLocaleTag
     }
     fun getLanguageDisplayName(context: Context, localeTag: String): String {
@@ -52,13 +49,8 @@ object LocaleHelper {
         val currentLocale = sharedHelper.getSavedLocale() ?: getPersistedLocale()
         if (BuildConfig.DEBUG) Log.d(TAG, "Setting layout direction for locale: $currentLocale")
 
-        if (currentLocale == "ar" || currentLocale == "ur") {
-            window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
-//            if (BuildConfig.DEBUG) Log.d(TAG, "Setting RTL layout direction for locale: $currentLocale")
-        } else {
-            window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
-//            if (BuildConfig.DEBUG) Log.d(TAG, "Setting LTR layout direction for locale: $currentLocale")
-        }
+        if (currentLocale == "ar" || currentLocale == "ur") window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
+        else window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
     }
     fun getLocalizedString(context: Context, stringResId: Int, vararg formatArgs: Any): String {
         val sharedHelper = SharedHelper(context)

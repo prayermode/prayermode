@@ -16,35 +16,58 @@ class SilentModeWorker(appContext: Context, workerParams: WorkerParameters) : Co
     private val audioPlayerHelper: AudioPlayerHelper by lazy { AudioPlayerHelper(appContext) }
 
     override suspend fun doWork(): Result {
-        val mode = inputData.getBoolean("mode", false)
         val prayerName = inputData.getString("prayerName") ?: "unknown"
+        val audioOnly = inputData.getBoolean("audioOnly", false)
+
+        if (audioOnly) {
+            return try {
+                withContext(Dispatchers.IO) {
+                    if (sharedHelper.getAudioSwitchState() && sharedHelper.getSwitchState() && !tools.isInCall()) {
+                        if (BuildConfig.DEBUG) Log.i(tag, "Iqama active: playing Takbir at adhan time for $prayerName")
+                        audioPlayerHelper.playAudioFromRaw(R.raw.takbir)
+                    } else if (BuildConfig.DEBUG) {
+                        Log.i(tag, "Skipping Iqama Takbir for $prayerName: audio/main switch off or in call")
+                    }
+                    Result.success()
+                }
+            } catch (e: Exception) {
+                Log.e(tag, "Takbir-only worker failed for $prayerName: ${e.message}", e)
+                Result.failure()
+            }
+        }
+
+        val mode = inputData.getBoolean("mode", false)
         val isBackup = inputData.getBoolean("isBackup", false)
         val isImmediate = inputData.getBoolean("isImmediate", false)
-        val ablutionEnabled = sharedHelper.getAblutionSwitchState()
         val isAblutionBefore = inputData.getBoolean("isAblutionBefore", false)
+        val isIqamaActive = inputData.getBoolean("isIqamaActive", false)
 
         if (BuildConfig.DEBUG) {
             if (isBackup) Log.w(tag, "BACKUP worker executing for $prayerName: mode=$mode")
             else if (isImmediate) Log.w(tag, "IMMEDIATE worker executing for $prayerName: mode=$mode")
             else Log.d(tag, "Executing worker for $prayerName: mode=$mode")
         }
+
+        val ablutionIqamaPrayers = listOf("Fajr", "Dhuhr", "Asr", "Maghrib", "Isha", "Taraweeh")
         val shouldPlayAudio = when {
-            prayerName == "jumua" -> {
-                val beforeJumuaInt = sharedHelper.getIntValue(SharedHelper.DURATION_BEFORE_JUMUA, 0)
-                if (BuildConfig.DEBUG) Log.i(tag, "Jumua: beforeDhuhr index=$beforeJumuaInt, ablution=$ablutionEnabled")
-                beforeJumuaInt == 0 && !ablutionEnabled
+            prayerName == "Jumua" -> {
+                if (BuildConfig.DEBUG) Log.i(tag, "Jumua: Inside Mosque, skipping takbir")
+                false
             }
             prayerName == "Tahajjud" -> {
-                val tahajjudInt = sharedHelper.getIntValue(SharedHelper.DURATION_TAHAJJUD, 0)
-                if (BuildConfig.DEBUG) Log.i(tag, "Tahajjud: tahajjud index=$tahajjudInt, ablution=$ablutionEnabled")
-                tahajjudInt == 0 && !ablutionEnabled
+                if (BuildConfig.DEBUG) Log.i(tag, "Tahajjud: continuous block, skipping takbir")
+                false
             }
             prayerName == "Eid" -> {
                 if (BuildConfig.DEBUG) Log.i(tag, "Eid prayer: skipping takbir playback (special prayer)")
                 false
             }
-            ablutionEnabled && prayerName in listOf("Fajr", "Dhuhr", "Asr", "Maghrib", "Isha", "Taraweeh") -> {
+            isAblutionBefore && prayerName in ablutionIqamaPrayers -> {
                 if (BuildConfig.DEBUG) Log.i(tag, "$prayerName: ablution enabled, skipping takbir")
+                false
+            }
+            isIqamaActive && prayerName in ablutionIqamaPrayers -> {
+                if (BuildConfig.DEBUG) Log.i(tag, "$prayerName: Iqama active, Takbir already played at adhan time, skipping duplicate")
                 false
             }
             else -> true

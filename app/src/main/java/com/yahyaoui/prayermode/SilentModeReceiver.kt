@@ -20,11 +20,16 @@ class SilentModeReceiver : BroadcastReceiver() {
                 val prayerName = intent.getStringExtra("prayerName") ?: "unknown"
                 val isImmediate = intent.getBooleanExtra("isImmediate", false)
                 val isAblutionBefore = intent.getBooleanExtra("isAblutionBefore", false)
-                handleSilentMode(context, mode = true, prayerName, isImmediate, isAblutionBefore)
+                val isIqamaActive = intent.getBooleanExtra("isIqamaActive", false)
+                handleSilentMode(context, mode = true, prayerName, isImmediate, isAblutionBefore, isIqamaActive)
             }
             "END_SILENT_MODE" -> {
                 val prayerName = intent.getStringExtra("prayerName") ?: "unknown"
-                handleSilentMode(context, mode = false, prayerName, isImmediate = false, isAblutionBefore = false)
+                handleSilentMode(context, mode = false, prayerName, isImmediate = false, isAblutionBefore = false, isIqamaActive = false)
+            }
+            "PLAY_TAKBIR_ONLY" -> {
+                val prayerName = intent.getStringExtra("prayerName") ?: "unknown"
+                handleTakbirOnly(context, prayerName)
             }
             "DAILY_WORKER_ALARM" -> {
                 if (BuildConfig.DEBUG) Log.d(tag, "Handling DAILY_WORKER_ALARM...")
@@ -35,7 +40,7 @@ class SilentModeReceiver : BroadcastReceiver() {
             }
         }
     }
-    private fun handleSilentMode(context: Context, mode: Boolean, prayerName: String, isImmediate: Boolean, isAblutionBefore: Boolean) {
+    private fun handleSilentMode(context: Context, mode: Boolean, prayerName: String, isImmediate: Boolean, isAblutionBefore: Boolean, isIqamaActive: Boolean = false) {
         val uniqueTag = "SilentModeWorker_${prayerName}_${if (mode) "Start" else "End"}"
         try {
             val inputData = Data.Builder()
@@ -43,6 +48,7 @@ class SilentModeReceiver : BroadcastReceiver() {
                 .putString("prayerName", prayerName)
                 .putBoolean("isImmediate", isImmediate)
                 .putBoolean("isAblutionBefore", isAblutionBefore)
+                .putBoolean("isIqamaActive", isIqamaActive)
                 .build()
 
             val workRequest = OneTimeWorkRequestBuilder<SilentModeWorker>()
@@ -54,6 +60,25 @@ class SilentModeReceiver : BroadcastReceiver() {
             if (BuildConfig.DEBUG) Log.i(tag, "Scheduled SilentModeWorker for $uniqueTag")
         } catch (e: Exception) {
             Log.e(tag, "Failed to set mode for $uniqueTag: ${e.message}",e)
+        }
+    }
+    private fun handleTakbirOnly(context: Context, prayerName: String) {
+        val uniqueTag = "SilentModeWorker_${prayerName}_TakbirOnly"
+        try {
+            val inputData = Data.Builder()
+                .putString("prayerName", prayerName)
+                .putBoolean("audioOnly", true)
+                .build()
+
+            val workRequest = OneTimeWorkRequestBuilder<SilentModeWorker>()
+                .setInputData(inputData)
+                .setInitialDelay(0, TimeUnit.SECONDS)
+                .addTag(uniqueTag)
+                .build()
+            WorkManager.getInstance(context).enqueueUniqueWork(uniqueTag, ExistingWorkPolicy.REPLACE, workRequest)
+            if (BuildConfig.DEBUG) Log.i(tag, "Scheduled Takbir-only SilentModeWorker for $uniqueTag")
+        } catch (e: Exception) {
+            Log.e(tag, "Failed to schedule Takbir-only worker for $uniqueTag: ${e.message}", e)
         }
     }
     private fun scheduleDailyWorker(context: Context) {

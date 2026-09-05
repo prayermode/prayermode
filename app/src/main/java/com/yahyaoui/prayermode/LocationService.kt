@@ -14,7 +14,6 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
-import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
@@ -104,7 +103,6 @@ class LocationService : Service(), CoroutineScope {
             override fun onLocationChanged(location: Location) {
                 processIncomingLocation(location)
             }
-            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
             override fun onProviderEnabled(provider: String) {
                 if (BuildConfig.DEBUG) Log.d(tag, "Provider enabled: $provider")
             }

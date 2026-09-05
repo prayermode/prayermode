@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.*
+import kotlin.coroutines.resume
 import org.json.JSONObject
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -26,7 +27,6 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.File
 import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.resume
 import com.ibm.icu.util.IslamicCalendar
 import java.util.TimeZone
 import java.util.*
@@ -49,6 +49,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import kotlin.time.Duration.Companion.milliseconds
 import com.yahyaoui.prayermode.LocationService.Companion.MIN_LOCATION_ACCURACY_METERS
 import com.yahyaoui.prayermode.LocationService.Companion.SIGNIFICANT_DISPLACEMENT_KM
 import com.yahyaoui.prayermode.LocationService.Companion.PREF_LAST_FETCH_TIME_MS
@@ -57,7 +58,7 @@ class Tools(private val context: Context) {
     private val sharedHelper = SharedHelper(context)
     private var alarmManager: AlarmManager
     private val pendingIntentMap = HashMap<String, PendingIntent>()
-    private val prayerNames = listOf("Fajr", "Dhuhr", "Asr", "Maghrib", "Isha","Taraweeh", "Tahajjud", "jumua","Eid")
+    private val prayerNames = listOf("Fajr","Dhuhr","Asr","Maghrib","Isha","Taraweeh","Tahajjud","Jumua","Eid")
     private var isExitSilent = false
     private val prayerNameMap = mapOf(
         "Eid" to R.string.eid,
@@ -68,16 +69,20 @@ class Tools(private val context: Context) {
         "Asr" to R.string.asr,
         "Maghrib" to R.string.maghrib,
         "Isha" to R.string.isha,
-        "jumua" to R.string.jumua,
+        "Jumua" to R.string.jumua,
         "Taraweeh" to R.string.taraweeh,
         "Tahajjud" to R.string.tahajjud,
         "Ramadan" to R.string.ramadan
     )
-
+    private data class AblutionIqamaResolution(
+        val durationBeforeInt: Int,
+        val iqamaDelayMinutes: Int,
+        val isAblutionBefore: Boolean,
+        val startTimeMillis: Long,
+        val endTimeMillis: Long
+    )
     init { alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager }
-    companion object {
-        private const val MAX_LOCATION_AGE_MS = 5 * 60000L
-    }
+    companion object { private const val MAX_LOCATION_AGE_MS = 5 * 60000L }
     suspend fun findLocation(selectedMethod: Int): Boolean {
         return try {
             val location = getCurrentLocation() ?: getLastLocation()
@@ -323,8 +328,8 @@ class Tools(private val context: Context) {
                         return
                     }
 
-                    val responseBody: String? = res.body.string()
-                    if (responseBody.isNullOrEmpty()) {
+                    val responseBody: String = res.body.string()
+                    if (responseBody.isEmpty()) {
                         Log.e(tag, "Prayer times response body is null/empty for URL: ${request.url}. Fetch failed.")
                         NotificationHelper.sendNotification(context, R.string.fetch_title, R.string.fetch_failed, 50, "")
                     } else {
@@ -342,7 +347,7 @@ class Tools(private val context: Context) {
         if (currentAttempt < maxRetries) {
             if (BuildConfig.DEBUG) Log.i(tag, "Retrying in ${delay / 1000} seconds...")
             CoroutineScope(Dispatchers.IO).launch {
-                delay(delay)
+                delay(delay.milliseconds)
                 retryFetch(client, request, currentAttempt + 1)
             }
         } else {
@@ -376,6 +381,7 @@ class Tools(private val context: Context) {
         val file = File(context.filesDir, "prayer_times.txt")
         val methodId = getMethodId(sharedHelper.getIntValue(SharedHelper.SELECTED_METHOD_RES_ID, 0))
         if (BuildConfig.DEBUG) Log.d(tag, "Process function - selected method Id : $methodId")
+        val prayerDisplayTimes = mutableMapOf<String, String>()
 
         try {
             val calendar = Calendar.getInstance()
@@ -422,10 +428,9 @@ class Tools(private val context: Context) {
                 val isRamadan = (hijriMonth == 9)
                 val isLastDayOfRamadan = (isRamadan && hijriDay == lastDay)
                 val isTaraweehPeriod = isLastDayOfShaban || (isRamadan && !isLastDayOfRamadan)
-                val isTahajjudPeriod = isRamadan
+                val isTahajjudPeriod = (hijriMonth == 9)
                 val isEidAlFitr = (hijriMonth == 10 && hijriDay == 1)
                 val isEidAlAdha = (hijriMonth == 12 && hijriDay == 10)
-                val ablutionEnabled = sharedHelper.getAblutionSwitchState()
 
                 if (currentWeekday == "Friday") {
                     if (!pendingIntentMap.containsKey(dhuhrTime)) {
@@ -434,28 +439,26 @@ class Tools(private val context: Context) {
                             val cleanedDhuhrTime = "${dhuhrCalendar.get(Calendar.HOUR_OF_DAY)}:${dhuhrCalendar.get(Calendar.MINUTE)}"
                             val durationBeforeInt = getBeforeJumuaDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_BEFORE_JUMUA, 0))
                             val durationAfterInt = getAfterJumuaDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_AFTER_JUMUA, 3))
-                            val effectiveBefore = if (durationBeforeInt > 0) durationBeforeInt else (if (ablutionEnabled) 10 else 0)
-                            if (BuildConfig.DEBUG) Log.i(tag, "Jumua duration $durationBeforeInt min before - ablution is $ablutionEnabled, activated $effectiveBefore min before, $durationAfterInt min after")
+                            if (BuildConfig.DEBUG) Log.i(tag, "Jumua duration $durationBeforeInt min before, $durationAfterInt min after")
 
                             val prayerTimeMillis = dhuhrCalendar.timeInMillis
                             val currentMillis = currentTime.timeInMillis
-                            val startTimeMillis = prayerTimeMillis - TimeUnit.MINUTES.toMillis(effectiveBefore.toLong())
+                            val startTimeMillis = prayerTimeMillis - TimeUnit.MINUTES.toMillis(durationBeforeInt.toLong())
                             val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationAfterInt.toLong())
                             val silentModeRange = startTimeMillis..endTimeMillis
 
                             val formattedDhuhrTime = LocaleHelper.formatTimeForNotification(context, dhuhrCalendar)
-                            if (BuildConfig.DEBUG) Log.i(tag, "Today Al-jumua is at $formattedDhuhrTime")
-                            val isAblutionBefore = (durationBeforeInt == 0 && ablutionEnabled)
+                            if (BuildConfig.DEBUG) Log.i(tag, "Today Al-Jumua is at $formattedDhuhrTime")
 
                             if (currentMillis in silentModeRange || dhuhrCalendar.after(currentTime)) {
-                                NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.today_dhuhr_time_is, 150, formattedDhuhrTime)
-                                scheduleSilentMode(cleanedDhuhrTime, effectiveBefore, durationAfterInt, "jumua", isAblutionBefore)
+                                NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.today_jumua_time_is, 150, formattedDhuhrTime)
+                                scheduleSilentMode(cleanedDhuhrTime, durationBeforeInt, durationAfterInt, "Jumua", false)
                             } else {
-                                if (BuildConfig.DEBUG) Log.i(tag, "Skipping jumua silent mode until after worker execution")
+                                if (BuildConfig.DEBUG) Log.i(tag, "Skipping Jumua silent mode until after worker execution")
                             }
-                        } else Log.w(tag, "Prayer calendar is null for jumua")
+                        } else Log.w(tag, "Prayer calendar is null for Jumua")
                     } else {
-                        if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for jumua at $dhuhrTime")
+                        if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for Jumua at $dhuhrTime")
                     }
                 }
                 if (isTaraweehPeriod) {
@@ -464,17 +467,16 @@ class Tools(private val context: Context) {
                         if (ishaCalendar != null) {
                             val cleanedIshaTime = "${ishaCalendar.get(Calendar.HOUR_OF_DAY)}:${ishaCalendar.get(Calendar.MINUTE)}"
                             val durationTaraweehInt = getTaraweehDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_TARAWEEH, 4))
-                            val durationBeforeInt = if (ablutionEnabled) 10 else 0
-                            if (BuildConfig.DEBUG) Log.i(tag, "Taraweeh: $durationBeforeInt min before (ablution), $durationTaraweehInt min after")
-
                             val prayerTimeMillis = ishaCalendar.timeInMillis
-                            val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationTaraweehInt.toLong())
+
+                            val resolution = resolveAblutionIqamaFor("Taraweeh", prayerTimeMillis, durationTaraweehInt)
+                            if (BuildConfig.DEBUG) Log.i(tag, "Taraweeh: ${resolution.durationBeforeInt} min before (ablutionBefore=${resolution.isAblutionBefore}), $durationTaraweehInt min after, iqama=${resolution.iqamaDelayMinutes} min")
+
                             val currentMillis = currentTime.timeInMillis
-                            val silentModeRange = prayerTimeMillis..endTimeMillis
-                            val isAblutionBefore = ablutionEnabled
+                            val silentModeRange = resolution.startTimeMillis..resolution.endTimeMillis
 
                             if (currentMillis in silentModeRange || ishaCalendar.after(currentTime)) {
-                                scheduleSilentMode(cleanedIshaTime, durationBeforeInt, durationTaraweehInt, "Taraweeh", isAblutionBefore)
+                                scheduleSilentMode(cleanedIshaTime, resolution.durationBeforeInt, durationTaraweehInt, "Taraweeh", resolution.isAblutionBefore, resolution.iqamaDelayMinutes)
                             } else {
                                 if (BuildConfig.DEBUG) Log.i(tag, "Skipping Taraweeh silent mode until after worker execution")
                             }
@@ -484,25 +486,45 @@ class Tools(private val context: Context) {
                     }
                 }
                 if (isTahajjudPeriod) {
-                     if (!pendingIntentMap.containsKey(fajrTime)) {
+                    if (!pendingIntentMap.containsKey(fajrTime)) {
                         val fajrCalendar = getPrayerCalendar(fajrTime)
                         if (fajrCalendar != null) {
                             val cleanedFajrTime = "${fajrCalendar.get(Calendar.HOUR_OF_DAY)}:${fajrCalendar.get(Calendar.MINUTE)}"
                             val durationTahajjudInt = getTahajjudDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_TAHAJJUD, 0))
                             val durationFajrInt = getDurationId(sharedHelper.getIntValue(SharedHelper.DURATION_FAJR, 3))
-                            val effectiveBefore = if (durationTahajjudInt > 0) durationTahajjudInt else (if (ablutionEnabled) 10 else 0)
-                            if (BuildConfig.DEBUG) Log.i(tag, "Tahajjud duration $durationTahajjudInt min - ablution is $ablutionEnabled, activated $effectiveBefore min before, $durationFajrInt min after")
-
                             val prayerTimeMillis = fajrCalendar.timeInMillis
                             val currentMillis = currentTime.timeInMillis
-                            val startTimeMillis = prayerTimeMillis - TimeUnit.MINUTES.toMillis(effectiveBefore.toLong())
-                            val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationFajrInt.toLong())
+
+                            val prayerNameForScheduling: String
+                            val beforeMinutes: Int
+                            val iqamaDelayMinutesTahajjud: Int
+                            val isAblutionBeforeTahajjud: Boolean
+                            val startTimeMillis: Long
+                            val endTimeMillis: Long
+
+                            if (durationTahajjudInt > 0) {
+                                prayerNameForScheduling = "Tahajjud"
+                                beforeMinutes = durationTahajjudInt
+                                iqamaDelayMinutesTahajjud = 0
+                                isAblutionBeforeTahajjud = false
+                                startTimeMillis = prayerTimeMillis - TimeUnit.MINUTES.toMillis(durationTahajjudInt.toLong())
+                                endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationFajrInt.toLong())
+                                if (BuildConfig.DEBUG) Log.i(tag, "Tahajjud ON: $durationTahajjudInt min before Fajr, $durationFajrInt min after (continuous block)")
+                            } else {
+                                val resolution = resolveAblutionIqamaFor("Fajr", prayerTimeMillis, durationFajrInt)
+                                prayerNameForScheduling = "Fajr"
+                                beforeMinutes = resolution.durationBeforeInt
+                                iqamaDelayMinutesTahajjud = resolution.iqamaDelayMinutes
+                                isAblutionBeforeTahajjud = resolution.isAblutionBefore
+                                startTimeMillis = resolution.startTimeMillis
+                                endTimeMillis = resolution.endTimeMillis
+                                if (BuildConfig.DEBUG) Log.i(tag, "Tahajjud OFF: using Fajr settings - ${resolution.durationBeforeInt} min before (ablutionBefore=${resolution.isAblutionBefore}), $durationFajrInt min after, iqama=${resolution.iqamaDelayMinutes} min")
+                            }
+
                             val silentModeRange = startTimeMillis..endTimeMillis
-                            val isAblutionBefore = (durationTahajjudInt == 0 && ablutionEnabled)
-                            val prayerNameForScheduling = if (durationTahajjudInt > 0) "Tahajjud" else "Fajr"
 
                             if (currentMillis in silentModeRange || fajrCalendar.after(currentTime)) {
-                                scheduleSilentMode(cleanedFajrTime, effectiveBefore, durationFajrInt, prayerNameForScheduling, isAblutionBefore)
+                                scheduleSilentMode(cleanedFajrTime, beforeMinutes, durationFajrInt, prayerNameForScheduling, isAblutionBeforeTahajjud, iqamaDelayMinutesTahajjud)
                                 val imsakCalendar = getPrayerCalendar(imsakTime)
 
                                 if (imsakCalendar != null) {
@@ -591,50 +613,46 @@ class Tools(private val context: Context) {
                         }
                     }
                 }
+                var hasScheduled = false
                 timesList.forEach { key ->
+                    val time = prayerTimes.optString(key)
+                    val prayerCalendar = getPrayerCalendar(time)
+                    if (prayerCalendar != null) prayerDisplayTimes[key] = LocaleHelper.formatTimeForNotification(context, prayerCalendar)
+                     else {
+                        Log.w(tag, "Prayer calendar is null for $key")
+                        return@forEach
+                    }
                     val isFridayDhuhr = (currentWeekday == "Friday" && key == "Dhuhr")
                     val shouldSkipIsha = (key == "Isha" && isTaraweehPeriod)
                     val shouldSkipFajr = (key == "Fajr" && isTahajjudPeriod)
 
                     if (!isFridayDhuhr && !shouldSkipIsha && !shouldSkipFajr) {
-                        val time = prayerTimes.optString(key)
-                        val prayerCalendar = getPrayerCalendar(time)
-                        if (prayerCalendar != null) {
-                            val cleanedTime = "${prayerCalendar.get(Calendar.HOUR_OF_DAY)}:${prayerCalendar.get(Calendar.MINUTE)}"
-                            if (BuildConfig.DEBUG) Log.d(tag, "Processing $key at $cleanedTime")
+                        val cleanedTime = "${prayerCalendar.get(Calendar.HOUR_OF_DAY)}:${prayerCalendar.get(Calendar.MINUTE)}"
+                        if (BuildConfig.DEBUG) Log.d(tag, "Processing $key at $cleanedTime")
 
-                            val prayerTimeMillis = prayerCalendar.timeInMillis
-                            val durationValueInt = getPrayerDuration(key, sharedHelper)
-                            val durationBeforeInt = if (ablutionEnabled) 10 else 0
-                            if (BuildConfig.DEBUG) Log.i(tag, "Duration for $key: $durationBeforeInt min before, $durationValueInt min after")
+                        val prayerTimeMillis = prayerCalendar.timeInMillis
+                        val durationValueInt = getPrayerDuration(key, sharedHelper)
 
-                            val startTimeMillis = prayerTimeMillis - TimeUnit.MINUTES.toMillis(durationBeforeInt.toLong())
-                            val endTimeMillis = prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationValueInt.toLong())
-                            val currentMillis = currentTime.timeInMillis
-                            val silentModeRange = startTimeMillis..endTimeMillis
-                            val isAblutionBefore = ablutionEnabled
+                        val resolution = resolveAblutionIqamaFor(key, prayerTimeMillis, durationValueInt)
+                        if (BuildConfig.DEBUG) Log.i(tag, "Duration for $key: ${resolution.durationBeforeInt} min before (ablutionBefore=${resolution.isAblutionBefore}), $durationValueInt min after, iqama=${resolution.iqamaDelayMinutes} min")
 
-                            if (currentMillis in silentModeRange || prayerCalendar.after(currentTime)) {
-                                if (!pendingIntentMap.containsKey(cleanedTime)) {
-                                    scheduleSilentMode(cleanedTime, durationBeforeInt, durationValueInt, key, isAblutionBefore)
-                                    if (key == "Fajr") {
-                                        val fajrCalendar = getPrayerCalendar(fajrTime)
+                        val currentMillis = currentTime.timeInMillis
+                        val silentModeRange = resolution.startTimeMillis..resolution.endTimeMillis
 
-                                        if (fajrCalendar != null) {
-                                            val displayedFajrTime = LocaleHelper.formatTimeForNotification(context, fajrCalendar)
-                                            NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.today_fajr_time_is, 151, displayedFajrTime)
-                                        }
-                                    }
-                                    if (BuildConfig.DEBUG) Log.i(tag, "Scheduling silent mode $key for $durationValueInt minutes")
-                                } else {
-                                    if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for $key at $cleanedTime")
-                                }
+                        if (currentMillis in silentModeRange || prayerCalendar.after(currentTime)) {
+                            if (!pendingIntentMap.containsKey(cleanedTime)) {
+                                scheduleSilentMode(cleanedTime, resolution.durationBeforeInt, durationValueInt, key, resolution.isAblutionBefore, resolution.iqamaDelayMinutes)
+                                hasScheduled = true
+                                if (BuildConfig.DEBUG) Log.i(tag, "Scheduling silent mode $key for $durationValueInt minutes")
                             } else {
-                                if (BuildConfig.DEBUG) Log.i(tag, "Skipping $key silent mode until after worker execution")
+                                if (BuildConfig.DEBUG) Log.i(tag, "Silent mode already scheduled for $key at $cleanedTime")
                             }
-                        } else Log.w(tag, "Prayer calendar is null for $key")
+                        } else {
+                            if (BuildConfig.DEBUG) Log.i(tag, "Skipping $key silent mode until after worker execution")
+                        }
                     }
                 }
+                if (prayerDisplayTimes.size == 5 && hasScheduled) NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.today_prayers_time, 151, prayerDisplayTimes["Fajr"] ?: "", prayerDisplayTimes["Dhuhr"] ?: "", prayerDisplayTimes["Asr"] ?: "", prayerDisplayTimes["Maghrib"] ?: "", prayerDisplayTimes["Isha"] ?: "")
             } else Log.e(tag, "Prayer times for date $gregorianDate / Hijri $hijriDay $hijriMonth not found in file")
         } catch (e: IOException) {
             if (BuildConfig.DEBUG) NotificationHelper.sendNotification(context, R.string.process_prayer, R.string.fail_read_file, 442, "${e.message}")
@@ -657,7 +675,7 @@ class Tools(private val context: Context) {
         }
         return getDurationId(durationIndex)
     }
-    private fun scheduleSilentMode(time: String, durationBefore: Int, durationAfter: Int, prayerName: String, isAblutionBefore: Boolean = false) {
+    private fun scheduleSilentMode(time: String, durationBefore: Int, durationAfter: Int, prayerName: String, isAblutionBefore: Boolean = false, iqamaDelayMinutes: Int = 0) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!alarmManager.canScheduleExactAlarms()) {
                 if (BuildConfig.DEBUG) Log.w(tag, "Exact alarm permission not granted. Cannot schedule silent mode precisely for $prayerName.")
@@ -685,8 +703,24 @@ class Tools(private val context: Context) {
             }
             val currentTimeInMillis = System.currentTimeMillis()
             val prayerTimeInMillis = prayerCalendar.timeInMillis
-            val startTimeInMillis = prayerTimeInMillis - TimeUnit.MINUTES.toMillis(durationBefore.toLong())
-            val endTimeInMillis = prayerTimeInMillis + TimeUnit.MINUTES.toMillis(durationAfter.toLong())
+            val startTimeInMillis = if (iqamaDelayMinutes > 0) prayerTimeInMillis + TimeUnit.MINUTES.toMillis(iqamaDelayMinutes.toLong())
+            else prayerTimeInMillis - TimeUnit.MINUTES.toMillis(durationBefore.toLong())
+            val endTimeInMillis = if (iqamaDelayMinutes > 0) startTimeInMillis + TimeUnit.MINUTES.toMillis(durationAfter.toLong())
+            else prayerTimeInMillis + TimeUnit.MINUTES.toMillis(durationAfter.toLong())
+
+            if (iqamaDelayMinutes > 0 && currentTimeInMillis < prayerTimeInMillis) {
+                val takbirIntent = Intent(context, SilentModeReceiver::class.java).apply {
+                    action = "PLAY_TAKBIR_ONLY"
+                    putExtra("prayerName", prayerName)
+                }
+                val takbirPendingIntent = PendingIntent.getBroadcast(
+                    context, (prayerName.hashCode() * 10) + 4, takbirIntent,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, prayerTimeInMillis, takbirPendingIntent)
+                if (BuildConfig.DEBUG) Log.i(tag, "Takbir-only alarm scheduled for $prayerName at $prayerTimeInMillis ms (adhan time, Iqama active)")
+                pendingIntentMap[prayerName + "_takbir"] = takbirPendingIntent
+            }
 
             if (currentTimeInMillis in startTimeInMillis..endTimeInMillis) {
                 if (BuildConfig.DEBUG) Log.i(tag, "Current time is within the silent mode duration for $prayerName. Activating silent mode immediately.")
@@ -696,6 +730,7 @@ class Tools(private val context: Context) {
                     putExtra("prayerName", prayerName)
                     putExtra("isImmediate", true)
                     putExtra("isAblutionBefore", isAblutionBefore)
+                    putExtra("isIqamaActive", iqamaDelayMinutes > 0)
                 }
                 context.sendBroadcast(immediateIntent)
             }
@@ -706,6 +741,7 @@ class Tools(private val context: Context) {
                     putExtra("mode", true)
                     putExtra("prayerName", prayerName)
                     putExtra("isAblutionBefore", isAblutionBefore)
+                    putExtra("isIqamaActive", iqamaDelayMinutes > 0)
                 }
                 val startPendingIntent = PendingIntent.getBroadcast(
                     context, (prayerName.hashCode() * 10) + 1, startIntent,
@@ -805,7 +841,7 @@ class Tools(private val context: Context) {
                     sharedHelper.saveBoolean(SharedHelper.IS_APP_CONTROLLED_DND_ACTIVE, true)
                     if (BuildConfig.DEBUG) Log.i(tag, "Saved IS_APP_CONTROLLED_DND_ACTIVE as TRUE, App controls DND.")
 
-                    if (sharedHelper.getAblutionSwitchState() && isAblutionBefore) {
+                    if (isAblutionBefore) {
                         if (BuildConfig.DEBUG) Log.i(tag, "Do Not Disturb activated for $localizedPrayerName 10 minutes before Adhan.")
                         NotificationHelper.sendNotification(context, R.string.schedule_title, R.string.ablution_silent_mode_activation, 220, localizedPrayerName)
                     } else {
@@ -816,17 +852,17 @@ class Tools(private val context: Context) {
                 }
             } else {
                 val wasAppControlledDnd = sharedHelper.getBoolean(SharedHelper.IS_APP_CONTROLLED_DND_ACTIVE, false)
-                if (BuildConfig.DEBUG) Log.d(tag, "Deactivation: hasDndAccess is true, wasAppControlledDnd is $wasAppControlledDnd")
+                if (BuildConfig.DEBUG) Log.d(tag, "Deactivation: DND permission granted is true, app-controlled DND flag is $wasAppControlledDnd")
 
                 if (wasAppControlledDnd) {
+                    audioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
+                    notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+
                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, sharedHelper.getIntValue("music_volume", audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) / 2), 0)
                     audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, sharedHelper.getIntValue("notification_volume", audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION) / 2), 0)
                     audioManager.setStreamVolume(AudioManager.STREAM_RING, sharedHelper.getIntValue("ring_volume", audioManager.getStreamMaxVolume(AudioManager.STREAM_RING) / 2), 0)
                     audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, sharedHelper.getIntValue("system_volume", audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM) / 2), 0)
                     if (BuildConfig.DEBUG) Log.i(tag, "All volumes restored to original values or defaults")
-
-                    audioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
-                    notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
 
                     sharedHelper.saveBoolean(SharedHelper.IS_APP_CONTROLLED_DND_ACTIVE, false)
                     if (BuildConfig.DEBUG) Log.i(tag, "Saved IS_APP_CONTROLLED_DND_ACTIVE as FALSE, App no longer controls DND.")
@@ -1097,6 +1133,33 @@ class Tools(private val context: Context) {
             11 -> 60
             else -> 0
         }
+    }
+    private fun getIqamaDelayMinutes(index: Int): Int {
+        return when (index) {
+            0 -> 0
+            1 -> 5
+            2 -> 10
+            3 -> 15
+            4 -> 20
+            5 -> 25
+            6 -> 30
+            else -> 0
+        }
+    }
+    private fun resolveAblutionIqamaFor(prayerKey: String, prayerTimeMillis: Long, durationValueInt: Int): AblutionIqamaResolution {
+        val ablutionKeyForPrayer = sharedHelper.getAblutionKeyForPrayer(prayerKey)
+        val iqamaKeyForPrayer = sharedHelper.getIqamaKeyForPrayer(prayerKey)
+        val ablutionOn = ablutionKeyForPrayer != null && sharedHelper.isAblutionEnabled(ablutionKeyForPrayer)
+        val iqamaIndex = if (iqamaKeyForPrayer != null) sharedHelper.getIqamaIndex(iqamaKeyForPrayer) else 0
+        val iqamaDelayMinutes = getIqamaDelayMinutes(iqamaIndex)
+        val iqamaOn = iqamaDelayMinutes > 0
+        val durationBeforeInt = if (!iqamaOn && ablutionOn) 10 else 0
+        val startTimeMillis = if (iqamaOn) prayerTimeMillis + TimeUnit.MINUTES.toMillis(iqamaDelayMinutes.toLong())
+        else prayerTimeMillis - TimeUnit.MINUTES.toMillis(durationBeforeInt.toLong())
+        val endTimeMillis = if (iqamaOn) startTimeMillis + TimeUnit.MINUTES.toMillis(durationValueInt.toLong())
+        else prayerTimeMillis + TimeUnit.MINUTES.toMillis(durationValueInt.toLong())
+        val isAblutionBefore = ablutionOn && !iqamaOn
+        return AblutionIqamaResolution(durationBeforeInt, iqamaDelayMinutes, isAblutionBefore, startTimeMillis, endTimeMillis)
     }
     private fun getAfterJumuaDurationId(index: Int): Int {
         return when (index) {

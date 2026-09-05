@@ -4,7 +4,8 @@
     <string name="On">Açık</string>
     <string name="select_option">Bir seçenek belirleyin</string>
     <string name="AudioText">Sessiz modu etkinleştirmeden önce tekbiri dinle</string>
-    <string name="AblutionText">Abdest Zamanı - Ezandan 10 dakika önce</string>
+    <string name="duration_ablution_suffix">Abdest · %1$s sessizlik</string>
+    <string name="duration_iqama_suffix">İkâmet %2$s sonra · %1$s sessizlik</string>
     <string name="menu">Menü</string>
     <string name="settings_title">Uygulama Bilgisi</string>
 
@@ -44,22 +45,32 @@
     <string name="fajr_silent_duration_after_adhan">Sabah</string>
     <string name="fajr_silent_duration">Sabah süresi</string>
     <string name="select_fajr_duration">Sabah sessizlik süresini seç</string>
+    <string name="select_fajr_ablution">Fajr için abdest süresini seçin</string>
+    <string name="select_fajr_iqama">Fajr için İkâmet vaktini seçin</string>
     <!-- Dhuhr Card view -->
     <string name="dhuhr_silent_duration_after_adhan">Öğle</string>
     <string name="dhuhr_silent_duration">Öğle süresi</string>
     <string name="select_dhuhr_duration">Öğle sessizlik süresini seç</string>
+    <string name="select_dhuhr_ablution">Dhuhr için abdest süresini seçin</string>
+    <string name="select_dhuhr_iqama">Dhuhr için İkâmet vaktini seçin</string>
     <!-- Asr Card view -->
     <string name="asr_silent_duration_after_adhan">İkindi</string>
     <string name="asr_silent_duration">İkindi süresi</string>
     <string name="select_asr_duration">İkindi sessizlik süresini seç</string>
+    <string name="select_asr_ablution">Asr için abdest süresini seçin</string>
+    <string name="select_asr_iqama">Asr için İkâmet vaktini seçin</string>
     <!-- Maghrib Card view -->
     <string name="maghrib_silent_duration_after_adhan">Akşam</string>
     <string name="maghrib_silent_duration">Akşam süresi</string>
     <string name="select_maghrib_duration">Akşam sessizlik süresini seç</string>
+    <string name="select_maghrib_ablution">Maghrib için abdest süresini seçin</string>
+    <string name="select_maghrib_iqama">Maghrib için İkâmet vaktini seçin</string>
     <!-- Isha Card view -->
     <string name="isha_silent_duration_after_adhan">Yatsı</string>
     <string name="isha_silent_duration">Yatsı süresi</string>
     <string name="select_isha_duration">Yatsı sessizlik süresini seç</string>
+    <string name="select_isha_ablution">Isha için abdest süresini seçin</string>
+    <string name="select_isha_iqama">Isha için İkâmet vaktini seçin</string>
 
     <string-array name="silent_durations">
         <item>15 dakika</item>
@@ -119,6 +130,8 @@
     <string name="taraweeh_silent_duration">Yatsı ve Teravih</string>
     <string name="taraweeh_duration">Teravih Süresi</string>
     <string name="select_taraweeh_duration">Teravih süresi seçin</string>
+    <string name="select_taraweeh_ablution">İsha ve Taraweeh için abdest süresini seçin</string>
+    <string name="select_taraweeh_iqama">İsha ve Taraweeh için İkâmet vaktini seçin</string>
     <string-array name="taraweeh_duration">
         <item>20 dakika</item>
         <item>30 dakika</item>
@@ -238,11 +251,14 @@ Uygulamamıza güvendiğiniz için teşekkür ederiz.<br/><br/>
     <string name="calculation">Hesaplama yöntemleri</string>
     <string name="calculation_description">Anahtarı etkinleştirmeden önce tercih ettiğiniz hesaplama yöntemini seçin. Lütfen uygulamanın doğru namaz vakitlerini almak için aladhan.com API\'sini kullandığını unutmayın.</string>
 
+    <string name="durations">Süreler</string>
+    <string name="durations_description">Tercihlerinize göre süreleri seçin. Her namazın kendi sessizlik süresi vardır.</string>
+
     <string name="ablution">Abdest zamanı ayarı</string>
     <string name="ablution_description">Abdest (Wudu) için zaman tanımak üzere ezandan 10 dakika önce Rahatsız Etmeyi etkinleştirir. Bu ayarı yalnızca ana anahtar kapalıyken değiştirebilirsiniz.</string>
 
-    <string name="durations">Süreler</string>
-    <string name="durations_description">Tercihlerinize göre süreleri seçin. Her namazın kendi sessizlik süresi vardır.</string>
+    <string name="iqama">İkâmet</string>
+    <string name="iqama_description">Ezandan sonra belirlenen dakika sayısına kadar sessiz modu geciktirin. Etkinleştirilmişse tekbiri önceden duyabilirsiniz.</string>
 
     <string name="time">Zaman</string>
     <string name="time_description">Ramazan ve Kurban Bayramı namazı saatini seçin.</string>
@@ -316,8 +332,8 @@ Desteğiniz sadece takdirinizi göstermenin bir yoludur ve bizi uygulamayı topl
     <string name="decline">Reddet</string>
     <string name="accept">Kabul Et</string>
 
-    <string name="today_fajr_time_is">Bugün Sabah namazı saati %1$s.</string>
-    <string name="today_dhuhr_time_is">Bugünkü Cuma namazı saati %1$s.</string>
+    <string name="today_prayers_time">Bugünün namaz vakitleri: Fajr %1$s · Dhuhr %2$s · Asr %3$s · Maghrib %4$s · Isha %5$s</string>
+    <string name="today_jumua_time_is">Bugünkü Cuma namazı saati %1$s.</string>
     <string name="silent_mode_activated_for">%1$s için Rahatsız Etmeyen mod etkinleştirildi.</string>
     <string name="ablution_silent_mode_activation">Rahatsız Etmeyin modu %1$s için Ezandan 10 dakika önce etkinleştirildi.</string>
     <string name="today_imsak_time_is">Bugünkü imsak vakti %1$s.</string>
@@ -387,6 +403,14 @@ Desteğiniz sadece takdirinizi göstermenin bir yoludur ve bizi uygulamayı topl
 \u2022 Kalıcı İnternet bağlantısı\n\n
 💡 GPS sinyali geçici olarak kullanılamıyorsa, uygulama son bilinen konumunuzu kullanabilir.\n</string>
     <string name="got_it">Anladım</string>
+
+    <string name="migration_title">1.8.5 Sürümündeki Yenilikler</string>
+    <string name="migration_message">Abdest ve Kâmet ayarlarını geliştirdik!\n\n
+\u2022 Artık Abdest süresini (Ezan\'dan 10 dk önce) ve Kâmet gecikmesini (Ezan\'dan sonra) her vakit ve Teravih için ayrı ayrı ayarlayabilirsiniz.\n
+\u2022 Ayarlamak için listeden herhangi bir vakti (Fakir, Öğle vb.) seçin.\n\n
+⚠️ Daha önce Abdest anahtarını kullandıysanız sıfırlandı — kullanmaya devam etmek için lütfen her vakit için tekrar ayarlayın.\n\n
+Abdest ayarlarını daha önce kullanmadıysanız hiçbir şey değişmez — sessiz mod varsayılan olarak yine Ezan vaktinde başlar.\n\n
+Güncellemenin tadını çıkarın!</string>
 
     <!-- Language Section -->
     <string name="language_section">Dil</string>

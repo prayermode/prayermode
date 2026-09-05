@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:layoutDirection="locale">
 
@@ -80,15 +82,18 @@
                 android:textAlignment="viewStart"
                 android:textColor="?android:textColorPrimary"
                 android:textDirection="locale"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/activateSwitch"
-                android:saveEnabled="false"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="38dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="0dp" />
+                android:layout_marginEnd="0dp"
+                android:saveEnabled="false"
+                android:clickable="false"
+                android:focusable="false"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -170,8 +175,8 @@
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 app:cardBackgroundColor="?attr/cardBackground"
-                app:cardCornerRadius="0dp"
-                app:cardElevation="0dp">
+                app:cardElevation="0dp"
+                app:shapeAppearanceOverlay="@style/BottomRoundedCorners">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -193,48 +198,6 @@
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/audioSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
-            <!-- Ablution Switch -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/ablutionSwitchContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="?attr/cardBackground"
-                app:cardElevation="0dp"
-                app:cardPreventCornerOverlap="false"
-                app:shapeAppearanceOverlay="@style/BottomRoundedCorners">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/tvAblutionSwitchState"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/AblutionText"
-                        android:textAlignment="viewStart"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="14sp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/ablutionSwitch" />
-
-                    <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/ablutionSwitch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"

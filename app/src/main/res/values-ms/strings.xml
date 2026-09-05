@@ -4,7 +4,8 @@
     <string name="On">Hidup</string>
     <string name="select_option">Pilih Pilihan</string>
     <string name="AudioText">Dengar takbir sebelum mengaktifkan mod senyap</string>
-    <string name="AblutionText">Masa Berwuduk - 10 minit sebelum Azan</string>
+    <string name="duration_ablution_suffix">Wudhu · senyap %1$s</string>
+    <string name="duration_iqama_suffix">Iqamah selepas %2$s · senyap %1$s</string>
     <string name="menu">Menu</string>
     <string name="settings_title">Maklumat Aplikasi</string>
 
@@ -44,22 +45,32 @@
     <string name="fajr_silent_duration_after_adhan">Subuh</string>
     <string name="fajr_silent_duration">Tempoh Subuh</string>
     <string name="select_fajr_duration">Pilih tempoh senyap Subuh</string>
+    <string name="select_fajr_ablution">Pilih tempoh wudhu untuk Fajr</string>
+    <string name="select_fajr_iqama">Pilih masa Iqamah untuk Fajr</string>
     <!-- Dhuhr Card view -->
     <string name="dhuhr_silent_duration_after_adhan">Zohor</string>
     <string name="dhuhr_silent_duration">Tempoh Zohor</string>
     <string name="select_dhuhr_duration">Pilih tempoh senyap Zohor</string>
+    <string name="select_dhuhr_ablution">Pilih tempoh wudhu untuk Dhuhr</string>
+    <string name="select_dhuhr_iqama">Pilih masa Iqamah untuk Dhuhr</string>
     <!-- Asr Card view -->
     <string name="asr_silent_duration_after_adhan">Asar</string>
     <string name="asr_silent_duration">Tempoh Asar</string>
     <string name="select_asr_duration">Pilih tempoh senyap Asar</string>
+    <string name="select_asr_ablution">Pilih tempoh wudhu untuk Asr</string>
+    <string name="select_asr_iqama">Pilih masa Iqamah untuk Asr</string>
     <!-- Maghrib Card view -->
     <string name="maghrib_silent_duration_after_adhan">Maghrib</string>
     <string name="maghrib_silent_duration">Tempoh Maghrib</string>
     <string name="select_maghrib_duration">Pilih tempoh senyap Maghrib</string>
+    <string name="select_maghrib_ablution">Pilih tempoh wudhu untuk Maghrib</string>
+    <string name="select_maghrib_iqama">Pilih masa Iqamah untuk Maghrib</string>
     <!-- Isha Card view -->
     <string name="isha_silent_duration_after_adhan">Isyak</string>
     <string name="isha_silent_duration">Tempoh Isyak</string>
     <string name="select_isha_duration">Pilih tempoh senyap Isyak</string>
+    <string name="select_isha_ablution">Pilih tempoh wudhu untuk Isha</string>
+    <string name="select_isha_iqama">Pilih masa Iqamah untuk Isha</string>
 
     <string-array name="silent_durations">
         <item>15 minit</item>
@@ -119,6 +130,8 @@
     <string name="taraweeh_silent_duration">Isyak &amp; Terawih</string>
     <string name="taraweeh_duration">Tempoh Solat Terawih</string>
     <string name="select_taraweeh_duration">Pilih tempoh Isyak dan Solat Terawih</string>
+    <string name="select_taraweeh_ablution">Pilih tempoh wudhu untuk Isya dan Taraweeh</string>
+    <string name="select_taraweeh_iqama">Pilih masa Iqamah untuk Isya dan Taraweeh</string>
     <string-array name="taraweeh_duration">
         <item>20 minit</item>
         <item>30 minit</item>
@@ -238,11 +251,14 @@ Terima kasih kerana mempercayai permohonan kami.<br/><br/>
     <string name="calculation">Kaedah Pengiraan</string>
     <string name="calculation_description">Pilih kaedah pengiraan sebelum mengaktifkan suis. Aplikasi menggunakan API aladhan.com untuk mendapatkan waktu solat yang tepat.</string>
 
+    <string name="durations">Tempoh</string>
+    <string name="durations_description">Pilih tempoh berdasarkan keutamaan anda. Setiap solat mempunyai tempoh senyap tersendiri.</string>
+
     <string name="ablution">Tetapan masa wuduk</string>
     <string name="ablution_description">Mengaktifkan Jangan Ganggu 10 minit sebelum azan untuk memberi masa untuk wuduk. Anda hanya boleh menukar tetapan ini apabila suis utama ditutup.</string>
 
-    <string name="durations">Tempoh</string>
-    <string name="durations_description">Pilih tempoh berdasarkan keutamaan anda. Setiap solat mempunyai tempoh senyap tersendiri.</string>
+    <string name="iqama">Iqamah</string>
+    <string name="iqama_description">Lengahkan mod senyap sehingga bilangan minit yang ditetapkan selepas Azan. Anda masih boleh mendengar Takbir terlebih dahulu jika diaktifkan.</string>
 
     <string name="time">Waktu</string>
     <string name="time_description">Pilih waktu Solat Hari Raya Aidilfitri dan Aidiladha.</string>
@@ -316,8 +332,8 @@ Anda boleh menyumbang melalui [DONATION_LINK].<br/><br/>
     <string name="decline">Tolak</string>
     <string name="accept">Terima</string>
 
-    <string name="today_fajr_time_is">Waktu solat Subuh hari ini %1$s.</string>
-    <string name="today_dhuhr_time_is">Waktu Solat Jumaat hari ini ialah %1$s.</string>
+    <string name="today_prayers_time">Waktu solat hari ini: Fajr %1$s · Dhuhr %2$s · Asr %3$s · Maghrib %4$s · Isha %5$s</string>
+    <string name="today_jumua_time_is">Waktu Solat Jumaat hari ini ialah %1$s.</string>
     <string name="silent_mode_activated_for">Mod Jangan Ganggu diaktifkan selama %1$s.</string>
     <string name="ablution_silent_mode_activation">Mod Jangan Ganggu diaktifkan untuk %1$s 10 minit sebelum Azan.</string>
     <string name="today_imsak_time_is">Waktu Imsak hari ini ialah %1$s.</string>
@@ -387,6 +403,14 @@ Anda boleh menyumbang melalui [DONATION_LINK].<br/><br/>
 \u2022 Sambungan Internet berterusan\n\n
 💡 Apl boleh menggunakan lokasi terakhir anda yang diketahui jika isyarat GPS tidak tersedia buat sementara waktu.\n</string>
     <string name="got_it">Faham</string>
+
+    <string name="migration_title">Yang Baharu dalam 1.8.5</string>
+    <string name="migration_message">Kami telah menambah baik tetapan Wuduk dan Iqamah!\n\n
+\u2022 Kini anda boleh menetapkan Wuduk (10 minit sebelum Azan) dan Iqamah (penundaan selepas Azan) secara berasingan untuk setiap solat harian dan Terawih.\n
+\u2022 Pilih mana-mana solat daripada senarai (Subuh, Zohor, dll.) untuk melaraskannya.\n\n
+⚠️ Jika anda pernah menggunakan suis Wuduk sebelum ini, ia telah ditetapkan semula — sila tetapkan semula mengikut solat jika anda ingin terus menggunakannya.\n\n
+Jika anda tidak pernah menggunakan tetapan Wuduk sebelum ini, tiada apa yang berubah — mod senyap tetap bermula tepat pada waktu Azan secara lalai.\n\n
+Nikmati kemas kini ini!</string>
 
     <!-- Language Section -->
     <string name="language_section">Bahasa</string>

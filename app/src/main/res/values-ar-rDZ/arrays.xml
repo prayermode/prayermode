@@ -12,6 +12,21 @@
         <item>60 دقيقة</item>
     </string-array>
 
+    <string-array name="ablution_duration">
+        <item>إيقاف</item>
+        <item>10 دقائق</item>
+    </string-array>
+
+    <string-array name="iqama_delay_options">
+        <item>إيقاف</item>
+        <item>5 دقائق</item>
+        <item>10 دقائق</item>
+        <item>15 دقيقة</item>
+        <item>20 دقيقة</item>
+        <item>25 دقيقة</item>
+        <item>30 دقيقة</item>
+    </string-array>
+
     <string-array name="before_jumua_duration">
         <item>إيقاف</item>
         <item>10 دقائق</item>

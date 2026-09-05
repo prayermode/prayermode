@@ -8,12 +8,12 @@
     android:padding="24dp">
 
     <TextView
-        android:id="@+id/dialogTitle"
+        android:id="@+id/migrationTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:gravity="center_horizontal"
-        android:text="@string/welcome_title"
+        android:text="@string/migration_title"
         android:textAlignment="center"
         android:textAppearance="?attr/textAppearanceHeadlineSmall"
         android:textColor="?android:textColorPrimary"
@@ -32,25 +32,24 @@
         android:layout_marginBottom="24dp">
 
         <TextView
-            android:id="@+id/tvWelcomeMessage"
+            android:id="@+id/tvMigrationMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingMultiplier="1.2"
-            android:text="@string/welcome_message"
-            android:textAlignment="center"
+            android:text="@string/migration_message"
             android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="?attr/colorOnSurface"
             android:textSize="16sp" />
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnNext"
+        android:id="@+id/btnGotIt"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:backgroundTint="?attr/colorPrimary"
-        android:text="@string/next"
+        android:text="@string/got_it"
         android:textAlignment="center"
         android:textColor="@android:color/white" />
 </LinearLayout>

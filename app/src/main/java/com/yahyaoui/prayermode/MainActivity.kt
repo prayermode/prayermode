@@ -44,6 +44,18 @@ data class ContainerConfig(
     val defaultIndex: Int,
     val launcherKey: String
 )
+data class DailyPrayerConfig(
+    val prayerName: String,
+    val container: View,
+    val textView: TextView,
+    val durationKey: String,
+    val durationTitleResId: Int,
+    val ablutionTitleResId: Int,
+    val iqamaTitleResId: Int,
+    val durationArrayResId: Int = R.array.silent_durations,
+    val durationDefaultIndex: Int = 3
+)
+private enum class ChainStep { DURATION, ABLUTION, IQAMA }
 
 class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDialog.WelcomeDialogListener {
 
@@ -57,7 +69,6 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
     private lateinit var tvSwitchState: TextView
     private lateinit var menuButton: ImageView
     private lateinit var audioSwitch: SwitchCompat
-    private lateinit var ablutionSwitch: SwitchCompat
     private val textViewsMap = mutableMapOf<String, TextView>()
     private val tools: Tools by lazy { Tools(this) }
     private val sharedHelper: SharedHelper by lazy { SharedHelper(this) }
@@ -89,6 +100,38 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         }
     }
     private val containerConfigs by lazy { createContainerConfigs() }
+    private val dailyPrayerConfigs by lazy { createDailyPrayerConfigs() }
+    private var chainConfig: DailyPrayerConfig? = null
+    private var chainStep: ChainStep? = null
+    private val chainedSelectionLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val config = chainConfig ?: return@registerForActivityResult
+        if (result.resultCode == RESULT_OK) {
+            when (chainStep) {
+                ChainStep.DURATION -> launchAblutionSelection(config)
+                ChainStep.ABLUTION -> {
+                    val ablutionKey = sharedHelper.getAblutionKeyForPrayer(config.prayerName)
+                    val ablutionOn = ablutionKey != null && sharedHelper.isAblutionEnabled(ablutionKey)
+                    if (ablutionOn) {
+                        val iqamaKey = sharedHelper.getIqamaKeyForPrayer(config.prayerName)
+                        if (iqamaKey != null) sharedHelper.saveIntValue(iqamaKey, 0)
+                    }
+                    if (ablutionOn) finishChain(config) else launchIqamaSelection(config)
+                }
+                ChainStep.IQAMA -> {
+                    val ablutionKey = sharedHelper.getAblutionKeyForPrayer(config.prayerName)
+                    if (ablutionKey != null) sharedHelper.saveIntValue(ablutionKey, 0)
+                    finishChain(config)
+                }
+                null -> finishChain(config)
+            }
+        } else {
+            when (chainStep) {
+                ChainStep.ABLUTION -> launchDurationSelection(config)
+                ChainStep.IQAMA -> launchAblutionSelection(config)
+                else -> finishChain(config)
+            }
+        }
+    }
     private var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +146,6 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         tools.hideNavigationBarIfNeeded(this)
         updateAllTextViews()
         audioSwitch.isChecked = sharedHelper.getAudioSwitchState()
-        ablutionSwitch.isChecked = sharedHelper.getAblutionSwitchState()
         setupListeners()
         isRestoringSwitchState = true
         activateSwitch.isChecked = sharedHelper.getSwitchState()
@@ -121,18 +163,11 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         tvSwitchState = findViewById(R.id.tvSwitchState)
         menuButton = findViewById(R.id.menuButton)
         audioSwitch = findViewById(R.id.audioSwitch)
-        ablutionSwitch = findViewById(R.id.ablutionSwitch)
 
         textViewsMap.apply {
             put(SharedHelper.SELECTED_METHOD_RES_ID, findViewById(R.id.tvCalculationMethod))
-            put(SharedHelper.DURATION_FAJR, findViewById(R.id.tvFajr))
-            put(SharedHelper.DURATION_DHUHR, findViewById(R.id.tvDhuhr))
-            put(SharedHelper.DURATION_ASR, findViewById(R.id.tvAsr))
-            put(SharedHelper.DURATION_MAGHRIB, findViewById(R.id.tvMaghrib))
-            put(SharedHelper.DURATION_ISHA, findViewById(R.id.tvIsha))
             put(SharedHelper.DURATION_BEFORE_JUMUA, findViewById(R.id.tvBeforeJumua))
             put(SharedHelper.DURATION_AFTER_JUMUA, findViewById(R.id.tvAfterJumua))
-            put(SharedHelper.DURATION_TARAWEEH, findViewById(R.id.tvTaraweeh))
             put(SharedHelper.DURATION_TAHAJJUD, findViewById(R.id.tvTahajjud))
             put(SharedHelper.SELECTED_TIME_EID, findViewById(R.id.tvEidTime))
             put(SharedHelper.DURATION_EID, findViewById(R.id.tvEidDuration))
@@ -141,18 +176,76 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
     private fun createContainerConfigs(): List<ContainerConfig> {
         return listOf(
             ContainerConfig(findViewById(R.id.calculationMethodsContainer), R.string.select_calculation_method, R.array.calculation_methods, SharedHelper.SELECTED_METHOD_RES_ID, 0, "calculation_method"),
-            ContainerConfig(findViewById(R.id.fajrContainer), R.string.select_fajr_duration, R.array.silent_durations, SharedHelper.DURATION_FAJR, 3, "fajr"),
-            ContainerConfig(findViewById(R.id.dhuhrContainer), R.string.select_dhuhr_duration, R.array.silent_durations, SharedHelper.DURATION_DHUHR, 3, "dhuhr"),
-            ContainerConfig(findViewById(R.id.asrContainer), R.string.select_asr_duration, R.array.silent_durations, SharedHelper.DURATION_ASR, 3, "asr"),
-            ContainerConfig(findViewById(R.id.maghribContainer), R.string.select_maghrib_duration, R.array.silent_durations, SharedHelper.DURATION_MAGHRIB, 3, "maghrib"),
-            ContainerConfig(findViewById(R.id.ishaContainer), R.string.select_isha_duration, R.array.silent_durations, SharedHelper.DURATION_ISHA, 3, "isha"),
             ContainerConfig(findViewById(R.id.beforeJumuaContainer), R.string.select_before_jumua_duration, R.array.before_jumua_duration, SharedHelper.DURATION_BEFORE_JUMUA, 0, "before_jumua"),
             ContainerConfig(findViewById(R.id.afterJumuaContainer), R.string.select_after_jumua_duration, R.array.after_jumua_duration, SharedHelper.DURATION_AFTER_JUMUA, 3, "after_jumua"),
-            ContainerConfig(findViewById(R.id.taraweehContainer), R.string.select_taraweeh_duration, R.array.taraweeh_duration, SharedHelper.DURATION_TARAWEEH, 4, "taraweeh"),
             ContainerConfig(findViewById(R.id.tahajjudContainer), R.string.select_tahajjud_duration, R.array.tahajjud_duration, SharedHelper.DURATION_TAHAJJUD, 0, "tahajjud"),
             ContainerConfig(findViewById(R.id.eidTimeContainer), R.string.select_eid_time, R.array.eid_time, SharedHelper.SELECTED_TIME_EID, 0, "eid_time"),
             ContainerConfig(findViewById(R.id.eidDurationContainer), R.string.select_eid_duration, R.array.eid_duration, SharedHelper.DURATION_EID, 2, "eid_duration")
         )
+    }
+    private fun createDailyPrayerConfigs(): List<DailyPrayerConfig> {
+        return listOf(
+            DailyPrayerConfig("Fajr", findViewById(R.id.fajrContainer), findViewById(R.id.tvFajr), SharedHelper.DURATION_FAJR, R.string.select_fajr_duration, R.string.select_fajr_ablution, R.string.select_fajr_iqama),
+            DailyPrayerConfig("Dhuhr", findViewById(R.id.dhuhrContainer), findViewById(R.id.tvDhuhr), SharedHelper.DURATION_DHUHR, R.string.select_dhuhr_duration, R.string.select_dhuhr_ablution, R.string.select_dhuhr_iqama),
+            DailyPrayerConfig("Asr", findViewById(R.id.asrContainer), findViewById(R.id.tvAsr), SharedHelper.DURATION_ASR, R.string.select_asr_duration, R.string.select_asr_ablution, R.string.select_asr_iqama),
+            DailyPrayerConfig("Maghrib", findViewById(R.id.maghribContainer), findViewById(R.id.tvMaghrib), SharedHelper.DURATION_MAGHRIB, R.string.select_maghrib_duration, R.string.select_maghrib_ablution, R.string.select_maghrib_iqama),
+            DailyPrayerConfig("Isha", findViewById(R.id.ishaContainer), findViewById(R.id.tvIsha), SharedHelper.DURATION_ISHA, R.string.select_isha_duration, R.string.select_isha_ablution, R.string.select_isha_iqama),
+            DailyPrayerConfig("Taraweeh", findViewById(R.id.taraweehContainer), findViewById(R.id.tvTaraweeh), SharedHelper.DURATION_TARAWEEH, R.string.select_taraweeh_duration, R.string.select_taraweeh_ablution, R.string.select_taraweeh_iqama, R.array.taraweeh_duration, 4)
+        )
+    }
+    private fun launchDurationSelection(config: DailyPrayerConfig) {
+        chainConfig = config
+        chainStep = ChainStep.DURATION
+        val intent = Intent(this, SelectionActivity::class.java).apply {
+            putExtra("TITLE", getString(config.durationTitleResId))
+            putExtra("OPTIONS", resources.getStringArray(config.durationArrayResId))
+            putExtra("SELECTED_INDEX_KEY", config.durationKey)
+            putExtra("DEFAULT_INDEX", config.durationDefaultIndex)
+        }
+        chainedSelectionLauncher.launch(intent)
+    }
+    private fun launchAblutionSelection(config: DailyPrayerConfig) {
+        val ablutionKey = sharedHelper.getAblutionKeyForPrayer(config.prayerName) ?: return
+        chainStep = ChainStep.ABLUTION
+        val intent = Intent(this, SelectionActivity::class.java).apply {
+            putExtra("TITLE", getString(config.ablutionTitleResId))
+            putExtra("OPTIONS", resources.getStringArray(R.array.ablution_duration))
+            putExtra("SELECTED_INDEX_KEY", ablutionKey)
+            putExtra("DEFAULT_INDEX", 0)
+        }
+        chainedSelectionLauncher.launch(intent)
+    }
+    private fun launchIqamaSelection(config: DailyPrayerConfig) {
+        val iqamaKey = sharedHelper.getIqamaKeyForPrayer(config.prayerName) ?: return
+        chainStep = ChainStep.IQAMA
+        val intent = Intent(this, SelectionActivity::class.java).apply {
+            putExtra("TITLE", getString(config.iqamaTitleResId))
+            putExtra("OPTIONS", resources.getStringArray(R.array.iqama_delay_options))
+            putExtra("SELECTED_INDEX_KEY", iqamaKey)
+            putExtra("DEFAULT_INDEX", 0)
+        }
+        chainedSelectionLauncher.launch(intent)
+    }
+    private fun finishChain(config: DailyPrayerConfig) {
+        updateCombinedPrayerText(config)
+        chainConfig = null
+        chainStep = null
+    }
+    private fun updateCombinedPrayerText(config: DailyPrayerConfig) {
+        val durationText = sharedHelper.getStringFromArray(config.durationArrayResId, config.durationKey, config.durationDefaultIndex)
+        val ablutionKey = sharedHelper.getAblutionKeyForPrayer(config.prayerName) ?: return
+        val iqamaKey = sharedHelper.getIqamaKeyForPrayer(config.prayerName) ?: return
+        val ablutionOn = sharedHelper.isAblutionEnabled(ablutionKey)
+        val iqamaIndex = sharedHelper.getIqamaIndex(iqamaKey)
+
+        config.textView.text = when {
+            ablutionOn -> getString(R.string.duration_ablution_suffix, durationText)
+            iqamaIndex > 0 -> {
+                val iqamaText = resources.getStringArray(R.array.iqama_delay_options).getOrNull(iqamaIndex) ?: ""
+                getString(R.string.duration_iqama_suffix, durationText, iqamaText)
+            }
+            else -> durationText
+        }
     }
     private fun setupEdgeToEdge() {
         val mainLinearLayout = findViewById<LinearLayout>(R.id.main_linear_layout)
@@ -192,18 +285,6 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
             sharedHelper.saveAudioSwitchState(isChecked)
             if (BuildConfig.DEBUG) Log.d(tag, "Audio takbir changed to: $isChecked")
         }
-        findViewById<View>(R.id.ablutionSwitchContainer).setOnClickListener {
-            if (activateSwitch.isChecked) showSnackbar(R.string.cannot_change_settings)
-            else ablutionSwitch.toggle()
-        }
-        ablutionSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (activateSwitch.isChecked) {
-                ablutionSwitch.isChecked = !isChecked
-                return@setOnCheckedChangeListener
-            }
-            sharedHelper.saveAblutionSwitchState(isChecked)
-            if (BuildConfig.DEBUG) Log.d(tag, "Ablution switch changed to: $isChecked")
-        }
         menuButton.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
@@ -220,6 +301,15 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
                     putExtra("DEFAULT_INDEX", config.defaultIndex)
                 }
                 selectionLauncher.launch(intent)
+            }
+        }
+        dailyPrayerConfigs.forEach { config ->
+            config.container.setOnClickListener {
+                if (activateSwitch.isChecked) {
+                    showSnackbar(R.string.cannot_change_settings)
+                    return@setOnClickListener
+                }
+                launchDurationSelection(config)
             }
         }
     }
@@ -299,6 +389,7 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
     }
     private fun updateAllTextViews() {
         textViewsMap.forEach { (key, textView) -> updateTextViewForKey(key, textView) }
+        dailyPrayerConfigs.forEach { updateCombinedPrayerText(it) }
     }
     private fun updateTextViewForKey(key: String, textView: TextView? = null) {
         val targetTextView = textView ?: textViewsMap[key] ?: return
@@ -325,6 +416,11 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         registerReceiver(dndStateReceiver, IntentFilter(NotificationManager.ACTION_NOTIFICATION_POLICY_ACCESS_GRANTED_CHANGED))
         checkDndAndUpdateSwitch()
 
+        if (sharedHelper.getTermsAccepted() && !sharedHelper.isMigration185DialogShown()) {
+            showMigration185Dialog()
+            sharedHelper.setMigration185DialogShown(true)
+        }
+
         if (sharedHelper.getTermsAccepted() && permissionsHelper.areLocNotifDNDGranted() && !permissionsHelper.checkAlarmPermission()) {
             permissionsHelper.requestAlarmPermission(this)
         } else if (sharedHelper.getTermsAccepted() && permissionsHelper.areLocNotifDNDAlarmGranted() && !permissionsHelper.checkBackgroundLocationPermission()) {
@@ -335,7 +431,6 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         }
         updateAllTextViews()
         audioSwitch.isChecked = sharedHelper.getAudioSwitchState()
-        ablutionSwitch.isChecked = sharedHelper.getAblutionSwitchState()
     }
 
     override fun onPause() {
@@ -344,7 +439,6 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         loadingDialog = null
         sharedHelper.saveSwitchState(activateSwitch.isChecked)
         sharedHelper.saveAudioSwitchState(audioSwitch.isChecked)
-        sharedHelper.saveAblutionSwitchState(ablutionSwitch.isChecked)
         try {
             unregisterReceiver(dndStateReceiver)
         } catch (e: IllegalArgumentException) {
@@ -389,6 +483,10 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
         val dialog = EducationDialog()
         dialog.show(supportFragmentManager, "EducationDialog")
     }
+    private fun showMigration185Dialog() {
+        val dialog = MigrationDialog()
+        dialog.show(supportFragmentManager, "MigrationDialog")
+    }
 
     override fun onNextClicked() {
         if (BuildConfig.DEBUG) Log.d(tag, "Welcome dialog next clicked. Showing terms.")
@@ -401,6 +499,7 @@ class MainActivity : AppCompatActivity(), TermsAndConditionsListener, WelcomeDia
 
     override fun onTermsAccepted() {
         if (BuildConfig.DEBUG) Log.d(tag, "Terms accepted callback received. Proceeding with permissions.")
+        sharedHelper.setMigration185DialogShown(true)
         requestLocationPermission()
     }
 

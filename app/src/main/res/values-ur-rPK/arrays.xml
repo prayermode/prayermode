@@ -13,6 +13,21 @@
         <item>60 منٹ</item>
     </string-array>
 
+    <string-array name="ablution_duration">
+        <item>بند</item>
+        <item>10 منٹ</item>
+    </string-array>
+
+    <string-array name="iqama_delay_options">
+        <item>بند</item>
+        <item>5 منٹ</item>
+        <item>10 منٹ</item>
+        <item>15 منٹ</item>
+        <item>20 منٹ</item>
+        <item>25 منٹ</item>
+        <item>30 منٹ</item>
+    </string-array>
+
      <string-array name="before_jumua_duration">
         <item>بند</item>
         <item>10 منٹ</item>

@@ -4,7 +4,8 @@
     <string name="On">চালু</string>
     <string name="select_option">একটি অপশন নির্বাচন করুন</string>
     <string name="AudioText">সাইলেন্ট মোড সক্রিয় করার আগে তাকবির শুনুন</string>
-    <string name="AblutionText">ওজুর সময় - আজানের ১০ মিনিট আগে</string>
+    <string name="duration_ablution_suffix">ওযু · নীরবতা %1$s</string>
+    <string name="duration_iqama_suffix">ইকামত %2$s পরে · নীরবতা %1$s</string>
     <string name="menu">মেনু</string>
     <string name="settings_title">অ্যাপের তথ্য</string>
 
@@ -44,22 +45,32 @@
     <string name="fajr_silent_duration_after_adhan">ফজর</string>
     <string name="fajr_silent_duration">ফজরের সময়</string>
     <string name="select_fajr_duration">ফজরের নীরব সময় নির্বাচন</string>
+    <string name="select_fajr_ablution">ফজরের জন্য ওযুর সময়কাল নির্বাচন করুন</string>
+    <string name="select_fajr_iqama">ফজরের জন্য ইকামতের সময় নির্বাচন করুন</string>
     <!-- Dhuhr Card view -->
     <string name="dhuhr_silent_duration_after_adhan">যোহর</string>
     <string name="dhuhr_silent_duration">যোহরের সময়</string>
     <string name="select_dhuhr_duration">যোহরের নীরব সময় নির্বাচন</string>
+    <string name="select_dhuhr_ablution">যোহরের জন্য ওযুর সময়কাল নির্বাচন করুন</string>
+    <string name="select_dhuhr_iqama">যোহরের জন্য ইকামতের সময় নির্বাচন করুন</string>
     <!-- Asr Card view -->
     <string name="asr_silent_duration_after_adhan">আসর</string>
     <string name="asr_silent_duration">আসরের সময়</string>
     <string name="select_asr_duration">আসরের নীরব সময় নির্বাচন</string>
+    <string name="select_asr_ablution">আসরের জন্য ওযুর সময়কাল নির্বাচন করুন</string>
+    <string name="select_asr_iqama">আসরের জন্য ইকামতের সময় নির্বাচন করুন</string>
     <!-- Maghrib Card view -->
     <string name="maghrib_silent_duration_after_adhan">মাগরিব</string>
     <string name="maghrib_silent_duration">মাগরিবের সময়</string>
     <string name="select_maghrib_duration">মাগরিবের নীরব সময় নির্বাচন</string>
+    <string name="select_maghrib_ablution">মাগরিবের জন্য ওযুর সময়কাল নির্বাচন করুন</string>
+    <string name="select_maghrib_iqama">মাগরিবের জন্য ইকামতের সময় নির্বাচন করুন</string>
     <!-- Isha Card view -->
     <string name="isha_silent_duration_after_adhan">এশা</string>
     <string name="isha_silent_duration">ইশার সময়</string>
     <string name="select_isha_duration">ইশার নীরব সময় নির্বাচন</string>
+    <string name="select_isha_ablution">ইশার জন্য ওযুর সময়কাল নির্বাচন করুন</string>
+    <string name="select_isha_iqama">ইশার জন্য ইকামতের সময় নির্বাচন করুন</string>
 
     <string-array name="silent_durations">
         <item>১৫ মিনিট</item>
@@ -119,6 +130,8 @@
     <string name="taraweeh_silent_duration">এশা ও তারাবিহ</string>
     <string name="taraweeh_duration">তারাবিহ সময়</string>
     <string name="select_taraweeh_duration">ইশা ও তারাবিহ সময় নির্বাচন করুন</string>
+    <string name="select_taraweeh_ablution">ইশা ও তারাবিহের জন্য ওযুর সময়কাল নির্বাচন করুন</string>
+    <string name="select_taraweeh_iqama">ইশা ও তারাবিহের জন্য ইকামতের সময় নির্বাচন করুন</string>
     <string-array name="taraweeh_duration">
         <item>২০ মিনিট</item>
         <item>৩০ মিনিট</item>
@@ -242,11 +255,14 @@
     <string name="calculation">গণনা পদ্ধতি</string>
     <string name="calculation_description">সুইচ সক্রিয় করার আগে পছন্দসই গণনা পদ্ধতি নির্বাচন করুন। দয়া করে মনে রাখবেন যে অ্যাপটি সঠিক নামাজের সময় পেতে aladhan.com-এর API ব্যবহার করছে।</string>
 
+    <string name="durations">সময়</string>
+    <string name="durations_description">আপনার পছন্দ অনুযায়ী সময় নির্বাচন করুন। মনে রাখবেন যে প্রতিটি নামাজের নিজস্ব নীরব সময় আছে।</string>
+
     <string name="ablution">অযুর সময় সেটিং</string>
     <string name="ablution_description">আযানের 10 মিনিট আগে ডু নট ডিস্টার্ব সক্রিয় করে যাতে অযুর সময় পাওয়া যায়। আপনি এই সেটিংটি কেবল তখনই পরিবর্তন করতে পারবেন যখন প্রধান সুইচ বন্ধ থাকে।</string>
 
-    <string name="durations">সময়</string>
-    <string name="durations_description">আপনার পছন্দ অনুযায়ী সময় নির্বাচন করুন। মনে রাখবেন যে প্রতিটি নামাজের নিজস্ব নীরব সময় আছে।</string>
+    <string name="iqama">ইকামত</string>
+    <string name="iqama_description">আজানের পর নির্ধারিত মিনিট পর্যন্ত নীরব মোড বিলম্বিত করুন। সক্রিয় থাকলে আপনি আগে থেকেই তাকবীর শুনতে পারেন।</string>
 
     <string name="time">সময়</string>
     <string name="time_description">আল-ফিতর এবং আল-আজহার ঈদের নামাজের সময় চয়ন করুন।</string>
@@ -320,8 +336,8 @@
     <string name="decline">প্রত্যাখ্যান</string>
     <string name="accept">গ্রহণ করুন</string>
 
-    <string name="today_fajr_time_is">আজ ফজরের নামাজ %1$s সময়।</string>
-    <string name="today_dhuhr_time_is">আজ আল-জুমুআর নামাজ %1$s সময়।</string>
+    <string name="today_prayers_time">আজকের নামাজের সময়: ফজর %1$s · যোহর %2$s · আসর %3$s · মাগরিব %4$s · ইশা %5$s</string>
+    <string name="today_jumua_time_is">আজ আল-জুমুআর নামাজ %1$s সময়।</string>
     <string name="silent_mode_activated_for">%1$s-এর জন্য ডু নট ডিসটার্ব সক্রিয় করা হয়েছে।</string>
     <string name="ablution_silent_mode_activation">%1$s-এর জন্য ডু নট ডিস্টার্ব আজানের ১০ মিনিট আগে সক্রিয় করা হয়েছে।</string>
     <string name="today_imsak_time_is">আজ ইমসাকের সময় %1$s।</string>
@@ -391,6 +407,14 @@
 \u2022 স্থায়ী ইন্টারনেট সংযোগ\n\n
 💡 অ্যাপটি আপনার শেষ পরিচিত অবস্থান ব্যবহার করতে পারে যদি GPS সিগন্যাল সাময়িকভাবে অনুপলব্ধ থাকে।\n</string>
     <string name="got_it">বুঝেছি</string>
+
+    <string name="migration_title">ভার্সন ১.৮.৫-এর নতুন ফিচার</string>
+    <string name="migration_message">আমরা অজু এবং ইকামতের সেটিংসে উন্নতি এনেছি!\n\n
+\u2022 এখন থেকে আপনি প্রতিদিনের প্রতিটি নামাজ ও তারাবিহের জন্য আলাদাভাবে অজু (আজানের ১০ মিনিট আগে) এবং ইকামত (আজানের পর বিলম্ব) সেট করতে পারবেন।\n
+\u2022 সেটিংস পরিবর্তন করতে তালিকা থেকে যেকোনো নামাজ (ফজর, জোহর ইত্যাদি) বেছে নিন।\n\n
+⚠️ আপনি যদি আগে অজুর সুইচটি ব্যবহার করে থাকেন, তবে সেটি রিসেট হয়ে গেছে — অপশনটি চালু রাখতে চাইলে দয়া করে প্রতিটি নামাজের জন্য নতুন করে সেট করে নিন।\n\n
+আপনি যদি আগে অজুর সেটিংস ব্যবহার না করে থাকেন, তবে কোনো পরিবর্তন হবে না — ডিফল্টভাবে সাইলেন্ট মোড আজানের সময় থেকেই শুরু হবে।\n\n
+নতুন আপডেটটি উপভোগ করুন!</string>
 
     <!-- Language Section -->
     <string name="language_section">ভাষা</string>

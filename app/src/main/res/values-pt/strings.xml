@@ -4,7 +4,8 @@
     <string name="On">Ligado</string>
     <string name="select_option">Selecione uma opção</string>
     <string name="AudioText">Ouvir o takbir antes de ativar o modo silencioso</string>
-    <string name="AblutionText">Tempo de Ablução - 10 minutos antes do Adhan</string>
+    <string name="duration_ablution_suffix">Ablução · silêncio %1$s</string>
+    <string name="duration_iqama_suffix">Iqama após %2$s · silêncio %1$s</string>
     <string name="menu">Menu</string>
     <string name="settings_title">Informações da Aplicação</string>
 
@@ -44,22 +45,32 @@
     <string name="fajr_silent_duration_after_adhan">Fajr</string>
     <string name="fajr_silent_duration">Duração do Fajr</string>
     <string name="select_fajr_duration">Selecione a duração de silêncio para o Fajr</string>
+    <string name="select_fajr_ablution">Selecione a duração da ablução para Fajr</string>
+    <string name="select_fajr_iqama">Selecione a hora do Iqama para Fajr</string>
     <!-- Dhuhr Card view -->
     <string name="dhuhr_silent_duration_after_adhan">Dhuhr</string>
     <string name="dhuhr_silent_duration">Duração do Dhuhr</string>
     <string name="select_dhuhr_duration">Selecione a duração de silêncio para o Dhuhr</string>
+    <string name="select_dhuhr_ablution">Selecione a duração da ablução para Dhuhr</string>
+    <string name="select_dhuhr_iqama">Selecione a hora do Iqama para Dhuhr</string>
     <!-- Asr Card view -->
     <string name="asr_silent_duration_after_adhan">Asr</string>
     <string name="asr_silent_duration">Duração do Asr</string>
     <string name="select_asr_duration">Selecione a duração de silêncio para o Asr</string>
+    <string name="select_asr_ablution">Selecione a duração da ablução para Asr</string>
+    <string name="select_asr_iqama">Selecione a hora do Iqama para Asr</string>
     <!-- Maghrib Card view -->
     <string name="maghrib_silent_duration_after_adhan">Maghrib</string>
     <string name="maghrib_silent_duration">Duração do Maghrib</string>
     <string name="select_maghrib_duration">Selecione a duração de silêncio para o Maghrib</string>
+    <string name="select_maghrib_ablution">Selecione a duração da ablução para Maghrib</string>
+    <string name="select_maghrib_iqama">Selecione a hora do Iqama para Maghrib</string>
     <!-- Isha Card view -->
     <string name="isha_silent_duration_after_adhan">Isha</string>
     <string name="isha_silent_duration">Duração do Isha</string>
     <string name="select_isha_duration">Selecione a duração de silêncio para o Isha</string>
+    <string name="select_isha_ablution">Selecione a duração da ablução para Isha</string>
+    <string name="select_isha_iqama">Selecione a hora do Iqama para Isha</string>
 
     <string-array name="silent_durations">
         <item>15 minutos</item>
@@ -119,6 +130,8 @@
     <string name="taraweeh_silent_duration">Isha e Taraweeh</string>
     <string name="taraweeh_duration">Duração do Taraweeh</string>
     <string name="select_taraweeh_duration">Selecione a duração de Isha e Taraweeh</string>
+    <string name="select_taraweeh_ablution">Selecione a duração da ablução para Isha e Taraweeh</string>
+    <string name="select_taraweeh_iqama">Selecione a hora do Iqama para Isha e Taraweeh</string>
     <string-array name="taraweeh_duration">
         <item>20 minutos</item>
         <item>30 minutos</item>
@@ -242,11 +255,14 @@ Obrigado por confiar na nossa aplicação.<br/><br/>
     <string name="calculation">Métodos de cálculo</string>
     <string name="calculation_description">Selecione o método de cálculo preferido antes de ativar o interruptor. Note que a aplicação utiliza a API do aladhan.com para obter horários precisos.</string>
 
+    <string name="durations">Durações</string>
+    <string name="durations_description">Selecione as durações com base nas suas preferências. Note que cada oração tem a sua própria duração de silêncio.</string>
+
     <string name="ablution">Definição do tempo de ablução</string>
     <string name="ablution_description">Ativa o modo Não Incomodar 10 minutos antes do adhan para permitir tempo para a ablução (Wudu). Só pode alterar esta definição quando o interruptor principal estiver desligado.</string>
 
-    <string name="durations">Durações</string>
-    <string name="durations_description">Selecione as durações com base nas suas preferências. Note que cada oração tem a sua própria duração de silêncio.</string>
+    <string name="iqama">Iqama</string>
+    <string name="iqama_description">Atrase o modo silencioso até um número definido de minutos após o Adhan. Você ainda pode ouvir o Takbir antes se ativado.</string>
 
     <string name="time">Hora</string>
     <string name="time_description">Escolha a hora da oração do Eid Al-Fitr e Al-Adha.</string>
@@ -320,8 +336,8 @@ Obrigado por confiar na nossa aplicação.<br/><br/>
     <string name="decline">Recusar</string>
     <string name="accept">Aceitar</string>
 
-    <string name="today_fajr_time_is">Hoje a oração Fajr é às %1$s.</string>
-    <string name="today_dhuhr_time_is">Hoje a oração Al-Jumua é às %1$s.</string>
+    <string name="today_prayers_time">Horários de oração de hoje: Fajr %1$s · Dhuhr %2$s · Asr %3$s · Maghrib %4$s · Isha %5$s</string>
+    <string name="today_jumua_time_is">Hoje a oração Al-Jumua é às %1$s.</string>
     <string name="silent_mode_activated_for">Modo \"Não Incomodar\" ativado para %1$s.</string>
     <string name="ablution_silent_mode_activation">Modo \"Não Incomodar\" ativado para %1$s 10 minutos antes do Adhan.</string>
     <string name="today_imsak_time_is">Hoje o horário de Imsak é às %1$s.</string>
@@ -390,6 +406,14 @@ Obrigado por confiar na nossa aplicação.<br/><br/>
     \u2022 Ligação persistente à Internet\n\n
         💡 A aplicação pode utilizar a sua última localização conhecida se o sinal GPS estiver temporariamente indisponível.\n</string>
     <string name="got_it">Entendi</string>
+
+    <string name="migration_title">Novidades na versão 1.8.5</string>
+    <string name="migration_message">Melhoramos as configurações de Ablução e Iqama!\n\n
+\u2022 Agora você pode definir a Ablução (10 min antes do Adhan) e a Iqama (atraso após o Adhan) separadamente para cada oração diária e Taraweeh.\n
+\u2022 Selecione qualquer oração da lista (Fajr, Dhuhr, etc.) para ajustá-las.\n\n
+⚠️ Se você usava o interruptor de Ablução anteriormente, ele foi redefinido — por favor, configure-o novamente por oração se quiser continuar usando.\n\n
+Se você não usava as configurações de Ablução antes, nada muda — o modo silencioso ainda é ativado exatamente no Adhan por padrão.\n\n
+Aproveite a atualização!</string>
 
     <!-- Language Section -->
     <string name="language_section">Idioma</string>

@@ -72,10 +72,11 @@ class InformationActivity : AppCompatActivity() {
                     PermissionItem(R.drawable.ic_baseline_info, getString(R.string.important_note), getString(R.string.important_note_description)),
                     PermissionItem(R.drawable.ic_volume_off, getString(R.string.volume), getString(R.string.volume_description)),
                     PermissionItem(R.drawable.ic_calculation, getString(R.string.calculation), getString(R.string.calculation_description)),
-                    PermissionItem(R.drawable.ic_ablution, getString(R.string.ablution), getString(R.string.ablution_description)),
                     PermissionItem(R.drawable.ic_duration, getString(R.string.durations), getString(R.string.durations_description)),
+                    PermissionItem(R.drawable.ic_ablution, getString(R.string.ablution), getString(R.string.ablution_description)),
+                    PermissionItem(R.drawable.ic_iqama, getString(R.string.iqama), getString(R.string.iqama_description)),
                     PermissionItem(R.drawable.ic_time, getString(R.string.time), getString(R.string.time_description)),
-                    PermissionItem(R.drawable.ic_prayer_mat_inverted, getString(R.string.tile), getString(R.string.tile_description)),
+                    PermissionItem(R.drawable.ic_prayer_mat, getString(R.string.tile), getString(R.string.tile_description)),
                     PermissionItem(R.drawable.ic_wearable, getString(R.string.wearable), getString(R.string.wearable_description))
                 )
                 helpItems.forEach { helpItem ->

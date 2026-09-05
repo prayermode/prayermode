@@ -66,33 +66,21 @@
     public void set*(***);
 }
 
-# ========== Compose Specific ==========
--keep class androidx.compose.runtime.internal.ComposableLambdaImpl { *; }
--keep class androidx.compose.runtime.internal.ComposableLambdaKt { *; }
--keep class androidx.compose.ui.platform.AndroidComposeView { *; }
-
 # ========== WorkManager ==========
-#-keep class androidx.work.** { *; }
 -keep class com.yahyaoui.prayermode.SilentModeWorker { *; }
-#-keepclassmembers class * extends androidx.work.Worker {
-#    public <init>(android.content.Context, android.util.AttributeSet);
-#}
 
 # ========== OkHttp ==========
-#-keep class okhttp3.** { *; }
 -keep class okhttp3.internal.publicsuffix.PublicSuffixDatabase
 -keep class okhttp3.internal.platform.Platform
 -dontwarn okhttp3.**
 -keep interface okhttp3.internal.** { *; }
 
 # ========== Kotlin Coroutines ==========
-#-keep class kotlinx.coroutines.** { *; }
 -keepclassmembers class kotlinx.coroutines.internal.DispatchedContinuation {
     *;
 }
 
 # ========== ICU4J ==========
-#-keep class com.ibm.icu.** { *; }
 -keep class com.ibm.icu.util.Calendar { *; }
 -keep class com.ibm.icu.text.DateFormat { *; }
 -keep class com.ibm.icu.util.IslamicCalendar { *; }

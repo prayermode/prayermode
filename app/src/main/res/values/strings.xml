@@ -4,7 +4,9 @@
     <string name="On">On</string>
     <string name="select_option">Select an option</string>
     <string name="AudioText">Listen to takbir before activating silent mode</string>
-    <string name="AblutionText">Ablution Time - 10 mins before Adhan</string>
+    <!-- English -->
+    <string name="duration_ablution_suffix">Ablution · %1$s silent duration</string>
+    <string name="duration_iqama_suffix">Iqama after %2$s · %1$s silent duration</string>
     <string name="menu">Menu</string>
     <string name="settings_title">App Information</string>
 
@@ -44,22 +46,32 @@
     <string name="fajr_silent_duration_after_adhan">Fajr</string>
     <string name="fajr_silent_duration">Fajr duration</string>
     <string name="select_fajr_duration">Select Fajr silent duration</string>
+    <string name="select_fajr_ablution">Select Fajr Ablution duration</string>
+    <string name="select_fajr_iqama">Select Fajr Iqama Time</string>
     <!-- Dhuhr Card view -->
     <string name="dhuhr_silent_duration_after_adhan">Dhuhr</string>
     <string name="dhuhr_silent_duration">Dhuhr duration</string>
     <string name="select_dhuhr_duration">Select Dhuhr silent duration</string>
+    <string name="select_dhuhr_ablution">Select Dhuhr Ablution duration</string>
+    <string name="select_dhuhr_iqama">Select Dhuhr Iqama Time</string>
     <!-- Asr Card view -->
     <string name="asr_silent_duration_after_adhan">Asr</string>
     <string name="asr_silent_duration">Asr duration</string>
     <string name="select_asr_duration">Select Asr silent duration</string>
+    <string name="select_asr_ablution">Select Asr Ablution duration</string>
+    <string name="select_asr_iqama">Select Asr Iqama Time</string>
     <!-- Maghrib Card view -->
     <string name="maghrib_silent_duration_after_adhan">Maghrib</string>
     <string name="maghrib_silent_duration">Maghrib duration</string>
     <string name="select_maghrib_duration">Select Maghrib silent duration</string>
+    <string name="select_maghrib_ablution">Select Maghrib Ablution duration</string>
+    <string name="select_maghrib_iqama">Select Maghrib Iqama Time</string>
     <!-- Isha Card view -->
     <string name="isha_silent_duration_after_adhan">Isha</string>
     <string name="isha_silent_duration">Isha duration</string>
     <string name="select_isha_duration">Select Isha silent duration</string>
+    <string name="select_isha_ablution">Select Isha Ablution duration</string>
+    <string name="select_isha_iqama">Select Isha Iqama Time</string>
 
     <!-- jumua Card view -->
     <string name="jumua_card">Al-Jumua Silent Durations</string>
@@ -80,6 +92,8 @@
     <string name="taraweeh_silent_duration">Isha and Taraweeh</string>
     <string name="taraweeh_duration">Taraweeh duration</string>
     <string name="select_taraweeh_duration">Select Isha and Taraweeh duration</string>
+    <string name="select_taraweeh_ablution">Select Isha and Taraweeh Ablution duration</string>
+    <string name="select_taraweeh_iqama">Select Isha and Taraweeh Iqama Time</string>
 
     <string name="tahajjud_silent_duration">Tahajjud</string>
     <string name="tahajjud_duration">Tahajjud duration</string>
@@ -162,11 +176,14 @@ Thank you for trusting our application.<br/><br/>
     <string name="calculation">Calculation methods</string>
     <string name="calculation_description">Select the preferred calculation method before activating the switch. Please note that the app is using the API of aladhan.com to get accurate prayer times.</string>
 
+    <string name="durations">Durations</string>
+    <string name="durations_description">Select the durations based on your preferences. Note that each prayer has its own silent duration.</string>
+
     <string name="ablution">Ablution time setting</string>
     <string name="ablution_description">Activates Do Not Disturb 10 minutes before adhan to allow time for ablution (Wudu). You can only change this setting when the main switch is off.</string>
 
-    <string name="durations">Durations</string>
-    <string name="durations_description">Select the durations based on your preferences. Note that each prayer has its own silent duration.</string>
+    <string name="iqama">Iqama</string>
+    <string name="iqama_description">Delay silent mode until a set number of minutes after Adhan. You can still hear the Takbir beforehand if activated.</string>
 
     <string name="time">Time</string>
     <string name="time_description">Choose the time of Al-Fitr and Al-Adha Eid prayer.</string>
@@ -240,8 +257,8 @@ Thank you for trusting our application.<br/><br/>
     <string name="decline">Decline</string>
     <string name="accept">Accept</string>
 
-    <string name="today_fajr_time_is">Today Fajr prayer is at %1$s.</string>
-    <string name="today_dhuhr_time_is">Today Al-Jumua prayer is at %1$s.</string>
+    <string name="today_prayers_time">Today Prayers time: Fajr %1$s · Dhuhr %2$s · Asr %3$s · Maghrib %4$s · Isha %5$s</string>
+    <string name="today_jumua_time_is">Today Al-Jumua prayer is at %1$s.</string>
     <string name="silent_mode_activated_for">Do Not Disturb activated for %1$s.</string>
     <string name="ablution_silent_mode_activation">Do Not Disturb activated for %1$s 10 minutes before Adhan.</string>
     <string name="today_imsak_time_is">Today Imsak time is at %1$s.</string>
@@ -310,6 +327,14 @@ Thank you for trusting our application.<br/><br/>
     \u2022 Persistent Internet connection\n\n
         💡 The app can use your last known location if GPS signal is temporarily unavailable.\n</string>
     <string name="got_it">Got it</string>
+
+    <string name="migration_title">What\'s New in 1.8.5</string>
+    <string name="migration_message">We\'ve improved Ablution and Iqama settings!\n\n
+    \u2022 You can now set Ablution (10 min before Adhan) and Iqama (delay after Adhan) separately for each daily prayer and Taraweeh.\n
+    \u2022 Select any prayer from the list (Fajr, Dhuhr, etc.) to adjust them.\n\n
+    ⚠️ If you previously used the Ablution switch, it has been reset — please set it again per prayer if you\'d like to keep using it.\n\n
+    If you didn\'t use Ablution settings before, nothing changes — silence mode still starts exactly at Adhan by default.\n\n
+    Enjoy the update!</string>
 
     <!-- Language Section -->
     <string name="language_section">Language</string>

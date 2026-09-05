@@ -4,7 +4,8 @@
     <string name="On">开启</string>
     <string name="select_option">选择一个选项</string>
     <string name="AudioText">在激活静音模式前播放至大词</string>
-    <string name="AblutionText">小净时间 - 宣礼前10分钟</string>
+    <string name="duration_ablution_suffix">小净 · 静音%1$s</string>
+    <string name="duration_iqama_suffix">内宣礼延迟%2$s · 静音%1$s</string>
     <string name="menu">菜单</string>
     <string name="settings_title">应用信息</string>
 
@@ -44,22 +45,32 @@
     <string name="fajr_silent_duration_after_adhan">晨礼</string>
     <string name="fajr_silent_duration">晨礼时长</string>
     <string name="select_fajr_duration">选择晨礼静音时长</string>
+    <string name="select_fajr_ablution">选择晨礼的小净时长</string>
+    <string name="select_fajr_iqama">选择晨礼的内宣礼时间</string>
     <!-- Dhuhr Card view -->
     <string name="dhuhr_silent_duration_after_adhan">晌礼</string>
     <string name="dhuhr_silent_duration">晌礼时长</string>
     <string name="select_dhuhr_duration">选择晌礼静音时长</string>
+    <string name="select_dhuhr_ablution">选择晌礼的小净时长</string>
+    <string name="select_dhuhr_iqama">选择晌礼的内宣礼时间</string>
     <!-- Asr Card view -->
     <string name="asr_silent_duration_after_adhan">晡礼</string>
     <string name="asr_silent_duration">晡礼时长</string>
     <string name="select_asr_duration">选择晡礼静音时长</string>
+    <string name="select_asr_ablution">选择晡礼的小净时长</string>
+    <string name="select_asr_iqama">选择晡礼的内宣礼时间</string>
     <!-- Maghrib Card view -->
     <string name="maghrib_silent_duration_after_adhan">昏礼</string>
     <string name="maghrib_silent_duration">昏礼时长</string>
     <string name="select_maghrib_duration">选择昏礼静音时长</string>
+    <string name="select_maghrib_ablution">选择昏礼的小净时长</string>
+    <string name="select_maghrib_iqama">选择昏礼的内宣礼时间</string>
     <!-- Isha Card view -->
     <string name="isha_silent_duration_after_adhan">宵礼</string>
     <string name="isha_silent_duration">宵礼时长</string>
     <string name="select_isha_duration">选择宵礼静音时长</string>
+    <string name="select_isha_ablution">选择宵礼的小净时长</string>
+    <string name="select_isha_iqama">选择宵礼的内宣礼时间</string>
 
     <string-array name="silent_durations">
         <item>15 分钟</item>
@@ -119,6 +130,8 @@
     <string name="taraweeh_silent_duration">宵礼和间歇拜</string>
     <string name="taraweeh_duration">间歇拜时长</string>
     <string name="select_taraweeh_duration">选择宵礼和间歇拜静音时长</string>
+    <string name="select_taraweeh_ablution">选择宵礼和泰拉威哈拜的小净时长</string>
+    <string name="select_taraweeh_iqama">选择宵礼和泰拉威哈拜的内宣礼时间</string>
     <string-array name="taraweeh_duration">
         <item>20 分钟</item>
         <item>30 分钟</item>
@@ -242,11 +255,14 @@
     <string name="calculation">计算方法</string>
     <string name="calculation_description">在激活开关前选择首选的计算方法。请注意，本应用使用 aladhan.com 的 API 来获取准确的礼拜时间。</string>
 
+    <string name="durations">时长</string>
+    <string name="durations_description">根据您的偏好选择时长。请注意，每次礼拜都有其自己的静音时长。</string>
+
     <string name="ablution">小净时间设置</string>
     <string name="ablution_description">在宣礼前 10 分钟激活勿扰模式，以便有时间进行小净。您只能在主开关关闭时更改此设置。</string>
 
-    <string name="durations">时长</string>
-    <string name="durations_description">根据您的偏好选择时长。请注意，每次礼拜都有其自己的静音时长。</string>
+    <string name="iqama">内宣礼</string>
+    <string name="iqama_description">将静音模式延迟到宣礼后的设定分钟数。如果已激活，您仍然可以提前听到泰克比尔。</string>
 
     <string name="time">时间</string>
     <string name="time_description">选择开斋节和宰牲节会礼的时间。</string>
@@ -320,8 +336,8 @@
     <string name="decline">拒绝</string>
     <string name="accept">接受</string>
 
-    <string name="today_fajr_time_is">今天的晨礼时间是 %1$s。</string>
-    <string name="today_dhuhr_time_is">今天的聚礼时间是 %1$s。</string>
+    <string name="today_prayers_time">今日礼拜时间：晨礼 %1$s · 晌礼 %2$s · 晡礼 %3$s · 昏礼 %4$s · 宵礼 %5$s</string>
+    <string name="today_jumua_time_is">今天的聚礼时间是 %1$s。</string>
     <string name="silent_mode_activated_for">已为 %1$s 激活勿扰模式。</string>
     <string name="ablution_silent_mode_activation">已为 %1$s 在宣礼前 10 分钟激活勿扰模式。</string>
     <string name="today_imsak_time_is">今天的禁食开始时间是 %1$s。</string>
@@ -390,6 +406,14 @@
     \u2022 持续的互联网连接\n\n
         💡 如果 GPS 信号暂时不可用，应用可以使用您上次已知的位置。\n</string>
     <string name="got_it">知道了</string>
+
+    <string name="migration_title">1.8.5 版本更新说明</string>
+    <string name="migration_message">我们优化了小净和成拜词（Iqama）的设置！\n\n
+\u2022 您现在可以为每日的每一场礼拜及特拉维哈（Taraweeh）单独设置小净（宣礼前 10 分钟）和成拜词（宣礼后的延迟时间）。\n
+\u2022 从列表中选择任意礼拜（晨礼、晌礼等）即可进行调整。\n\n
+⚠️ 如果您之前使用过小净开关，它已被重置 — 如需继续使用，请按礼拜分别重新设置。\n\n
+如果您之前未使用过小净设置，则一切保持不变 — 静音模式默认仍会在宣礼时准时开启。\n\n
+希望您喜欢这次更新！</string>
 
     <!-- Language Section -->
     <string name="language_section">语言</string>

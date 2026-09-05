@@ -4,7 +4,8 @@
     <string name="On">چالو</string>
     <string name="select_option">ایک اختیار منتخب کریں</string>
     <string name="AudioText">خاموش موڈ آن کرنے سے پہلے تکبیر سنیں</string>
-    <string name="AblutionText">وضو کا وقت - اذان سے دس منٹ پہلے</string>
+    <string name="duration_ablution_suffix">وضو · خاموشی %1$s</string>
+    <string name="duration_iqama_suffix">اقامت بعد %2$s · خاموشی %1$s</string>
     <string name="menu">مینو</string>
     <string name="settings_title">ایپ کی معلومات</string>
 
@@ -19,22 +20,32 @@
     <string name="fajr_silent_duration_after_adhan">فجر</string>
     <string name="fajr_silent_duration">فجر کا وقت</string>
     <string name="select_fajr_duration">فجر کی خاموشی کا وقت منتخب کریں</string>
+    <string name="select_fajr_ablution">فجر کے لیے وضو کی مدت منتخب کریں</string>
+    <string name="select_fajr_iqama">فجر کے لیے اقامت کا وقت منتخب کریں</string>
     <!-- Dhuhr Card view -->
     <string name="dhuhr_silent_duration_after_adhan">ظہر</string>
     <string name="dhuhr_silent_duration">ظہر کا وقت</string>
     <string name="select_dhuhr_duration">ظہر کی خاموشی کا وقت منتخب کریں</string>
+    <string name="select_dhuhr_ablution">ظہر کے لیے وضو کی مدت منتخب کریں</string>
+    <string name="select_dhuhr_iqama">ظہر کے لیے اقامت کا وقت منتخب کریں</string>
     <!-- Asr Card view -->
     <string name="asr_silent_duration_after_adhan">عصر</string>
     <string name="asr_silent_duration">عصر کا وقت</string>
     <string name="select_asr_duration">عصر کی خاموشی کا وقت منتخب کریں</string>
+    <string name="select_asr_ablution">عصر کے لیے وضو کی مدت منتخب کریں</string>
+    <string name="select_asr_iqama">عصر کے لیے اقامت کا وقت منتخب کریں</string>
     <!-- Maghrib Card view -->
     <string name="maghrib_silent_duration_after_adhan">مغرب</string>
     <string name="maghrib_silent_duration">مغرب کا وقت</string>
     <string name="select_maghrib_duration">مغرب کی خاموشی کا وقت منتخب کریں</string>
+    <string name="select_maghrib_ablution">مغرب کے لیے وضو کی مدت منتخب کریں</string>
+    <string name="select_maghrib_iqama">مغرب کے لیے اقامت کا وقت منتخب کریں</string>
     <!-- Isha Card view -->
     <string name="isha_silent_duration_after_adhan">عشاء</string>
     <string name="isha_silent_duration">عشاء کا وقت</string>
     <string name="select_isha_duration">عشاء کی خاموشی کا وقت منتخب کریں</string>
+    <string name="select_isha_ablution">عشاء کے لیے وضو کی مدت منتخب کریں</string>
+    <string name="select_isha_iqama">عشاء کے لیے اقامت کا وقت منتخب کریں</string>
 
     <!-- jumua Card view -->
     <string name="jumua_card">جمعہ کے لیے خاموشی کے دورانیے</string>
@@ -55,6 +66,8 @@
     <string name="taraweeh_silent_duration">عشاء اور تراویح</string>
     <string name="taraweeh_duration">تراویح کا دورانیہ</string>
     <string name="select_taraweeh_duration">عشاء اور تراویح کا دورانیہ منتخب کریں</string>
+    <string name="select_taraweeh_ablution">عشاء اور تراويح کے لیے وضو کی مدت منتخب کریں</string>
+    <string name="select_taraweeh_iqama">عشاء اور تراويح کے لیے اقامت کا وقت منتخب کریں</string>
 
     <string name="tahajjud_silent_duration">تہجد</string>
     <string name="tahajjud_duration">تہجد کا دورانیہ</string>
@@ -134,11 +147,14 @@
     <string name="calculation">حساب کے طریقے</string>
     <string name="calculation_description">aladhan.com API کا استعمال کرتے ہوئے درست نماز اوقات۔</string>
 
+    <string name="durations">دورانیے</string>
+    <string name="durations_description">ہر نماز کا الگ خاموشی کا دورانیہ منتخب کریں۔</string>
+
     <string name="ablution">وضو کا وقت ترتیب</string>
     <string name="ablution_description">اذان سے دس منٹ پہلے دستک نہ دیں موڈ کو چالو کرتا ہے تاکہ وضو کا وقت میسر ہو۔ آپ یہ ترتیب صرف اس وقت تبدیل کر سکتے ہیں جب مرکزی سوئچ بند ہو۔</string>
 
-    <string name="durations">دورانیے</string>
-    <string name="durations_description">ہر نماز کا الگ خاموشی کا دورانیہ منتخب کریں۔</string>
+    <string name="iqama">اقامت</string>
+    <string name="iqama_description">اذان کے بعد مقررہ منٹوں تک خاموش موڈ میں تاخیر کریں۔ اگر فعال ہو تو آپ تکبیر پہلے سن سکتے ہیں۔</string>
 
     <string name="time">وقت</string>
     <string name="time_description">عید الفطر اور عید الاضحی کی نماز کا وقت منتخب کریں۔</string>
@@ -212,9 +228,8 @@
     <string name="decline">انکار</string>
     <string name="accept">قبول کریں</string>
 
-    <string name="today_fajr_time_is">آج فجر کی نماز کا وقت %1$s ہے۔</string>
-
-    <string name="today_dhuhr_time_is">آج جمعہ کی نماز کا وقت %1$s ہے۔</string>
+    <string name="today_prayers_time">آج کے اوقاتِ نماز: فجر %1$s · ظہر %2$s · عصر %3$s · مغرب %4$s · عشاء %5$s</string>
+    <string name="today_jumua_time_is">آج جمعہ کی نماز کا وقت %1$s ہے۔</string>
     <string name="silent_mode_activated_for">نماز کے اوقات کیلئے پریشان نہ کریں موڈ چالو کیا گیا %1$s۔</string>
     <string name="ablution_silent_mode_activation">اذان سے دس منٹ پہلے %1$s کے لیے ڈسٹرب نہ کریں موڈ چالو کیا گیا۔</string>
     <string name="today_imsak_time_is">آج کے امساک کا وقت %1$s ہے۔</string>
@@ -284,6 +299,14 @@
 \u2022 مسلسل انٹرنیٹ کنکشن\n\n
 💡 اگر GPS سگنل عارضی طور پر دستیاب نہ ہو تو ایپ آپ کے آخری معلوم مقام کو استعمال کر سکتی ہے۔\n</string>
     <string name="got_it">سمجھ گیا</string>
+
+    <string name="migration_title">ورژن 1.8.5 میں نئی خصوصیات</string>
+    <string name="migration_message">ہم نے وضو اور اقامت کی سیٹنگز کو بہتر بنایا ہے!\n\n
+\u2022 اب آپ ہر روز کی نماز اور تراویح کے لیے وضو (اذان سے 10 منٹ پہلے) اور اقامت (اذان کے بعد تاخیر) الگ الگ سیٹ کر سکتے ہیں۔\n
+\u2022 سیٹنگز بدلنے کے لیے لسٹ میں سے کسی بھی نماز (فجر، ظہر وغیرہ) کا انتخاب کریں۔\n\n
+⚠️ اگر آپ پہلے وضو کا سوئچ استعمال کر رہے تھے تو وہ ری سیٹ ہو گیا ہے — اگر آپ اسے جاری رکھنا چاہتے ہیں تو براہ کرم ہر نماز کے لیے اسے دوبارہ سیٹ کر لیں۔\n\n
+اگر آپ نے پہلے وضو کی سیٹنگز استعمال نہیں کی تھیں تو کچھ نہیں بدلے گا — سائلنٹ موڈ حسب معمول اذان کے وقت ہی شروع ہوگا۔\n\n
+اپ ڈیٹ سے لطف اندوز ہوں!</string>
 
     <!-- Language Section -->
     <string name="language_section">زبان</string>

@@ -1,33 +1,34 @@
 Are you tired of remembering to silence your phone before every prayer? Have you ever been interrupted by notifications during Salah or worried about disturbing others?
 
-Prayer Mode solves this by automatically activating Do Not Disturb mode at precise prayer times, allowing you to focus completely on worship without distractions.
+Prayer mode solves this by automatically activating Do Not Disturb mode at precise prayer times, allowing you to focus completely on worship without distractions.
 
 🎯 Set It Once, It Works Automatically:
 • Smart Automation: Activates DND mode at exact prayer times
 • 23 Calculation Methods: Choose from established prayer time calculations (aladhan.com API)
 • Location-Aware: Automatically adjusts when you travel
-• Complete Customization: Individual settings for every prayer scenario
+• Complete Customization: Individual settings for every prayer
 
 🕌 Prayer-Specific Features:
 • Five Daily Prayers: Custom silent durations for Fajr, Dhuhr, Asr, Maghrib, Isha
+• Per-prayer Ablution & Iqama – set 10 min before Adhan or delay after Adhan
 • Friday Prayer: Silent periods before and after Adhan
 • Ramadan Nights: Settings for Taraweeh and Tahajjud
 • Eid Prayers: Custom timing for Eid al-Fitr and Eid al-Adha
 • Audio Takbir: Optional sound notification before silence
-• Ablution Time: DND 10 minutes before Adhan for preparation
 
 🔔 Stay Informed:
 • Notifications for DND activation/deactivation
 • Prayer time updates when travelling
-• Reminders for Fajr, Friday Dhuhr, and Ramadan Imsak
+• Notifications for daily prayer times, Jumua, and Imsak in Ramadan
 
 ✨ User Experience:
+• Onboarding guidance – helpful dialogs guide you through first-time setup and new features
 • Clean interface with Light/Dark themes
 • Quick Settings Tile for instant access
-• Multi-language support (Arabic, English, French, Urdu, Indonesian, Malaysian, Turkish, Bengali, Spanish + more coming)
-• Privacy First: No data collection - all processing happens on your device
+• Multi-language support (Arabic, English, French, Urdu, Indonesian, Malaysian, Turkish, Bengali, Spanish, Portuguese, Chinese + more coming)
+• Privacy First: No data collection - all processing stays on your device
 
 🌍 Serving the Muslim Ummah:
 We're committed to providing a respectful, accurate tool for prayer focus. Expect regular free updates with new features and improvements.
 
-Download Prayer Mode today and experience uninterrupted, focused prayer.
+Download Prayer mode today and experience uninterrupted, focused prayer.
