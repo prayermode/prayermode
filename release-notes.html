@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Release Notes - Prayer mode</title>
+    <link rel="icon" href="icon.png" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 15px;
+            color: #333;
+        }
+        @media (prefers-color-scheme: dark) {
+            body {
+                color: #ddd;
+                background-color: #1a1a1a;
+            }
+            h1, h2, h3 {
+                color: #ADD8E6;
+            }
+            a {
+                color: #ADD8E6;
+            }
+            .version-card {
+                background-color: #2d2d2d;
+                border-left: 4px solid #ADD8E6;
+            }
+        }
+        h1, h2, h3 {
+            color: #215BA0;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.2em; }
+        ul {
+            list-style-type: disc;
+            margin-left: 25px;
+            margin-bottom: 1em;
+        }
+        ul li { margin-bottom: 0.5em; }
+        strong { font-weight: bold; color: inherit; }
+        p { margin-bottom: 1em; }
+        a { color: #215BA0; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .header-container h1 {
+            margin: 0;
+            font-size: 1.3em;
+            color: inherit;
+        }
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8em;
+            white-space: nowrap;
+        }
+        .nav-links .current-page {
+            font-weight: bold;
+            text-decoration: none;
+            cursor: default;
+            color: #555;
+        }
+        .version-card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #215BA0;
+        }
+        .version-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .version-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #215BA0;
+            margin: 0;
+        }
+        .version-date {
+            color: #666;
+            font-style: italic;
+        }
+        .feature-list {
+            margin: 15px 0;
+        }
+        .feature-list li {
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+        @media (prefers-color-scheme: dark) {
+            .nav-links .current-page { color: #aaa; }
+            strong { color: #eee; }
+            .version-date { color: #aaa; }
+        }
+        .download-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #e8f4fd;
+            border-radius: 8px;
+        }
+        @media (prefers-color-scheme: dark) {
+            .download-section {
+                background-color: #1e3a5f;
+            }
+        }
+        .download-button {
+            display: inline-block;
+            background-color: #215BA0;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        .download-button:hover {
+            background-color: #1a4780;
+            text-decoration: none;
+            color: white;
+        }
+        @media (prefers-color-scheme: dark) {
+            .download-button {
+                background-color: #ADD8E6;
+                color: #1a1a1a;
+            }
+            .download-button:hover {
+                background-color: #8bc7e0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-container">
+    <h1>Release Notes - Prayer mode</h1>
+    <div class="nav-links">
+        <a href="https://prayermode.github.io/apk/">Home</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="help.html">Help</a>
+        <span class="current-page">Release Notes</span>
+    </div>
+</div>
+    <div class="download-section">
+    <h2>Download Latest Version</h2>
+    <p>Get the last version of Prayer mode with all the latest features and improvements.</p>
+    <a href="https://github.com/prayermode/apk/releases/download/v1.8.5/prayer-mode.apk" class="download-button">Download Prayer mode</a>
+</div>
+
+<h2>Version History</h2>
+        <div class="version-card">   
+    <div class="version-header">
+        <h3 class="version-title">Version 1.8.5</h3>
+        <span class="version-date">05/09/2026</span>
+    </div>
+    <div class="feature-list">
+        <ul>
+            <li><strong>New Features:</strong> Ablution and Iqama settings – set 10 min before Adhan or delay after Adhan independently for each daily prayer</li>
+            <li><strong>New Features:</strong> Added independent Ablution and Iqama settings for Taraweeh during Ramadan</li>
+            <li><strong>New Features:</strong> Smarter scheduling – Iqama delay shifts silent mode start while Takbir still plays at Adhan time</li>
+            <li><strong>Improvements:</strong> Consolidated daily prayer notification showing all five prayer times instead of only showing Fajr prayer time</li>
+            <li><strong>Improvements:</strong> Updated display strings for Ablution and Iqama states</li>
+            <li><strong>Improvements:</strong> One-time migration info screen for users updating from previous versions</li>
+            <li><strong>Improvements:</strong> Code cleanup and vector drawable optimisation</li>
+            <li><strong>Bug Fixes:</strong> Fixed volume restoration issue on Xiaomi/HyperOS devices when exiting DND mode</li>
+            <li><strong>Global Reach:</strong> Updated translations for all supported languages</li>
+        </ul>
+    </div>
+    <a href="https://www.virustotal.com/gui/file/7b5a1286eb907d6d3a8569760710253a1edf63f08dd83a358d8bba57f02d0628" style="color: #ADD8FF; text-decoration: underline; font-weight: bold;">See VirusTotal Report</a>
+    </div>  
+    
+    <div class="version-card">   
+    <div class="version-header">
+        <h3 class="version-title">Version 1.8.1</h3>
+        <span class="version-date">16/03/2026</span>
+    </div>
+    <div class="feature-list">
+        <ul>
+            <li><strong>Improvements:</strong> Minor bug fix</li>
+        </ul>
+    </div>
+    <a href="https://www.virustotal.com/gui/file/b3f1772216deef185f4ddc70cbcd6058966ec3aa0b8770704a8fa6be85765c45" style="color: #ADD8FF; text-decoration: underline; font-weight: bold;">See VirusTotal Report</a>
+    </div>  
+
+    <div class="version-card">   
+    <div class="version-header">
+        <h3 class="version-title">Version 1.8</h3>
+        <span class="version-date">24/02/2026</span>
+    </div>
+    <div class="feature-list">
+        <ul>
+            <li><strong>Global Reach:</strong> Added Chinese language support</li>
+            <li><strong>Improvements:</strong> Various bug fixes and stability enhancements</li>
+        </ul>
+    </div>
+    <a href="https://www.virustotal.com/gui/file/1075c47c3f69b3ec5c50c5d9831e1892ec6821ab1dded888b8f5210b08bff4b2" style="color: #ADD8FF; text-decoration: underline; font-weight: bold;">See VirusTotal Report</a>
+    </div>
+    
+    <div class="version-card">   
+    <div class="version-header">
+        <h3 class="version-title">Version 1.7</h3>
+        <span class="version-date">20/02/2026</span>
+    </div>
+    <div class="feature-list">
+        <ul>
+            <li><strong>Global Reach:</strong> Added Portuguese language support</li>
+            <li><strong>Improvements:</strong> Minor bug fixes and stability enhancements</li>
+        </ul>
+    </div>
+    <a href="https://www.virustotal.com/gui/file/3a4b4ce23f0e6ce198f64e1595387b4117a0eb95931897743cd635650544c74f" style="color: #ADD8FF; text-decoration: underline; font-weight: bold;">See VirusTotal Report</a>
+    </div>        
+    <div class="version-card">
+    <div class="version-header">
+        <h3 class="version-title">Version 1.6</h3>
+        <span class="version-date">09/02/2026</span>
+    </div>
+    <div class="feature-list">
+        <ul>
+            <li><strong>Customization:</strong> Set silent mode duration individually for each daily prayer</li>
+            <li><strong>Localization:</strong> Choose from 9 languages directly within the app</li>
+            <li><strong>Interface:</strong> New 3-dot menu for easy access to Settings and App Information</li>
+            <li><strong>Performance:</strong> Built-in Battery Optimization Checker</li>
+            <li><strong>Customization:</strong> Configure ablution time setting</li>
+            <li><strong>Smart Behavior:</strong> Context-aware alerts that respect DND, location updates, and ablution mode</li>
+            <li><strong>Location:</strong> Enhanced travel detection for automatic prayer time updates</li>
+            <li><strong>Notifications:</strong> Less intrusive background service alerts</li>
+            <li><strong>Improvements:</strong> Various bug fixes and stability enhancements</li>
+        </ul>
+    </div>
+    <a href="https://www.virustotal.com/gui/file/87da7ef0a5eb245f10253ce99994a23cfc8c5abbc433ac88a12f3a5272b75654" style="color: #ADD8FF; text-decoration: underline; font-weight: bold;">See VirusTotal Report</a>
+    </div>    
+    <div class="version-card">        
+    <div class="version-header">
+        <h3 class="version-title">Version 1.5</h3>
+        <span class="version-date">22/11/2025</span>
+    </div>
+    <div class="feature-list">
+        <ul>
+            <li><strong>Performance:</strong> Audio focus pauses other apps during takbir playback</li>
+            <li><strong>Enhanced Settings:</strong> Enhanced DND state management and error recovery</li>
+            <li><strong>Global Reach:</strong> Added Bengali language support</li>
+            <li><strong>Improvements:</strong> Minor bug fixes</li>
+        </ul>
+    </div>
+    <a href="https://www.virustotal.com/gui/file/eeb9e877e609223b4d35f9b6ded08a817a24c49cbbb58a12bc1c7446e84e902a" style="color: #ADD8FF; text-decoration: underline; font-weight: bold;">See VirusTotal Report</a>
+    </div>
+    
+    <div class="version-card">
+    <div class="version-header">
+        <h3 class="version-title">Version 1.4</h3>
+        <span class="version-date">13/11/2025</span>
+    </div>
+    <div class="feature-list">
+        <ul>
+            <li><strong>Improvements:</strong> Minor bug fixes and stability improvements</li>
+        </ul>
+    </div>
+    <a href="https://www.virustotal.com/gui/file/e1d017d355ecb252e422794b9d934cc44268087a22a9331c0f0298bc53032b50" style="color: #ADD8FF; text-decoration: underline; font-weight: bold;">See VirusTotal Report</a>
+    </div>
+    
+    <div class="version-card">
+    <div class="version-header">
+        <h3 class="version-title">Version 1.3</h3>
+        <span class="version-date">03/11/2025</span>
+    </div>
+    <div class="feature-list">
+        <ul>
+            <li><strong>Performance:</strong> Optimized audio playback and timing</li>
+            <li><strong>Enhanced Settings:</strong> Added new duration options for Friday prayer</li>
+            <li><strong>Global Reach:</strong> Added Spanish language support</li>
+            <li><strong>Improvements:</strong> Minor bug fixes and stability improvements</li>
+        </ul>
+    </div>
+    <a href="https://www.virustotal.com/gui/file/ec583109752390e65b8f348f7da188b66c9c014b0725b10b28ed6837d2666995" style="color: #ADD8FF; text-decoration: underline; font-weight: bold;">See VirusTotal Report</a>
+    </div>
+
+    <div class="version-card">
+    <div class="version-header">
+        <h3 class="version-title">Version 1.2</h3>
+        <span class="version-date">23/10/2025</span>
+    </div>
+    <div class="feature-list">
+        <ul>
+            <li><strong>Stay Updated Automatically:</strong> Prayer mode now checks for last version and sends notification when updates are available</li>
+            <li><strong>Easy Update Process:</strong> Receive notification with direct download link</li>
+        </ul>
+    </div>
+    <a href="https://www.virustotal.com/gui/file/779eb68bb54e646f51a1612b543fad9ef1ae95105f069d274b20c38ef9c4216c" style="color: #ADD8FF; text-decoration: underline; font-weight: bold;">See VirusTotal Report</a>
+</div>
+
+<div class="version-card">
+    <div class="version-header">
+        <h3 class="version-title">Version 1.1</h3>
+        <span class="version-date">11/10/2025</span>
+    </div>
+    <div class="feature-list">
+        <ul>
+            <li><strong>New Feature:</strong> Added audio takbir for prayer notifications</li>
+            <li><strong>Improvements:</strong> Minor bug fixes and stability improvements</li>
+            <li><strong>Optimization:</strong> Code optimization for better performance</li>
+            <li><strong>Enhanced:</strong> Smoother user experience</li>
+        </ul>
+    </div>
+    <a href="https://www.virustotal.com/gui/file/3a46fe9799a29b1fbcb7c9947f642071cc9d0d97a9b07851c2c8f357c838f8a9" style="color: #ADD8FF; text-decoration: underline; font-weight: bold;">See VirusTotal Report</a>
+</div>
+
+<div class="version-card">
+    <div class="version-header">
+        <h3 class="version-title">Version 1.0</h3>
+        <span class="version-date">01/11/2025</span>
+    </div>
+    <div class="feature-list">
+        <ul>
+            <li><strong>Core Feature:</strong> Auto-silence mode during prayer times</li>
+            <li><strong>Location-based:</strong> Accurate prayer times based on your current location</li>
+            <li><strong>Automatic:</strong> No manual setup required - works automatically</li>
+            <li><strong>Reliable:</strong> Precise calculation of prayer times</li>
+        </ul>
+    </div>
+    <a href="https://www.virustotal.com/gui/file/a8b196ffc0dd8e7f30995134bb0356409a98c3d192842b29a7d2842b36293cc9" style="color: #ADD8FF; text-decoration: underline; font-weight: bold;">See VirusTotal Report</a>
+</div>
+
+<h3>Upcoming Features</h3>
+<p>We're constantly working to improve Prayer mode. Thank you for using our app.</p>
+
+<h3>Need Help?</h3>
+<p>If you encounter any issues or have suggestions for improvement, please contact us at <a href="mailto:prayer.mode@outlook.com">prayer.mode@outlook.com</a></p>
+
+</body>
+</html>
+
