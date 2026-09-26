@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation Help - Prayer mode</title>
+    <link rel="icon" href="icon.png" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 15px;
+            color: #333;
+        }
+        @media (prefers-color-scheme: dark) {
+            body {
+                color: #ddd;
+                background-color: #1a1a1a;
+            }
+            h1, h2, h3 {
+                color: #ADD8E6;
+            }
+            a {
+                color: #ADD8E6;
+            }
+            .warning-box {
+                background-color: #2d2d00;
+                border-left: 4px solid #ffff00;
+            }
+            .steps {
+                background-color: #2d2d2d;
+            }
+            .nav-links .current-page { color: #aaa; }
+            strong { color: #eee; }
+            .comparison-table td { border-color: #444; }
+        }
+        h1, h2, h3 {
+            color: #215BA0;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.2em; }
+        ul {
+            list-style-type: disc;
+            margin-left: 25px;
+            margin-bottom: 1em;
+        }
+        ul li { margin-bottom: 0.5em; }
+        strong { font-weight: bold; }
+        p { margin-bottom: 1em; }
+        a { color: #215BA0; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .header-container h1 {
+            margin: 0;
+            font-size: 1.3em;
+            color: inherit;
+        }
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8em;
+            white-space: nowrap;
+        }
+        .nav-links .current-page {
+            font-weight: bold;
+            text-decoration: none;
+            cursor: default;
+            color: #555;
+        }
+        .warning-box {
+            background-color: #fffacd;
+            border-left: 4px solid #ffd700;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .steps {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .step-number {
+            background-color: #215BA0;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        @media (prefers-color-scheme: dark) {
+            .step-number {
+                background-color: #ADD8E6;
+                color: #1a1a1a;
+            }
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .comparison-table th {
+            background-color: #215BA0;
+            color: white;
+        }
+        .comparison-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        @media (prefers-color-scheme: dark) {
+            .comparison-table th {
+                background-color: #1a3a5c;
+                color: #ADD8E6;
+            }
+            .comparison-table tr:hover {
+                background-color: #2d2d2d;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-container">
+    <h1>Installation Help - Prayer mode</h1>
+    <div class="nav-links">
+        <a href="https://prayermode.github.io/prayermode/">Home</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <span class="current-page">Help</span>
+        <a href="release-notes.html">Release Notes</a>
+    </div>
+</div>
+
+<h2>Two Ways to Install Prayer mode</h2>
+
+<p>Prayer mode is available through two trusted channels. Choose the one that works best for you:</p>
+
+<table class="comparison-table">
+    <thead>
+        <tr>
+            <th>Option</th>
+            <th>Best for</th>
+            <th>Update method</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>F-Droid</strong></td>
+            <td>Users who prefer automatic updates from a trusted open‑source repository</td>
+            <td>Automatic (through F-Droid)</td>
+        </tr>
+        <tr>
+            <td><strong>Direct APK</strong></td>
+            <td>Users who want the latest version immediately or don't use F-Droid</td>
+            <td>Manual (check website for updates)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Security Note</h3>
+<div class="warning-box">
+    <strong>Verified & Safe:</strong> Both the F-Droid repository and the APK on this website are built from the exact same open‑source code. You can verify the APK signature against the GitHub release if you wish.
+</div>
+
+<hr>
+
+<h2>Option 1: Install via F-Droid</h2>
+
+<p><strong>F-Droid</strong> is a trusted, open‑source app store that only contains free and open‑source software. Prayer mode is available in the official F-Droid repository.</p>
+
+<div class="steps">
+    <p><span class="step-number">1</span> Install <strong>F-Droid</strong> from <a href="https://f-droid.org/">f-droid.org</a> if you don't have it yet.</p>
+    <p><span class="step-number">2</span> Open F-Droid and search for <strong>"Prayer mode"</strong>.</p>
+    <p><span class="step-number">3</span> Tap <strong>Install</strong> and grant any requested permissions.</p>
+    <p><span class="step-number">4</span> Once installed, updates will be delivered automatically through F-Droid.</p>
+</div>
+
+<p><strong>Note:</strong> Prayer mode is available in the main F-Droid repository – no additional repository is needed. If you still can't find it, try refreshing the repository list in F-Droid (Settings → Repositories → Refresh).</p>
+
+<hr>
+
+<h2>Option 2: Install Directly from Our Website (APK)</h2>
+
+<p>If you prefer to install the APK directly, follow these steps.</p>
+
+<h3>Step 1: Enable "Install from Unknown Sources"</h3>
+
+<div class="warning-box">
+    <strong>Security Notice:</strong> This is a standard Android security feature. You only need to enable this temporarily to install Prayer mode. We recommend turning it off again after installation.
+</div>
+
+<p>Since Prayer mode is distributed outside the Google Play Store, you need to allow your browser or file manager to install apps. The steps vary by Android version:</p>
+
+<h4>For Android 7.0</h4>
+<div class="steps">
+    <p><span class="step-number">1</span> Go to <strong>Settings</strong></p>
+    <p><span class="step-number">2</span> Select <strong>Security</strong></p>
+    <p><span class="step-number">3</span> Enable <strong>Unknown sources</strong></p>
+    <p><span class="step-number">4</span> Confirm any security warning</p>
+</div>
+
+<h4>For Android 8.0 to Android 12</h4>
+<div class="steps">
+    <p><span class="step-number">1</span> Open <strong>Settings</strong></p>
+    <p><span class="step-number">2</span> Tap <strong>Apps & notifications</strong></p>
+    <p><span class="step-number">3</span> Select <strong>Advanced</strong> → <strong>Special app access</strong></p>
+    <p><span class="step-number">4</span> Tap <strong>Install unknown apps</strong></p>
+    <p><span class="step-number">5</span> Select the app you're using to download (e.g., Chrome, your file manager)</p>
+    <p><span class="step-number">6</span> Toggle <strong>Allow from this source</strong> to ON</p>
+</div>
+
+<h4>For Android 13 and later</h4>
+<div class="steps">
+    <p><span class="step-number">1</span> Open <strong>Settings</strong></p>
+    <p><span class="step-number">2</span> Go to <strong>Apps</strong></p>
+    <p><span class="step-number">3</span> Select <strong>Special app access</strong></p>
+    <p><span class="step-number">4</span> Tap <strong>Install unknown apps</strong></p>
+    <p><span class="step-number">5</span> Choose your browser or file manager</p>
+    <p><span class="step-number">6</span> Enable <strong>Allow from this source</strong></p>
+</div>
+
+<h4>For Xiaomi / MIUI devices</h4>
+<div class="steps">
+    <p><span class="step-number">1</span> Open <strong>Settings</strong> → <strong>Apps</strong> → <strong>Manage apps</strong></p>
+    <p><span class="step-number">2</span> Tap the <strong>⋮</strong> menu and select <strong>Settings</strong> → <strong>Install unknown apps</strong></p>
+    <p><span class="step-number">3</span> Select your browser or file manager → enable <strong>Allow</strong></p>
+</div>
+
+<h3>Step 2: Download and Install the APK</h3>
+
+<div class="steps">
+    <p><span class="step-number">1</span> Go to the <a href="https://prayermode.github.io/apk/">Home page</a> and download the latest APK.</p>
+    <p><span class="step-number">2</span> Open the downloaded file (usually in your Downloads folder).</p>
+    <p><span class="step-number">3</span> Tap <strong>Install</strong> and confirm any security prompt.</p>
+    <p><span class="step-number">4</span> Once installation is complete, tap <strong>Open</strong> to launch Prayer mode.</p>
+</div>
+
+<h3>Step 3: Disable Unknown Sources (Recommended)</h3>
+<p>After installing, return to the same settings and toggle <strong>Allow from this source</strong> back to OFF for security.</p>
+
+<hr>
+
+<h2>After Installation</h2>
+
+<p>Once Prayer mode is installed, we recommend:</p>
+<ul>
+    <li>Granting the necessary permissions when prompted (location, notifications, DND access)</li>
+    <li>Setting your preferred calculation method in the app settings</li>
+    <li>Configuring per‑prayer settings (durations, Ablution, Iqama) to your preference</li>
+</ul>
+
+<h2>Verifying APK Authenticity</h2>
+
+<p>For maximum security, you can verify that the APK matches the official GitHub release:</p>
+<ul>
+    <li>Download the APK from <a href="https://github.com/prayermode/prayermode/releases">GitHub Releases</a></li>
+    <li>Check the SHA‑256 hash against the one published on the release page</li>
+    <li>Compare the signature using tools like <code>apksigner</code></li>
+</ul>
+
+<h2>Troubleshooting</h2>
+
+<h3>"App not installed as package appears to be invalid"</h3>
+<ul>
+    <li>Uninstall any existing version of Prayer mode first</li>
+    <li>Make sure you're using the latest APK</li>
+    <li>Try downloading the APK again (the file may be corrupted)</li>
+</ul>
+
+<h3>"Install" button is greyed out / "Blocked by Play Protect"</h3>
+<ul>
+    <li>Tap <strong>More details</strong> → <strong>Install anyway</strong></li>
+    <li>If Play Protect blocks it, you can temporarily disable it in Google Play Store → Play Protect settings</li>
+</ul>
+
+<h3>Need More Help?</h3>
+
+<p>If you're still having trouble installing Prayer mode, please contact us at <a href="mailto:prayer.mode@outlook.com">prayer.mode@outlook.com</a> and let us know:</p>
+<ul>
+    <li>Your Android version (found in Settings → About phone)</li>
+    <li>Your device model</li>
+    <li>What happens when you try to install</li>
+</ul>
+
+</body>
+</html>
