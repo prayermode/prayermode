@@ -1,0 +1,9 @@
+Ablution and Iqama settings – set 10 min before Adhan or delay after Adhan independently for each daily prayer
+Added independent Ablution and Iqama settings for Taraweeh during Ramadan
+Smarter scheduling – Iqama delay shifts silent mode start while Takbir still plays at Adhan time
+Consolidated daily prayer notification showing all five prayer times instead of only showing Fajr prayer time
+Updated display strings for Ablution and Iqama states
+One-time migration info screen for users updating from previous versions
+Code cleanup and vector drawable optimisation
+Fixed volume restoration issue on Xiaomi/HyperOS devices when exiting DND mode
+Updated translations for all supported languages
