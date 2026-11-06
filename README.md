@@ -24,7 +24,7 @@
 - [Permissions Explained](#-permissions-explained)
 - [Building from Source](#-building-from-source)
 - [Contributing](#-contributing)
-- [Donations](#-donations)
+- [Supporting the project](#-supporting-the-project)
 - [License](#-license)
 - [Contact](#-contact)
 
@@ -112,7 +112,7 @@ You can help by:
 
 Please read our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
-## ❤️ Donations
+## ☕ Supporting the project
 
 Prayer mode is completely free and open source. Developing and maintaining it requires time and effort.
 
