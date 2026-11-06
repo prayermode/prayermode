@@ -123,7 +123,6 @@ If you find this app valuable and would like to support its continued developmen
 | Platform | Link |
 | :--- | :--- |
 | **PayPal** | [https://www.paypal.me/prayermode](https://www.paypal.me/prayermode) |
-| **GitHub Sponsors** | [https://github.com/sponsors/prayermode](https://github.com/sponsors/prayermode) |
 
 ## 📄 License
 
